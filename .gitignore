@@ -7,4 +7,12 @@
 *.iml
 out
 gen
+
+# eclipse project files
+.settings
+.classpath
+.project
+
+# all
 target
+src/test/
