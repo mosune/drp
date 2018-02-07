@@ -16,3 +16,4 @@ gen
 # all
 target
 src/test/
+src/main/resources/jdbc.properties
