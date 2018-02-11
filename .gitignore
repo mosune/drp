@@ -17,3 +17,4 @@ gen
 target
 src/test/
 src/main/resources/jdbc.properties
+LICENSE
