@@ -14,7 +14,7 @@ import java.util.Date;
  * @date 2018-03-24 24:53:07
  */
 @Data
-public class Role implements Serializable {
+public class Menu implements Serializable {
 
 	/**
 	 * 
@@ -22,22 +22,21 @@ public class Role implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id; //
-	private Integer shopId; //门店Id
-	private String name; //岗位名称
-	private String type; //岗位类型
+	private String code; //
+	private String name; //名称
+	private Integer level; //等级
+	private String parent; //上级
 	private String status; //状态：VALID／INVALID
 	private String createBy; //
 	private Date createTime; //
 	private String updateBy; //
 	private Date updateTime; //
-	private Date sysCreateTime; //
-	private Date sysUpdateTime; //
 	
-	public Role() {
+	public Menu() {
 		super();
 	}
 
-	public Role(Integer id) {
+	public Menu(Integer id) {
 		this.id = id;
 	}
 

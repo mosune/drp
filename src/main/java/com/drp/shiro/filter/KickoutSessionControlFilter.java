@@ -1,6 +1,6 @@
 package com.drp.shiro.filter;
 
-import com.drp.data.entity.User;
+import com.drp.data.entity.AdminUser;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;
@@ -67,14 +67,14 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
         }
 
         Session session = subject.getSession();
-        User user = (User) subject.getPrincipal();
+        AdminUser user = (AdminUser) subject.getPrincipal();
         Serializable sessionId = session.getId();
 
         //TODO 同步控制
-        Deque<Serializable> deque = cache.get(user.getUserName());
+        Deque<Serializable> deque = cache.get(user.getName());
         if(deque == null) {
             deque = new LinkedList<Serializable>();
-            cache.put(user.getUserName(), deque);
+            cache.put(user.getName(), deque);
         }
 
         //如果队列里没有此sessionId，且用户没有被踢出；放入队列

@@ -18,4 +18,18 @@
         <setting name="logImpl" value="LOG4J"/>
     </settings>
 
+    <typeAliases>
+        <typeAlias type="com.drp.data.entity.AdminUser" alias="adminUser" />
+        <typeAlias type="com.drp.data.entity.Category" alias="category" />
+        <typeAlias type="com.drp.data.entity.Goods" alias="goods" />
+        <typeAlias type="com.drp.data.entity.GoodsStock" alias="goodsStock" />
+        <typeAlias type="com.drp.data.entity.GoodsStockLog" alias="goodsStockLog" />
+        <typeAlias type="com.drp.data.entity.Menu" alias="menu" />
+        <typeAlias type="com.drp.data.entity.OperationCode" alias="operationCode" />
+        <typeAlias type="com.drp.data.entity.OperationLog" alias="operationLog" />
+        <typeAlias type="com.drp.data.entity.Relation" alias="relation" />
+        <typeAlias type="com.drp.data.entity.Role" alias="role" />
+        <typeAlias type="com.drp.data.entity.Shop" alias="shop" />
+    </typeAliases>
+
 </configuration>

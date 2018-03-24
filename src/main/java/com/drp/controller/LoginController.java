@@ -1,6 +1,6 @@
 package com.drp.controller;
 
-import com.drp.data.entity.User;
+import com.drp.data.entity.AdminUser;
 import lombok.extern.log4j.Log4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
@@ -35,7 +35,7 @@ public class LoginController {
         // usernamePasswordToken.setRememberMe(true);
         try {
             SecurityUtils.getSubject().login(usernamePasswordToken);
-            log.info(((User)(SecurityUtils.getSubject().getPrincipal())).getUserName() + " login success");
+            // log.info(((AdminUser)(SecurityUtils.getSubject().getPrincipal())).getUserName() + " login success");
             Session session = SecurityUtils.getSubject().getSession();
             SavedRequest savedRequest = WebUtils.getSavedRequest(request);
             if (savedRequest != null) {

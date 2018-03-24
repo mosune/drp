@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.drp.data.dao.impl.GoodsStockDaoImpl">
+
+	<sql id="table"> goods_stock </sql>
+	
+	<resultMap type="goodsStock" id="goodsStockMap">
+		<result property="id" column="id"/>
+		<result property="shopId" column="shop_id"/>
+		<result property="goodsId" column="goods_id"/>
+		<result property="originalStock" column="original_stock"/>
+		<result property="inQuantity" column="in_quantity"/>
+		<result property="outQuentity" column="out_quentity"/>
+		<result property="currentStock" column="current_stock"/>
+		<result property="status" column="status"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+	</resultMap>
+	
+	<sql id="sql_where">
+		<if test="id != null and id != ''"> and id = #{id} </if>
+		<if test="shop_id != null"> and shop_id = #{shop_id} </if>
+		<if test="goods_id != null and goods_id != ''"> and goods_id = #{goods_id} </if>
+		<if test="original_stock != null"> and original_stock = #{original_stock} </if>
+		<if test="in_quantity != null"> and in_quantity = #{in_quantity} </if>
+		<if test="out_quentity != null"> and out_quentity = #{out_quentity} </if>
+		<if test="current_stock != null"> and current_stock = #{current_stock} </if>
+		<if test="status != null"> and status = #{status} </if>
+		<if test="create_by != null and create_by != ''"> and create_by = #{create_by} </if>
+		<if test="create_time != null"> and create_time = #{create_time} </if>
+		<if test="update_by != null and update_by != ''"> and update_by = #{update_by} </if>
+		<if test="update_time != null"> and update_time = #{update_time} </if>
+	</sql>
+	
+	<sql id="sql_where_key">
+		id = #{id}
+	</sql>
+	
+	<sql id="sql_order_key">
+		id
+	</sql>
+	
+	<insert id="insert" parameterType="goodsStock" >
+		insert into
+		<include refid="table" />
+		(
+			id, shop_id, goods_id, original_stock, in_quantity, out_quentity, current_stock, status, create_by, create_time, update_by, update_time
+		) values(
+			#{id}, #{shopId}, #{goodsId}, #{originalStock}, #{inQuantity}, #{outQuentity}, #{currentStock}, #{status}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}
+		)
+	</insert>
+	
+	<insert id="batchInsert" parameterType="java.util.List" >
+		insert into
+		<include refid="table" />
+		(
+			id, shop_id, goods_id, original_stock, in_quantity, out_quentity, current_stock, status, create_by, create_time, update_by, update_time
+		) values
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{item.id}, #{item.shopId}, #{item.goodsId}, #{item.originalStock}, #{item.inQuantity}, #{item.outQuentity}, #{item.currentStock}, #{item.status}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
+		</foreach>
+	</insert>
+	
+	<delete id="delete" parameterType="goodsStock">
+		delete from
+		<include refid="table" />
+		<where>
+			<include refid="sql_where_key" />
+		</where>
+	</delete>
+	
+	<update id="update" parameterType="goodsStock">
+		update
+		<include refid="table" />
+		<set>
+			id = #{id},
+			shop_id = #{shopId},
+			goods_id = #{goodsId},
+			original_stock = #{originalStock},
+			in_quantity = #{inQuantity},
+			out_quentity = #{outQuentity},
+			current_stock = #{currentStock},
+			status = #{status},
+			create_by = #{createBy},
+			create_time = #{createTime},
+			update_by = #{updateBy},
+			update_time = #{updateTime}
+		</set>
+		<where>
+			<include refid="sql_where_key" />
+		</where>
+	</update>
+	
+	<!-- 按主键查询 -->
+	<select id="select" parameterType="goodsStock" resultMap="goodsStockMap">
+		select * from
+		<include refid="table" />
+		<where>
+			<include refid="sql_where_key" />
+		</where>
+	</select>
+
+	<!-- 按参数查询 -->
+	<select id="selectBy" parameterType="java.util.Map" resultMap="goodsStockMap">
+		select * from
+		<include refid="table" />
+		<where>
+			<include refid="sql_where" />
+		</where>
+	</select>
+
+	<!-- 按参数查询（分页） -->
+	<select id="selectPage" parameterType="java.util.Map" resultMap="goodsStockMap">
+		select * from
+		<include refid="table" />
+		<where>
+			<include refid="sql_where" />
+		</where>
+		order by
+		<include refid="sql_order_key" />
+	</select>
+	
+</mapper>

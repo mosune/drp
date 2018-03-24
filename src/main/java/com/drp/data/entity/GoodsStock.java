@@ -14,30 +14,31 @@ import java.util.Date;
  * @date 2018-03-24 24:53:07
  */
 @Data
-public class Role implements Serializable {
+public class GoodsStock implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Integer id; //
+	private String id; //
 	private Integer shopId; //门店Id
-	private String name; //岗位名称
-	private String type; //岗位类型
-	private String status; //状态：VALID／INVALID
+	private String goodsId; //商品Id
+	private Integer originalStock; //原始库存
+	private Integer inQuantity; //进货
+	private Integer outQuentity; //出货
+	private Integer currentStock; //当前库存
+	private Integer status; //状态
 	private String createBy; //
 	private Date createTime; //
 	private String updateBy; //
 	private Date updateTime; //
-	private Date sysCreateTime; //
-	private Date sysUpdateTime; //
 	
-	public Role() {
+	public GoodsStock() {
 		super();
 	}
 
-	public Role(Integer id) {
+	public GoodsStock(String id) {
 		this.id = id;
 	}
 

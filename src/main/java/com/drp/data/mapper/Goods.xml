@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.drp.data.dao.impl.GoodsDaoImpl">
+
+	<sql id="table"> goods </sql>
+	
+	<resultMap type="goods" id="goodsMap">
+		<result property="id" column="id"/>
+		<result property="shopId" column="shop_id"/>
+		<result property="name" column="name"/>
+		<result property="number" column="number"/>
+		<result property="desc" column="desc"/>
+		<result property="cateId" column="cate_id"/>
+		<result property="salePrice" column="sale_price"/>
+		<result property="originalPrice" column="original_price"/>
+		<result property="stock" column="stock"/>
+		<result property="url" column="url"/>
+		<result property="expiryTime" column="expiry_time"/>
+		<result property="status" column="status"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+	</resultMap>
+	
+	<sql id="sql_where">
+		<if test="id != null and id != ''"> and id = #{id} </if>
+		<if test="shop_id != null"> and shop_id = #{shop_id} </if>
+		<if test="name != null and name != ''"> and name = #{name} </if>
+		<if test="number != null and number != ''"> and number = #{number} </if>
+		<if test="desc != null and desc != ''"> and desc = #{desc} </if>
+		<if test="cate_id != null and cate_id != ''"> and cate_id = #{cate_id} </if>
+		<if test="sale_price != null"> and sale_price = #{sale_price} </if>
+		<if test="original_price != null"> and original_price = #{original_price} </if>
+		<if test="stock != null"> and stock = #{stock} </if>
+		<if test="url != null and url != ''"> and url = #{url} </if>
+		<if test="expiry_time != null"> and expiry_time = #{expiry_time} </if>
+		<if test="status != null and status != ''"> and status = #{status} </if>
+		<if test="create_by != null and create_by != ''"> and create_by = #{create_by} </if>
+		<if test="create_time != null"> and create_time = #{create_time} </if>
+		<if test="update_by != null and update_by != ''"> and update_by = #{update_by} </if>
+		<if test="update_time != null"> and update_time = #{update_time} </if>
+	</sql>
+	
+	<sql id="sql_where_key">
+		id = #{id}
+	</sql>
+	
+	<sql id="sql_order_key">
+		id
+	</sql>
+	
+	<insert id="insert" parameterType="goods" >
+		insert into
+		<include refid="table" />
+		(
+			id, shop_id, name, number, desc, cate_id, sale_price, original_price, stock, url, expiry_time, status, create_by, create_time, update_by, update_time
+		) values(
+			#{id}, #{shopId}, #{name}, #{number}, #{desc}, #{cateId}, #{salePrice}, #{originalPrice}, #{stock}, #{url}, #{expiryTime}, #{status}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}
+		)
+	</insert>
+	
+	<insert id="batchInsert" parameterType="java.util.List" >
+		insert into
+		<include refid="table" />
+		(
+			id, shop_id, name, number, desc, cate_id, sale_price, original_price, stock, url, expiry_time, status, create_by, create_time, update_by, update_time
+		) values
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{item.id}, #{item.shopId}, #{item.name}, #{item.number}, #{item.desc}, #{item.cateId}, #{item.salePrice}, #{item.originalPrice}, #{item.stock}, #{item.url}, #{item.expiryTime}, #{item.status}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
+		</foreach>
+	</insert>
+	
+	<delete id="delete" parameterType="goods">
+		delete from
+		<include refid="table" />
+		<where>
+			<include refid="sql_where_key" />
+		</where>
+	</delete>
+	
+	<update id="update" parameterType="goods">
+		update
+		<include refid="table" />
+		<set>
+			id = #{id},
+			shop_id = #{shopId},
+			name = #{name},
+			number = #{number},
+			desc = #{desc},
+			cate_id = #{cateId},
+			sale_price = #{salePrice},
+			original_price = #{originalPrice},
+			stock = #{stock},
+			url = #{url},
+			expiry_time = #{expiryTime},
+			status = #{status},
+			create_by = #{createBy},
+			create_time = #{createTime},
+			update_by = #{updateBy},
+			update_time = #{updateTime}
+		</set>
+		<where>
+			<include refid="sql_where_key" />
+		</where>
+	</update>
+	
+	<!-- 按主键查询 -->
+	<select id="select" parameterType="goods" resultMap="goodsMap">
+		select * from
+		<include refid="table" />
+		<where>
+			<include refid="sql_where_key" />
+		</where>
+	</select>
+
+	<!-- 按参数查询 -->
+	<select id="selectBy" parameterType="java.util.Map" resultMap="goodsMap">
+		select * from
+		<include refid="table" />
+		<where>
+			<include refid="sql_where" />
+		</where>
+	</select>
+
+	<!-- 按参数查询（分页） -->
+	<select id="selectPage" parameterType="java.util.Map" resultMap="goodsMap">
+		select * from
+		<include refid="table" />
+		<where>
+			<include refid="sql_where" />
+		</where>
+		order by
+		<include refid="sql_order_key" />
+	</select>
+	
+</mapper>

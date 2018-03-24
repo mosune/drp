@@ -1,7 +1,5 @@
 package com.drp.data.dao;
 
-import com.drp.data.entity.User;
-
 import java.util.List;
 import java.util.Set;
 

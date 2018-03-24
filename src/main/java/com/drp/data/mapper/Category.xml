@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.drp.data.dao.impl.RoleDaoImpl">
+<mapper namespace="com.drp.data.dao.impl.CategoryDaoImpl">
 
-	<sql id="table"> role </sql>
+	<sql id="table"> category </sql>
 	
-	<resultMap type="role" id="roleMap">
+	<resultMap type="category" id="categoryMap">
 		<result property="id" column="id"/>
 		<result property="shopId" column="shop_id"/>
+		<result property="sequence" column="sequence"/>
 		<result property="name" column="name"/>
-		<result property="type" column="type"/>
+		<result property="desc" column="desc"/>
+		<result property="level" column="level"/>
 		<result property="status" column="status"/>
 		<result property="createBy" column="create_by"/>
 		<result property="createTime" column="create_time"/>
 		<result property="updateBy" column="update_by"/>
 		<result property="updateTime" column="update_time"/>
-		<result property="sysCreateTime" column="sys_create_time"/>
-		<result property="sysUpdateTime" column="sys_update_time"/>
 	</resultMap>
 	
 	<sql id="sql_where">
-		<if test="id != null"> and id = #{id} </if>
+		<if test="id != null and id != ''"> and id = #{id} </if>
 		<if test="shop_id != null"> and shop_id = #{shop_id} </if>
+		<if test="sequence != null"> and sequence = #{sequence} </if>
 		<if test="name != null and name != ''"> and name = #{name} </if>
-		<if test="type != null and type != ''"> and type = #{type} </if>
-		<if test="status != null and status != ''"> and status = #{status} </if>
+		<if test="desc != null and desc != ''"> and desc = #{desc} </if>
+		<if test="level != null"> and level = #{level} </if>
+		<if test="status != null"> and status = #{status} </if>
 		<if test="create_by != null and create_by != ''"> and create_by = #{create_by} </if>
 		<if test="create_time != null"> and create_time = #{create_time} </if>
 		<if test="update_by != null and update_by != ''"> and update_by = #{update_by} </if>
 		<if test="update_time != null"> and update_time = #{update_time} </if>
-		<if test="sys_create_time != null"> and sys_create_time = #{sys_create_time} </if>
-		<if test="sys_update_time != null"> and sys_update_time = #{sys_update_time} </if>
 	</sql>
 	
 	<sql id="sql_where_key">
@@ -40,13 +40,13 @@
 		id
 	</sql>
 	
-	<insert id="insert" parameterType="role" >
+	<insert id="insert" parameterType="category" >
 		insert into
 		<include refid="table" />
 		(
-			id, shop_id, name, type, status, create_by, create_time, update_by, update_time, sys_create_time, sys_update_time
+			id, shop_id, sequence, name, desc, level, status, create_by, create_time, update_by, update_time
 		) values(
-			#{id}, #{shopId}, #{name}, #{type}, #{status}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}, #{sysCreateTime}, #{sysUpdateTime}
+			#{id}, #{shopId}, #{sequence}, #{name}, #{desc}, #{level}, #{status}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}
 		)
 	</insert>
 	
@@ -54,14 +54,14 @@
 		insert into
 		<include refid="table" />
 		(
-			id, shop_id, name, type, status, create_by, create_time, update_by, update_time, sys_create_time, sys_update_time
+			id, shop_id, sequence, name, desc, level, status, create_by, create_time, update_by, update_time
 		) values
 		<foreach collection="list" item="item" index="index" separator="," >
-			(#{item.id}, #{item.shopId}, #{item.name}, #{item.type}, #{item.status}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime}, #{item.sysCreateTime}, #{item.sysUpdateTime})
+			(#{item.id}, #{item.shopId}, #{item.sequence}, #{item.name}, #{item.desc}, #{item.level}, #{item.status}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
 		</foreach>
 	</insert>
 	
-	<delete id="delete" parameterType="role">
+	<delete id="delete" parameterType="category">
 		delete from
 		<include refid="table" />
 		<where>
@@ -69,21 +69,21 @@
 		</where>
 	</delete>
 	
-	<update id="update" parameterType="role">
+	<update id="update" parameterType="category">
 		update
 		<include refid="table" />
 		<set>
 			id = #{id},
 			shop_id = #{shopId},
+			sequence = #{sequence},
 			name = #{name},
-			type = #{type},
+			desc = #{desc},
+			level = #{level},
 			status = #{status},
 			create_by = #{createBy},
 			create_time = #{createTime},
 			update_by = #{updateBy},
-			update_time = #{updateTime},
-			sys_create_time = #{sysCreateTime},
-			sys_update_time = #{sysUpdateTime}
+			update_time = #{updateTime}
 		</set>
 		<where>
 			<include refid="sql_where_key" />
@@ -91,7 +91,7 @@
 	</update>
 	
 	<!-- 按主键查询 -->
-	<select id="select" parameterType="role" resultMap="roleMap">
+	<select id="select" parameterType="category" resultMap="categoryMap">
 		select * from
 		<include refid="table" />
 		<where>
@@ -100,7 +100,7 @@
 	</select>
 
 	<!-- 按参数查询 -->
-	<select id="selectBy" parameterType="java.util.Map" resultMap="roleMap">
+	<select id="selectBy" parameterType="java.util.Map" resultMap="categoryMap">
 		select * from
 		<include refid="table" />
 		<where>
@@ -109,7 +109,7 @@
 	</select>
 
 	<!-- 按参数查询（分页） -->
-	<select id="selectPage" parameterType="java.util.Map" resultMap="roleMap">
+	<select id="selectPage" parameterType="java.util.Map" resultMap="categoryMap">
 		select * from
 		<include refid="table" />
 		<where>

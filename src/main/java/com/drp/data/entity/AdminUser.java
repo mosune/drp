@@ -14,30 +14,31 @@ import java.util.Date;
  * @date 2018-03-24 24:53:07
  */
 @Data
-public class Role implements Serializable {
+public class AdminUser implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Integer id; //
+	private String id; //
+	private String account; //登录账号
+	private String password; //登录密码
 	private Integer shopId; //门店Id
-	private String name; //岗位名称
-	private String type; //岗位类型
-	private String status; //状态：VALID／INVALID
+	private String name; //姓名
+	private String mobile; //电话
+	private String roleId; //角色
+	private String status; //状态：是否可用
 	private String createBy; //
 	private Date createTime; //
 	private String updateBy; //
 	private Date updateTime; //
-	private Date sysCreateTime; //
-	private Date sysUpdateTime; //
 	
-	public Role() {
+	public AdminUser() {
 		super();
 	}
 
-	public Role(Integer id) {
+	public AdminUser(String id) {
 		this.id = id;
 	}
 
