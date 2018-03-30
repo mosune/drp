@@ -28,6 +28,11 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class LoginController {
 
+    @RequestMapping("index.do")
+    public String index() {
+        return "index";
+    }
+
     @RequestMapping(value = "login.do")
     public String login(String userName, String password, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView();
