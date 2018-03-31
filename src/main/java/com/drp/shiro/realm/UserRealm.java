@@ -1,6 +1,7 @@
 package com.drp.shiro.realm;
 
 import com.drp.data.entity.AdminUser;
+import com.drp.service.AdminUserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -20,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserRealm extends AuthorizingRealm {
 
     @Autowired
-    private AdminUser adminUser;
+    private AdminUserService adminUserService;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -43,7 +44,7 @@ public class UserRealm extends AuthorizingRealm {
         }
         SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(
                 user, user.getPassword(), ByteSource.Util.bytes(user.getUserName()), getName()); // 检验账户*/
-        return simpleAuthenticationInfo;
+        return null;
     }
 
 }
