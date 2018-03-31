@@ -59,6 +59,90 @@
                         </ul>
                     </li>
                 </c:forEach>--%>
+                <li>
+                    <a href="#">
+                        <span class="nav-label">系统设置</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a class="J_menuItem" href="<%=root %>">员工管理</a>
+                        </li>
+                        <li>
+                            <a class="J_menuItem" href="<%=root %>">岗位管理</a>
+                        </li>
+                        <li>
+                            <a class="J_menuItem" href="<%=root %>">操作日志</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-label">图书管理</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a class="J_menuItem" href="<%=root %>">书本分类管理</a>
+                        </li>
+                        <li>
+                            <a class="J_menuItem" href="<%=root %>">书本基本信息管理</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-label">图书采购管理</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a class="J_menuItem" href="<%=root %>">图书采购订单管理</a>
+                        </li>
+                        <li>
+                            <a class="J_menuItem" href="<%=root %>">图书采购退货管理</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-label">图书销售管理</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a class="J_menuItem" href="<%=root %>">图书销售管理</a>
+                        </li>
+                        <li>
+                            <a class="J_menuItem" href="<%=root %>">图书退货管理</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-label">图书库存管理</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a class="J_menuItem" href="<%=root %>">图书入库管理</a>
+                        </li>
+                        <li>
+                            <a class="J_menuItem" href="<%=root %>">图书出库管理</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-label">财务管理</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a class="J_menuItem" href="<%=root %>">图书进销存对账</a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </nav>
