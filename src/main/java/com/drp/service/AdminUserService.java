@@ -1,9 +1,8 @@
 package com.drp.service;
 
-import java.util.List;
-import java.util.Map;
-
 import com.drp.data.entity.AdminUser;
+import com.drp.util.Page;
+import com.drp.util.PageParam;
 
 /**
  * 
@@ -39,5 +38,11 @@ public interface AdminUserService {
 	 * @return
 	 */
 	AdminUser get(AdminUser adminUser);
-	
+
+	/**
+	 * 返回分页参数
+	 * @param pageParam
+	 * @return
+	 */
+	Page<AdminUser> find(PageParam pageParam);
 }

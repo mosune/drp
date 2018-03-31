@@ -1,8 +1,7 @@
 package com.drp.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
+import com.drp.util.Page;
+import com.drp.util.PageParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +40,10 @@ public class AdminUserServiceImpl implements AdminUserService {
 	public AdminUser get(AdminUser adminUser) {
 		return this.adminUserDao.get(adminUser);
 	}
-	
+
+	@Override
+	public Page<AdminUser> find(PageParam pageParam) {
+		return adminUserDao.find(pageParam);
+	}
+
 }

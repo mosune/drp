@@ -4,11 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>宾馆管理系统</title>
-    <link href="<%=root %>/resources/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link href="<%=root %>/resources/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
-    <link href="<%=root %>/resources/css/animate.css" rel="stylesheet">
-    <link href="<%=root %>/resources/css/style.css?v=4.1.0" rel="stylesheet">
+    <title>首页</title>
 </head>
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
 <div id="wrapper">
@@ -66,7 +62,7 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem" href="<%=root %>">员工管理</a>
+                            <a class="J_menuItem" href="<%=root %>adminUser/index.do">员工管理</a>
                         </li>
                         <li>
                             <a class="J_menuItem" href="<%=root %>">岗位管理</a>

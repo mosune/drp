@@ -20,7 +20,6 @@
 	</resultMap>
 	
 	<sql id="sql_where">
-		<if test="id != null and id != ''"> and id = #{id} </if>
 		<if test="account != null and account != ''"> and account = #{account} </if>
 		<if test="password != null and password != ''"> and password = #{password} </if>
 		<if test="shop_id != null"> and shop_id = #{shop_id} </if>
@@ -121,5 +120,13 @@
 		order by
 		<include refid="sql_order_key" />
 	</select>
-	
+
+	<!-- 按参数查询（分页）数量 -->
+	<select id="getCount" parameterType="java.util.Map" resultType="integer">
+		select count(*) from
+		<include refid="table" />
+		<where>
+			<include refid="sql_where" />
+		</where>
+	</select>
 </mapper>
