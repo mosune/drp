@@ -25,7 +25,7 @@
                             </span>
                         </a>
                     </div>
-                    <div class="logo-element">drp</div>
+                    <div class="logo-element">DRP</div>
                 </li>
                 <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                     <span class="ng-scope">yyt</span>
@@ -79,7 +79,7 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem" href="<%=root %>">书本分类管理</a>
+                            <a class="J_menuItem" href="<%=root %>category/index.do">书本分类管理</a>
                         </li>
                         <li>
                             <a class="J_menuItem" href="<%=root %>">书本基本信息管理</a>

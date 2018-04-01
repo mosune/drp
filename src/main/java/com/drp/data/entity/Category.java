@@ -21,11 +21,10 @@ public class Category implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String id; //
+	private Integer id; //
 	private Integer shopId; //门店Id
-	private Integer sequence; //
 	private String name; //名称
-	private String desc; //描述
+	private String remark; //描述
 	private Integer level; //级别
 	private Integer status; //状态：0，1
 	private String createBy; //
@@ -37,7 +36,7 @@ public class Category implements Serializable {
 		super();
 	}
 
-	public Category(String id) {
+	public Category(Integer id) {
 		this.id = id;
 	}
 

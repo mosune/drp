@@ -1,9 +1,11 @@
 package com.drp.service;
 
-import java.util.List;
-import java.util.Map;
-
+import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.Category;
+import com.drp.util.Page;
+import com.drp.util.PageParam;
+
+import java.util.List;
 
 /**
  * 
@@ -40,4 +42,23 @@ public interface CategoryService {
 			 */
 	Category get(Category category);
 
+	/**
+	 * 获取首页列表
+	 * @param pageParam
+	 * @return
+	 */
+	Page<Category> find(PageParam pageParam);
+
+	/**
+	 * 添加或者删除类别
+	 * @param category
+	 * @return
+	 */
+    JSONObject addOrUpdate(Category category);
+
+	/**
+	 * 获取第一级别的列表
+	 * @return
+	 */
+	List<Category> getTopLevel();
 }

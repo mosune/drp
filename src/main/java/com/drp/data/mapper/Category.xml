@@ -7,9 +7,8 @@
 	<resultMap type="category" id="categoryMap">
 		<result property="id" column="id"/>
 		<result property="shopId" column="shop_id"/>
-		<result property="sequence" column="sequence"/>
 		<result property="name" column="name"/>
-		<result property="desc" column="desc"/>
+		<result property="remark" column="remark"/>
 		<result property="level" column="level"/>
 		<result property="status" column="status"/>
 		<result property="createBy" column="create_by"/>
@@ -21,9 +20,8 @@
 	<sql id="sql_where">
 		<if test="id != null and id != ''"> and id = #{id} </if>
 		<if test="shop_id != null"> and shop_id = #{shop_id} </if>
-		<if test="sequence != null"> and sequence = #{sequence} </if>
 		<if test="name != null and name != ''"> and name = #{name} </if>
-		<if test="desc != null and desc != ''"> and desc = #{desc} </if>
+		<if test="remark != null and remark != ''"> and remark = #{remark} </if>
 		<if test="level != null"> and level = #{level} </if>
 		<if test="status != null"> and status = #{status} </if>
 		<if test="create_by != null and create_by != ''"> and create_by = #{create_by} </if>
@@ -37,16 +35,16 @@
 	</sql>
 	
 	<sql id="sql_order_key">
-		id
+		create_time DESC
 	</sql>
 	
 	<insert id="insert" parameterType="category" >
 		insert into
 		<include refid="table" />
 		(
-			id, shop_id, sequence, name, desc, level, status, create_by, create_time, update_by, update_time
+			shop_id, name, remark, level, status, create_by, create_time, update_by, update_time
 		) values(
-			#{id}, #{shopId}, #{sequence}, #{name}, #{desc}, #{level}, #{status}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}
+			#{shopId}, #{name}, #{remark}, #{level}, #{status}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}
 		)
 	</insert>
 	
@@ -54,10 +52,10 @@
 		insert into
 		<include refid="table" />
 		(
-			id, shop_id, sequence, name, desc, level, status, create_by, create_time, update_by, update_time
+			id, shop_id, name, remark, level, status, create_by, create_time, update_by, update_time
 		) values
 		<foreach collection="list" item="item" index="index" separator="," >
-			(#{item.id}, #{item.shopId}, #{item.sequence}, #{item.name}, #{item.desc}, #{item.level}, #{item.status}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
+			(#{item.id}, #{item.shopId}, #{item.name}, #{item.remark}, #{item.level}, #{item.status}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
 		</foreach>
 	</insert>
 	
@@ -75,9 +73,8 @@
 		<set>
 			id = #{id},
 			shop_id = #{shopId},
-			sequence = #{sequence},
 			name = #{name},
-			desc = #{desc},
+            remark = #{remark},
 			level = #{level},
 			status = #{status},
 			create_by = #{createBy},
@@ -116,6 +113,29 @@
 			<include refid="sql_where" />
 		</where>
 		order by
+		<include refid="sql_order_key" />
+	</select>
+
+	<!-- 获取分页总数据数 -->
+	<select id="getCount" parameterType="java.util.Map" resultMap="categoryMap">
+		select count(*) from
+		<include refid="table" />
+		<where>
+			<include refid="sql_where" />
+		</where>
+	</select>
+
+	<!-- 获取第一级别列表 -->
+	<select id="getTopLevel" parameterType="java.util.Map" resultMap="categoryMap">
+		select
+			id as id,
+			name as name
+		from
+		<include refid="table" />
+		<where>
+			<include refid="sql_where" />
+		</where>
+		order BY
 		<include refid="sql_order_key" />
 	</select>
 	

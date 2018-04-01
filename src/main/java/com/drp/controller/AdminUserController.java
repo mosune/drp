@@ -35,6 +35,12 @@ public class AdminUserController extends BaseController {
 		return "/adminUser/index";
 	}
 
+    /**
+     * 首页列表
+     * @param limit
+     * @param offset
+     * @return
+     */
 	@ResponseBody
     @RequestMapping("list.do")
     public JSONObject list(int limit, int offset) {
