@@ -77,9 +77,12 @@
             </div>
         </div>
     </div>
+
+    <input type="hidden" id="hideValue" />
 </body>
 <script src="<%=root %>/resources/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
 <script src="<%=root %>/resources/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="<%=root %>/resources/js/jquery.extends.js"></script>
 <script type="text/javascript">
     var _categoryTable;
     $(document).ready(function() {
@@ -98,10 +101,23 @@
             idField: 'id',
             columns: [
                 {field: 'name',width: '15%', title: '名称', align: 'center'},
-                {field: 'level', width: '10%', title: '级别', align: 'center'},
-                {field: 'desc',width: '20%', title: '描述', align: 'center'},
-                {field: 'status',width: '10%', title: '状态', align: 'center'},
-                {field: 'createTime',width: '10%', title: '创建时间', align: 'center'}
+                {field: 'levelName', width: '10%', title: '上级', align: 'center'},
+                {field: 'remark',width: '20%', title: '描述', align: 'center'},
+                {field: 'status',width: '10%', title: '状态', align: 'center',
+                    formatter : function(value) {
+                        if (value == 1) return "正常";
+                        else return "未启用";
+                    }},
+                {field: 'createTime',width: '10%', title: '创建时间', align: 'center',
+                    formatter : function(value) {
+                        return $(this).dateFormat(value, 'yyyy-MM-dd HH:mm:ss');
+                    }},
+                {field: 'opt',width: '10%', title: '操作', align: 'center',
+                    formatter: function(value, row){
+                        return '<button type="button" class="btn btn-info btn-xs" onclick="openModel(\''+row.id+'\')">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;'
+                            + '<button type="button" class="btn btn-danger btn-xs" onclick="deleteData(\''+row.id+'\')">删除</button>&nbsp;&nbsp;&nbsp;&nbsp;'
+                            + '<button type="button" class="btn btn-primary btn-xs" onclick="updateStatus(\''+row.id+'\', \''+row.status+'\')">状态</button>';
+                    }}
             ],
             toolbar: '#toolbar'
         });
@@ -110,6 +126,8 @@
             if (this.value == 'true') {
                 $("#topLevel option:first").prop("selected", 'selected');
                 $("#topLevel").attr("disabled", true);
+                $("#topLevel").empty();
+                $("#topLevel").append("<option value='0'>请选择</option>");
             } else {
                 $("#topLevel").attr("disabled", false);
                 $.ajax({
@@ -117,17 +135,66 @@
                     type: "post",
                     dataType: "json",
                     success:function(result) {
-
+                        for (var i = 0; i < result.list.length; i++) {
+                            $("#topLevel").append("<option value="+result.list[i].id+">"+result.list[i].name+"</option>");
+                        }
                     }
                 });
             }
         });
     });
 
-    function openModel() {
-        $("#name").val("");
-        $("#topLevel option:first").prop("selected", 'selected');
-        $("#desc").val("");
+    function openModel(id) {
+        if (id) {
+            $("#hideValue").val(id);
+            $("#topLevel").empty();
+            $("#topLevel").append("<option value='0'>请选择</option>");
+            $.ajax({
+                url: "<%=root%>category/getData.do",
+                type: "post",
+                data: {
+                    id:id
+                },
+                dataType: "json",
+                success:function(result) {
+                    if (result.msg) {
+                        toastr.error(result.msg);
+                    } else {
+                        $("#name").val(result.category.name);
+                        $("#desc").val(result.category.remark);
+                        if (result.category.level == 0) {
+                            $('input:radio').eq(0).prop('checked', true);
+                            $("#topLevel option:first").prop("selected", 'selected');
+                        } else {
+                            $('input:radio').eq(1).prop('checked', true);
+                            $("#topLevel").prop("disabled", false);
+                            $.ajax({
+                                url: "<%=root%>category/getTopLevel.do",
+                                type: "post",
+                                async: false,
+                                dataType: "json",
+                                success:function(data) {
+                                    for (var i = 0; i < data.list.length; i++) {
+                                        if (data.list[i].id == result.category.level) {
+                                            $("#topLevel").append("<option selected value="+data.list[i].id+">"+data.list[i].name+"</option>");
+                                            continue;
+                                        }
+                                        $("#topLevel").append("<option value="+data.list[i].id+">"+data.list[i].name+"</option>");
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        } else {
+            $("#hideValue").val("");
+            $("#name").val("");
+            $("#topLevel").attr("disabled","disabled");
+            $("#topLevel option:first").prop("selected", 'selected');
+            $('input:radio').eq(0).prop('checked', true);
+            $("#desc").val("");
+        }
         $("#modal").modal("show");
     }
     
@@ -135,13 +202,15 @@
         var name = $("#name").val();
         var level = $("#topLevel").val();
         var remark = $("#desc").val();
+        var id = $("#hideValue").val();
         $.ajax({
             url: "<%=root%>category/addOrUpdate.do",
             type: "post",
             data: {
                 name:name,
                 level:level,
-                remark:remark
+                remark:remark,
+                id:id
             },
             dataType: "json",
             success:function(result) {
@@ -149,7 +218,80 @@
                     toastr.error(result.msg);
                 } else {
                     toastr.info("操作成功");
+                    _categoryTable.bootstrapTable("refresh");
+                    $('#modal').modal('hide');
                 }
+            }
+        });
+    }
+
+    function deleteData(id) {
+        swal({
+            title: "确认删除么？",
+            text: "要慎重啊！这个操作可是不能反悔的",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "删除",
+            cancelButtonText: "取消",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            showLoaderOnConfirm: true
+        },
+        function(isConfirm){
+            if (isConfirm) {
+                $.ajax({
+                    url: "<%=root%>category/delete.do",
+                    type: "post",
+                    data: {id:id},
+                    success:function(result){
+                        if (result.msg) {
+                            swal("取消", result.msg, "error");
+                        } else {
+                            swal("成功!", "您删除了这个类目", "success");
+                            _categoryTable.bootstrapTable("refresh");
+                        }
+                    }
+                })
+            } else {
+                swal("取消", "谢谢您的考虑:)", "error");
+            }
+        });
+    }
+
+    function updateStatus(id, status) {
+        swal({
+            title: "确认修改状态么？",
+            text: "要慎重啊！这个操作可是不能反悔的",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "修改",
+            cancelButtonText: "取消",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            showLoaderOnConfirm: true
+        },
+        function(isConfirm){
+            if (isConfirm) {
+                $.ajax({
+                    url: "<%=root%>category/updateStatus.do",
+                    type: "post",
+                    data: {
+                        id:id,
+                        status:status
+                    },
+                    success:function(result){
+                        if (result.msg) {
+                            swal("取消", result.msg, "error");
+                        } else {
+                            swal("成功!", "您修改了状态", "success");
+                            _categoryTable.bootstrapTable("refresh");
+                        }
+                    }
+                })
+            } else {
+                swal("取消", "谢谢您的考虑:)", "error");
             }
         });
     }

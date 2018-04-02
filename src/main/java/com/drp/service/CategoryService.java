@@ -26,7 +26,7 @@ public interface CategoryService {
 	 * @param category
 	 * @return
 	 */
-	int delete(Category category);
+	JSONObject delete(Category category);
 
 	/**
 	 * 修改（按主键）
@@ -61,4 +61,11 @@ public interface CategoryService {
 	 * @return
 	 */
 	List<Category> getTopLevel();
+
+	/**
+	 * 修改状态
+	 * @param category
+	 * @return
+	 */
+	JSONObject updateStatus(Category category);
 }

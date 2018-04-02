@@ -13,10 +13,12 @@
 <link href="<%=root %>/resources/css/animate.css" rel="stylesheet">
 <link href="<%=root %>/resources/css/style.css?v=4.1.0" rel="stylesheet">
 <link href="<%=root %>/resources/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+<link href="<%=root %>/resources/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 
 <script src="<%=root %>/resources/js/jquery.min.js?v=2.1.4"></script>
 <script src="<%=root %>/resources/js/bootstrap.min.js?v=3.3.6"></script>
 <script src="<%=root %>/resources/js/plugins/toastr/toastr.min.js"></script>
+<script src="<%=root %>/resources/js/sweetalert.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		toastr.options = {

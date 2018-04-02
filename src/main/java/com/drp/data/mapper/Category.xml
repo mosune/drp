@@ -76,6 +76,7 @@
 			name = #{name},
             remark = #{remark},
 			level = #{level},
+			remark = #{remark},
 			status = #{status},
 			create_by = #{createBy},
 			create_time = #{createTime},
@@ -106,18 +107,21 @@
 	</select>
 
 	<!-- 按参数查询（分页） -->
-	<select id="selectPage" parameterType="java.util.Map" resultMap="categoryMap">
-		select * from
-		<include refid="table" />
-		<where>
-			<include refid="sql_where" />
-		</where>
-		order by
-		<include refid="sql_order_key" />
+	<select id="selectPage" parameterType="java.util.Map" resultType="categoryDto">
+		select
+			a.id as id,
+			a.shop_id as shopId,
+			a.name as name,
+			a.remark as remark,
+			a.status as status,
+			a.create_time as createTime,
+			b.name as levelName
+		from category a LEFT join category b on a.level = b.id
+			order by a.create_time DESC
 	</select>
 
 	<!-- 获取分页总数据数 -->
-	<select id="getCount" parameterType="java.util.Map" resultMap="categoryMap">
+	<select id="getCount" parameterType="java.util.Map" resultType="integer">
 		select count(*) from
 		<include refid="table" />
 		<where>

@@ -30,6 +30,8 @@
         <typeAlias type="com.drp.data.entity.Relation" alias="relation" />
         <typeAlias type="com.drp.data.entity.Role" alias="role" />
         <typeAlias type="com.drp.data.entity.Shop" alias="shop" />
+
+        <typeAlias type="com.drp.data.entity.dto.CategoryDto" alias="categoryDto" />
     </typeAliases>
 
 </configuration>

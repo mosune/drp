@@ -27,4 +27,5 @@ public interface CategoryDao extends BaseDao<Category> {
      * @return
      */
     List<Category> getTopLevel(Map<String, Object> map);
+
 }

@@ -1,6 +1,7 @@
 package com.drp.data.dao;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * FileName: BaseDao
@@ -52,5 +53,12 @@ public interface BaseDao<T> {
      * @return
      */
     int delete(T entity);
+
+    /**
+     * 通过参数查询列表
+     * @param map
+     * @return
+     */
+    List<T> getList(Map<String, Object> map);
 
 }

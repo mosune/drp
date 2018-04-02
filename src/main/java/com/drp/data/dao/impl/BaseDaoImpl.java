@@ -6,6 +6,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * FileName: BaseDaoImpl
@@ -87,6 +88,11 @@ public class BaseDaoImpl<T> extends SqlSessionDaoSupport implements BaseDao<T> {
         int result = this.getSqlSession().delete(this.getSqlName(SQL_DELETE), entity);
 
         return result;
+    }
+
+    @Override
+    public List<T> getList(Map<String, Object> map) {
+        return getSqlSession().selectList(this.getSqlName(SQL_SELECT_BY), map);
     }
 
     /**

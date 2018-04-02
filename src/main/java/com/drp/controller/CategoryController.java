@@ -5,6 +5,7 @@ import com.drp.data.entity.Category;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import com.drp.util.UserUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,6 +75,62 @@ public class CategoryController extends BaseController {
 		JSONObject result = new JSONObject();
 		result.put("list", categoryService.getTopLevel());
 		return result;
+	}
+
+	/**
+	 * 获取数据对象
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "getData.do")
+	public JSONObject getData(Category category) {
+		JSONObject result = new JSONObject();
+		if (category.getId() == null) {
+			result.put("msg", "数据错误，请刷新重试");
+			return result;
+		}
+		category = categoryService.get(category);
+		if (category == null) {
+			result.put("msg", "数据错误，请刷新重试");
+			return result;
+		}
+		result.put("category", categoryService.get(category));
+		return result;
+	}
+
+	/**
+	 * 删除数据
+	 * @param category
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("delete.do")
+	public JSONObject delete(Category category) {
+		JSONObject result = new JSONObject();
+		if (category.getId() == null) {
+			result.put("msg", "数据错误，请刷新重试");
+			return result;
+		}
+		return categoryService.delete(category);
+	}
+
+	/**
+	 * 修改状态
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "updateStatus.do")
+	public JSONObject updateStatus(Category category) {
+		JSONObject result = new JSONObject();
+		if (category.getId() == null) {
+			result.put("msg", "数据错误，请刷新重试");
+			return result;
+		}
+		if (category.getStatus() == null) {
+			result.put("msg", "数据错误，请刷新重试");
+			return result;
+		}
+		return categoryService.updateStatus(category);
 	}
 	
 }
