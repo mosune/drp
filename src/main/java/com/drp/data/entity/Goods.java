@@ -25,15 +25,12 @@ public class Goods implements Serializable {
 	private String id; //
 	private Integer shopId; //门店Id
 	private String name; //商品名称
-	private String number; //批次号
-	private String desc; //描述
+	private String remark; //描述
 	private String cateId; //售卖类目id
 	private BigDecimal salePrice; //售卖价格
 	private BigDecimal originalPrice; //成本价格
-	private Integer stock; //库存
-	private String url; //图片
-	private Date expiryTime; //过期时间
-	private String status; //上下架状态 WAIT/ON/OFF
+	private String status; //上下架状态 ON/OFF
+	private String deleteTag; // 删除标记
 	private String createBy; //
 	private Date createTime; //
 	private String updateBy; //

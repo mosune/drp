@@ -6,13 +6,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link href="<%=root %>/resources/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
-    <title>书本分类管理</title>
+    <title>书本基本信息管理</title>
 </head>
 <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>书本分类管理</h5>
+                <h5>书本基本信息</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -28,7 +28,7 @@
                         <button type="button" onclick="openModel();" class="btn btn-primary btn-sm">添加</button>
                     </div>
                     <div class="col-sm-12">
-                        <table class="table table-striped table-bordered table-hover" id="categoryTable">
+                        <table class="table table-striped table-bordered table-hover" id="goodsTable">
                         </table>
                     </div>
                 </div>
@@ -50,21 +50,30 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-4 control-label" for="cate">类别：</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control m-b" name="cate" id="cate">
+                                        <option value="0">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <label class="col-sm-4 control-label" for="topLevel">是否为第一级：</label>
-                                <div class="radio col-sm-8">
-                                    <label><input type="radio" value="true" id="true" checked name="chooseFirst">是</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label><input type="radio" value="false" id="false" name="chooseFirst">否</label>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label" for="originalPrice">成本价：</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" id="originalPrice" name="originalPrice" type="text" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <label class="col-sm-4 control-label" for="topLevel">上一级别：</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control m-b" name="topLevel" id="topLevel" disabled>
-                                        <option value="0">请选择</option>
-                                    </select>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label" for="salePrice">售卖价：</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" id="salePrice" name="salePrice" type="text" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -92,11 +101,11 @@
 <script src="<%=root %>/resources/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
 <script src="<%=root %>/resources/js/jquery.extends.js"></script>
 <script type="text/javascript">
-    var _categoryTable;
+    var _goodsTable;
     $(document).ready(function() {
-        _categoryTable = $('#categoryTable').bootstrapTable({
+        _goodsTable = $('#goodsTable').bootstrapTable({
             sidePagination:'server',//设置为服务器端分页
-            url: '<%=root%>/category/list.do',
+            url: '<%=root%>/goods/list.do',
             method: 'post',
             contentType: 'application/x-www-form-urlencoded;charset=utf-8',
             striped: true,
@@ -110,13 +119,15 @@
             idField: 'id',
             columns: [
                 {field: 'name',width: '15%', title: '名称', align: 'center'},
-                {field: 'levelName', width: '10%', title: '上级', align: 'center'},
-                {field: 'remark',width: '20%', title: '描述', align: 'center'},
+                {field: 'cateName', width: '10%', title: '类别', align: 'center'},
+                {field: 'salePrice', width: '10%', title: '售卖价格', align: 'center'},
+                {field: 'originalPrice', width: '10%', title: '成本价格', align: 'center'},
                 {field: 'status',width: '10%', title: '状态', align: 'center',
                     formatter : function(value) {
-                        if (value == 1) return "正常";
-                        else return "未启用";
+                        if (value == 'ON') return "上架";
+                        else return "下架";
                     }},
+                {field: 'remark',width: '20%', title: '描述', align: 'center'},
                 {field: 'createTime',width: '10%', title: '创建时间', align: 'center',
                     formatter : function(value) {
                         return $(this).dateFormat(value, 'yyyy-MM-dd HH:mm:ss');
@@ -130,27 +141,6 @@
             ],
             toolbar: '#toolbar'
         });
-
-        $('input[type=radio][name=chooseFirst]').change(function() {
-            if (this.value == 'true') {
-                $("#topLevel option:first").prop("selected", 'selected');
-                $("#topLevel").attr("disabled", true);
-                $("#topLevel").empty();
-                $("#topLevel").append("<option value='0'>请选择</option>");
-            } else {
-                $("#topLevel").attr("disabled", false);
-                $.ajax({
-                    url: "<%=root%>category/getTopLevel.do",
-                    type: "post",
-                    dataType: "json",
-                    success:function(result) {
-                        for (var i = 0; i < result.list.length; i++) {
-                            $("#topLevel").append("<option value="+result.list[i].id+">"+result.list[i].name+"</option>");
-                        }
-                    }
-                });
-            }
-        });
     });
 
     function queryParams(params) {
@@ -159,16 +149,27 @@
     }
 
     function search() {
-        _categoryTable.bootstrapTable("refresh");
+        _goodsTable.bootstrapTable("refresh");
     }
 
     function openModel(id) {
+        $("#cate").empty();
+        $("#cate").append("<option value='0'>请选择</option>");
+        $.ajax({
+            url: "<%=root%>category/getSecondLevel.do",
+            type: "post",
+            async: false,
+            dataType: "json",
+            success:function(data) {
+                for (var i = 0; i < data.list.length; i++) {
+                    $("#cate").append("<option value="+data.list[i].id+">"+data.list[i].name+"</option>");
+                }
+            }
+        });
         if (id) {
             $("#hideValue").val(id);
-            $("#topLevel").empty();
-            $("#topLevel").append("<option value='0'>请选择</option>");
             $.ajax({
-                url: "<%=root%>category/getData.do",
+                url: "<%=root%>goods/getData.do",
                 type: "post",
                 data: {
                     id:id
@@ -179,55 +180,49 @@
                         toastr.error(result.msg);
                         return;
                     } else {
-                        $("#name").val(result.category.name);
-                        $("#desc").val(result.category.remark);
-                        if (result.category.level == 0) {
-                            $('input:radio').eq(0).prop('checked', true);
-                            $("#topLevel option:first").prop("selected", 'selected');
-                        } else {
-                            $('input:radio').eq(1).prop('checked', true);
-                            $("#topLevel").prop("disabled", false);
-                            $.ajax({
-                                url: "<%=root%>category/getTopLevel.do",
-                                type: "post",
-                                async: false,
-                                dataType: "json",
-                                success:function(data) {
-                                    for (var i = 0; i < data.list.length; i++) {
-                                        if (data.list[i].id == result.category.level) {
-                                            $("#topLevel").append("<option selected value="+data.list[i].id+">"+data.list[i].name+"</option>");
-                                            continue;
-                                        }
-                                        $("#topLevel").append("<option value="+data.list[i].id+">"+data.list[i].name+"</option>");
-                                    }
-                                }
-                            });
-                        }
+                        $("#name").val(result.goods.name);
+                        $("#originalPrice").val(result.goods.originalPrice);
+                        $("#salePrice").val(result.goods.salePrice);
+                        $("#desc").val(result.goods.remark);
+                        $("#cate").find("option[value = '"+result.goods.cateId+"']").attr("selected","selected");
                     }
                 }
             });
         } else {
             $("#hideValue").val("");
             $("#name").val("");
-            $("#topLevel").attr("disabled","disabled");
-            $("#topLevel option:first").prop("selected", 'selected');
-            $('input:radio').eq(0).prop('checked', true);
+            $("#cate option:first").prop("selected", 'selected');
+            $("#originalPrice").val("");
+            $("#salePrice").val("");
             $("#desc").val("");
+            $("#hideValue").val("");
         }
         $("#modal").modal("show");
     }
     
     function saveOrUpdate() {
         var name = $("#name").val();
-        var level = $("#topLevel").val();
+        var cateId = $("#cate").val();
+        var originalPrice = $("#originalPrice").val();
+        var salePrice = $("#salePrice").val();
         var remark = $("#desc").val();
         var id = $("#hideValue").val();
+        if (isNaN(originalPrice)) {
+            toastr.error("成本价请输入数字");
+            return;
+        }
+        if (isNaN(salePrice)) {
+            toastr.error("售卖价请输入数字");
+            return;
+        }
         $.ajax({
-            url: "<%=root%>category/addOrUpdate.do",
+            url: "<%=root%>goods/addOrUpdate.do",
             type: "post",
             data: {
                 name:name,
-                level:level,
+                cateId:cateId,
+                originalPrice:originalPrice,
+                salePrice:salePrice,
                 remark:remark,
                 id:id
             },
@@ -237,7 +232,7 @@
                     toastr.error(result.msg);
                 } else {
                     toastr.info("操作成功");
-                    _categoryTable.bootstrapTable("refresh");
+                    _goodsTable.bootstrapTable("refresh");
                     $('#modal').modal('hide');
                 }
             }
@@ -260,15 +255,15 @@
         function(isConfirm){
             if (isConfirm) {
                 $.ajax({
-                    url: "<%=root%>category/delete.do",
+                    url: "<%=root%>goods/delete.do",
                     type: "post",
                     data: {id:id},
                     success:function(result){
                         if (result.msg) {
                             swal("取消", result.msg, "error");
                         } else {
-                            swal("成功!", "您删除了这个类目", "success");
-                            _categoryTable.bootstrapTable("refresh");
+                            swal("成功!", "您删除了这个书本", "success");
+                            _goodsTable.bootstrapTable("refresh");
                         }
                     }
                 })
@@ -294,7 +289,7 @@
         function(isConfirm){
             if (isConfirm) {
                 $.ajax({
-                    url: "<%=root%>category/updateStatus.do",
+                    url: "<%=root%>goods/updateStatus.do",
                     type: "post",
                     data: {
                         id:id,
@@ -305,7 +300,7 @@
                             swal("取消", result.msg, "error");
                         } else {
                             swal("成功!", "您修改了状态", "success");
-                            _categoryTable.bootstrapTable("refresh");
+                            _goodsTable.bootstrapTable("refresh");
                         }
                     }
                 })

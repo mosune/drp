@@ -8,15 +8,12 @@
 		<result property="id" column="id"/>
 		<result property="shopId" column="shop_id"/>
 		<result property="name" column="name"/>
-		<result property="number" column="number"/>
-		<result property="desc" column="desc"/>
+		<result property="remark" column="remark"/>
 		<result property="cateId" column="cate_id"/>
 		<result property="salePrice" column="sale_price"/>
 		<result property="originalPrice" column="original_price"/>
-		<result property="stock" column="stock"/>
-		<result property="url" column="url"/>
-		<result property="expiryTime" column="expiry_time"/>
 		<result property="status" column="status"/>
+		<result property="deleteTag" column="delete_tag"/>
 		<result property="createBy" column="create_by"/>
 		<result property="createTime" column="create_time"/>
 		<result property="updateBy" column="update_by"/>
@@ -27,15 +24,12 @@
 		<if test="id != null and id != ''"> and id = #{id} </if>
 		<if test="shop_id != null"> and shop_id = #{shop_id} </if>
 		<if test="name != null and name != ''"> and name = #{name} </if>
-		<if test="number != null and number != ''"> and number = #{number} </if>
-		<if test="desc != null and desc != ''"> and desc = #{desc} </if>
+		<if test="remark != null and remark != ''"> and remark = #{remark} </if>
 		<if test="cate_id != null and cate_id != ''"> and cate_id = #{cate_id} </if>
 		<if test="sale_price != null"> and sale_price = #{sale_price} </if>
 		<if test="original_price != null"> and original_price = #{original_price} </if>
-		<if test="stock != null"> and stock = #{stock} </if>
-		<if test="url != null and url != ''"> and url = #{url} </if>
-		<if test="expiry_time != null"> and expiry_time = #{expiry_time} </if>
 		<if test="status != null and status != ''"> and status = #{status} </if>
+		<if test="delete_tag != null and delete_tag != ''"> and delete_tag = #{delete_tag} </if>
 		<if test="create_by != null and create_by != ''"> and create_by = #{create_by} </if>
 		<if test="create_time != null"> and create_time = #{create_time} </if>
 		<if test="update_by != null and update_by != ''"> and update_by = #{update_by} </if>
@@ -54,9 +48,9 @@
 		insert into
 		<include refid="table" />
 		(
-			id, shop_id, name, number, desc, cate_id, sale_price, original_price, stock, url, expiry_time, status, create_by, create_time, update_by, update_time
+			id, shop_id, name, remark, cate_id, sale_price, original_price, status, delete_tag, create_by, create_time, update_by, update_time
 		) values(
-			#{id}, #{shopId}, #{name}, #{number}, #{desc}, #{cateId}, #{salePrice}, #{originalPrice}, #{stock}, #{url}, #{expiryTime}, #{status}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}
+			#{id}, #{shopId}, #{name}, #{remark}, #{cateId}, #{salePrice}, #{originalPrice}, #{status}, #{deleteTag}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}
 		)
 	</insert>
 	
@@ -64,10 +58,10 @@
 		insert into
 		<include refid="table" />
 		(
-			id, shop_id, name, number, desc, cate_id, sale_price, original_price, stock, url, expiry_time, status, create_by, create_time, update_by, update_time
+			id, shop_id, name, remark, cate_id, sale_price, original_price, status, delete_tag, create_by, create_time, update_by, update_time
 		) values
 		<foreach collection="list" item="item" index="index" separator="," >
-			(#{item.id}, #{item.shopId}, #{item.name}, #{item.number}, #{item.desc}, #{item.cateId}, #{item.salePrice}, #{item.originalPrice}, #{item.stock}, #{item.url}, #{item.expiryTime}, #{item.status}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
+			(#{item.id}, #{item.shopId}, #{item.name}, #{item.remark}, #{item.cateId}, #{item.salePrice}, #{item.originalPrice}, #{item.status}, #{item.deleteTag}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
 		</foreach>
 	</insert>
 	
@@ -86,15 +80,12 @@
 			id = #{id},
 			shop_id = #{shopId},
 			name = #{name},
-			number = #{number},
-			desc = #{desc},
+			remark = #{remark},
 			cate_id = #{cateId},
 			sale_price = #{salePrice},
 			original_price = #{originalPrice},
-			stock = #{stock},
-			url = #{url},
-			expiry_time = #{expiryTime},
 			status = #{status},
+			delete_tag = #{deleteTag},
 			create_by = #{createBy},
 			create_time = #{createTime},
 			update_by = #{updateBy},
@@ -124,14 +115,38 @@
 	</select>
 
 	<!-- 按参数查询（分页） -->
-	<select id="selectPage" parameterType="java.util.Map" resultMap="goodsMap">
-		select * from
-		<include refid="table" />
+	<select id="selectPage" parameterType="java.util.Map" resultType="goodsDto">
+		select
+			a.id as id,
+			a.name as name,
+			a.remark as remark,
+			a.sale_price as salePrice,
+			a.original_price as originalPrice,
+			a.status as status,
+			a.create_time as createTime,
+			b.name as cateName
+		from
+			goods as a
+		left join
+			category as b
+		on
+			a.cate_id = b.id
 		<where>
-			<include refid="sql_where" />
+			a.shop_id = #{shop_id} and delete_tag = 'N'
+			<if test="name != null and name != ''"><![CDATA[ and a.name LIKE concat('%',#{name}, '%')]]></if>
 		</where>
 		order by
-		<include refid="sql_order_key" />
+			a.create_time desc
+	</select>
+
+	<!-- 获取总数据 -->
+	<select id="getCount" parameterType="java.util.Map" resultType="integer">
+		select count(*) from
+			goods as a
+		left join
+			category as b
+		on
+			a.cate_id = b.id
 	</select>
 	
 </mapper>

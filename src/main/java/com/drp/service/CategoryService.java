@@ -68,4 +68,10 @@ public interface CategoryService {
 	 * @return
 	 */
 	JSONObject updateStatus(Category category);
+
+	/**
+	 * 获取二级列表
+	 * @return
+	 */
+	Object getSecondLevel();
 }

@@ -117,15 +117,19 @@
 			a.create_time as createTime,
 			b.name as levelName
 		from category a LEFT join category b on a.level = b.id
+		<where>
+			a.shop_id = #{shop_id}
+			<if test="name != null and name != ''"><![CDATA[ and a.name LIKE concat('%',#{name}, '%')]]></if>
+		</where>
 			order by a.create_time DESC
 	</select>
 
 	<!-- 获取分页总数据数 -->
 	<select id="getCount" parameterType="java.util.Map" resultType="integer">
-		select count(*) from
-		<include refid="table" />
+		select count(*) from category a LEFT join category b on a.level = b.id
 		<where>
-			<include refid="sql_where" />
+			a.shop_id = #{shop_id}
+			<if test="name != null and name != ''"><![CDATA[ and a.name LIKE concat('%',#{name}, '%')]]></if>
 		</where>
 	</select>
 
@@ -139,6 +143,18 @@
 		<where>
 			<include refid="sql_where" />
 		</where>
+		order BY
+		<include refid="sql_order_key" />
+	</select>
+
+	<!-- 获取第二级别列表 -->
+	<select id="getSecondLevel" parameterType="java.util.Map" resultMap="categoryMap">
+		select
+			id as id,
+			name as name
+		from
+		<include refid="table" />
+		where level > 0
 		order BY
 		<include refid="sql_order_key" />
 	</select>

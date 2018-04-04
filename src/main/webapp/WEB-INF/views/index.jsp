@@ -82,7 +82,7 @@
                             <a class="J_menuItem" href="<%=root %>category/index.do">书本分类管理</a>
                         </li>
                         <li>
-                            <a class="J_menuItem" href="<%=root %>">书本基本信息管理</a>
+                            <a class="J_menuItem" href="<%=root %>goods/index.do">书本基本信息管理</a>
                         </li>
                     </ul>
                 </li>

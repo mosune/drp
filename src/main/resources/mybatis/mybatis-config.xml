@@ -27,11 +27,14 @@
         <typeAlias type="com.drp.data.entity.Menu" alias="menu" />
         <typeAlias type="com.drp.data.entity.OperationCode" alias="operationCode" />
         <typeAlias type="com.drp.data.entity.OperationLog" alias="operationLog" />
+        <typeAlias type="com.drp.data.entity.Order" alias="order" />
+        <typeAlias type="com.drp.data.entity.OrderGoods" alias="orderGoods" />
         <typeAlias type="com.drp.data.entity.Relation" alias="relation" />
         <typeAlias type="com.drp.data.entity.Role" alias="role" />
         <typeAlias type="com.drp.data.entity.Shop" alias="shop" />
 
         <typeAlias type="com.drp.data.entity.dto.CategoryDto" alias="categoryDto" />
+        <typeAlias type="com.drp.data.entity.dto.GoodsDto" alias="goodsDto" />
     </typeAliases>
 
 </configuration>

@@ -1,9 +1,9 @@
 package com.drp.service;
 
-import java.util.List;
-import java.util.Map;
-
+import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.Goods;
+import com.drp.util.Page;
+import com.drp.util.PageParam;
 
 /**
  * 
@@ -40,4 +40,30 @@ public interface GoodsService {
 	 */
 	Goods get(Goods goods);
 
+	/**
+	 * 获取首页列表
+	 * @param pageParam
+	 * @return
+	 */
+	Page<Goods> find(PageParam pageParam);
+
+	/**
+	 * 添加或者修改货物
+	 * @param goods
+	 * @return
+	 */
+    JSONObject addOrUpdate(Goods goods);
+
+	/**
+	 * 软删除
+	 * @param goods
+	 */
+	JSONObject deleteLoft(Goods goods);
+
+	/**
+	 * 修改状态
+	 * @param goods
+	 * @return
+	 */
+	JSONObject updateStatus(Goods goods);
 }

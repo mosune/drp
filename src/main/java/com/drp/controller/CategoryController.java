@@ -44,10 +44,11 @@ public class CategoryController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("list.do")
-	public JSONObject list(int limit, int offset) {
+	public JSONObject list(int limit, int offset, String nameLike) {
 		JSONObject result = new JSONObject();
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("shop_id", UserUtil.getCurShopId());
+		map.put("name", nameLike);
 		PageParam pageParam = new PageParam(offset, limit, map);
 		Page<Category> page = categoryService.find(pageParam);
 		result.put("total", page.getTotal());
@@ -131,6 +132,18 @@ public class CategoryController extends BaseController {
 			return result;
 		}
 		return categoryService.updateStatus(category);
+	}
+
+	/**
+	 * 获取第二级列表
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getSecondLevel.do")
+	public JSONObject getSecondLevel() {
+		JSONObject result = new JSONObject();
+		result.put("list", categoryService.getSecondLevel());
+		return result;
 	}
 	
 }

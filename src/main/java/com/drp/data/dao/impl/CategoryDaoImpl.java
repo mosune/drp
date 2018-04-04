@@ -32,4 +32,9 @@ public class CategoryDaoImpl extends BaseDaoImpl<Category> implements CategoryDa
     public List<Category> getTopLevel(Map<String, Object> map) {
         return getSqlSession().selectList(getSqlName("getTopLevel"), map);
     }
+
+    @Override
+    public Object getSecondLevel(Map<String, Object> map) {
+        return getSqlSession().selectList(getSqlName("getSecondLevel"), map);
+    }
 }

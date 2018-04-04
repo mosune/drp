@@ -161,4 +161,12 @@ public class CategoryServiceImpl implements CategoryService {
 		return result;
 	}
 
+	@Override
+	public Object getSecondLevel() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("shop_id", UserUtil.getCurShopId());
+		map.put("status", 1);
+		return categoryDao.getSecondLevel(map);
+	}
+
 }
