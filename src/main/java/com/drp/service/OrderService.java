@@ -1,6 +1,8 @@
 package com.drp.service;
 
 import com.drp.data.entity.Order;
+import com.drp.util.Page;
+import com.drp.util.PageParam;
 
 /**
  * 
@@ -36,5 +38,11 @@ public interface OrderService {
 	 * @return
 	 */
 	Order get(Order order);
-	
+
+	/**
+	 * 获取列表
+	 * @param pageParam
+	 * @return
+	 */
+    Page<Order> find(PageParam pageParam);
 }

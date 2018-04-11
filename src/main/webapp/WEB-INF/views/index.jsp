@@ -93,7 +93,7 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem" href="<%=root %>">图书采购订单管理</a>
+                            <a class="J_menuItem" href="<%=root %>order/index.do">图书采购订单管理</a>
                         </li>
                         <li>
                             <a class="J_menuItem" href="<%=root %>">图书采购退货管理</a>

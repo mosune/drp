@@ -23,6 +23,7 @@ public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String id; //
+	private String userId; // 采购人id
 	private Integer shopId; //门店Id
 	private String number; //单号
 	private Integer quantity; //采购数量

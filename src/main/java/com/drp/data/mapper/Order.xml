@@ -7,6 +7,7 @@
 	<resultMap type="order" id="orderMap">
 		<result property="id" column="id"/>
 		<result property="shopId" column="shop_id"/>
+		<result property="userId" column="user_id"/>
 		<result property="number" column="number"/>
 		<result property="quantity" column="quantity"/>
 		<result property="totalPrice" column="total_price"/>
@@ -23,6 +24,7 @@
 	<sql id="sql_where">
 		<if test="id != null and id != ''"> and id = #{id} </if>
 		<if test="shop_id != null"> and shop_id = #{shop_id} </if>
+		<if test="user_id != null"> and user_id = #{user_id} </if>
 		<if test="number != null and number != ''"> and number = #{number} </if>
 		<if test="quantity != null"> and quantity = #{quantity} </if>
 		<if test="total_price != null"> and total_price = #{total_price} </if>
@@ -41,16 +43,16 @@
 	</sql>
 	
 	<sql id="sql_order_key">
-		id
+		update_time desc
 	</sql>
 	
 	<insert id="insert" parameterType="order" >
 		insert into
 		<include refid="table" />
 		(
-			id, shop_id, number, quantity, total_price, status, create_time, out_time, in_time, remark, create_by, update_by, update_time
+			id, shop_id, user_id, number, quantity, total_price, status, create_time, out_time, in_time, remark, create_by, update_by, update_time
 		) values(
-			#{id}, #{shopId}, #{number}, #{quantity}, #{totalPrice}, #{status}, #{createTime}, #{outTime}, #{inTime}, #{remark}, #{createBy}, #{updateBy}, #{updateTime}
+			#{id}, #{shopId}, #{userId}, #{number}, #{quantity}, #{totalPrice}, #{status}, #{createTime}, #{outTime}, #{inTime}, #{remark}, #{createBy}, #{updateBy}, #{updateTime}
 		)
 	</insert>
 	
@@ -58,10 +60,10 @@
 		insert into
 		<include refid="table" />
 		(
-			id, shop_id, number, quantity, total_price, status, create_time, out_time, in_time, remark, create_by, update_by, update_time
+			id, shop_id, user_id, number, quantity, total_price, status, create_time, out_time, in_time, remark, create_by, update_by, update_time
 		) values
 		<foreach collection="list" item="item" index="index" separator="," >
-			(#{item.id}, #{item.shopId}, #{item.number}, #{item.quantity}, #{item.totalPrice}, #{item.status}, #{item.createTime}, #{item.outTime}, #{item.inTime}, #{item.remark}, #{item.createBy}, #{item.updateBy}, #{item.updateTime})
+			(#{item.id}, #{item.shopId}, #{item.userId}, #{item.number}, #{item.quantity}, #{item.totalPrice}, #{item.status}, #{item.createTime}, #{item.outTime}, #{item.inTime}, #{item.remark}, #{item.createBy}, #{item.updateBy}, #{item.updateTime})
 		</foreach>
 	</insert>
 	
@@ -79,6 +81,7 @@
 		<set>
 			id = #{id},
 			shop_id = #{shopId},
+			user_id = #{userId},
 			number = #{number},
 			quantity = #{quantity},
 			total_price = #{totalPrice},
@@ -123,6 +126,16 @@
 		</where>
 		order by
 		<include refid="sql_order_key" />
+	</select>
+
+	<!-- 获取总数据 -->
+	<select id="getCount" parameterType="java.util.Map" resultType="integer">
+		select count(*) from
+			goods as a
+		left join
+			category as b
+		on
+			a.cate_id = b.id
 	</select>
 	
 </mapper>

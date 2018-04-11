@@ -5,6 +5,8 @@ import com.drp.data.entity.Goods;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 
+import java.util.List;
+
 /**
  * 
  * @author gcg
@@ -66,4 +68,10 @@ public interface GoodsService {
 	 * @return
 	 */
 	JSONObject updateStatus(Goods goods);
+
+	/**
+	 * 获取货物列表
+	 * @return
+	 */
+    List<Goods> getGoodsList();
 }

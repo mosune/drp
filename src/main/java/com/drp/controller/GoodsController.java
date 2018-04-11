@@ -124,5 +124,17 @@ public class GoodsController extends BaseController {
 		}
 		return goodsService.updateStatus(goods);
 	}
+
+	/**
+	 * 获取货物列表
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getGoodsList.do")
+	public JSONObject getGoodsList() {
+		JSONObject result = new JSONObject();
+		result.put("list", goodsService.getGoodsList());
+		return result;
+	}
 	
 }

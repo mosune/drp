@@ -1,5 +1,7 @@
 package com.drp.service.impl;
 
+import com.drp.util.Page;
+import com.drp.util.PageParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,11 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Order get(Order order) {
 		return this.orderDao.get(order);
+	}
+
+	@Override
+	public Page<Order> find(PageParam pageParam) {
+		return this.orderDao.find(pageParam);
 	}
 
 }

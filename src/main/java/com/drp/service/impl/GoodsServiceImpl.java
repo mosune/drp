@@ -146,4 +146,12 @@ public class GoodsServiceImpl implements GoodsService {
 		return result;
 	}
 
+	@Override
+	public List<Goods> getGoodsList() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("shop_id", UserUtil.getCurShopId());
+		map.put("delete_tag", "N");
+		return goodsDao.getList(map);
+	}
+
 }
