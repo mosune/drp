@@ -26,13 +26,11 @@ public class Order implements Serializable {
 	private String userId; // 采购人id
 	private Integer shopId; //门店Id
 	private String number; //单号
-	private Integer quantity; //采购数量
 	private BigDecimal totalPrice; //总金额
-	private Integer status; //状态：待出库，待入库，已入库，已取消，已出库
+	private Integer status; //状态：待入库：01，已入库：02，采购已取消：03，待出库：11，已出库：12，销售已取消：13
 	private Date createTime; //
 	private Date outTime; //
 	private Date inTime; //
-	private String remark; //描述
 	private String createBy; //
 	private String updateBy; //
 	private Date updateTime; //

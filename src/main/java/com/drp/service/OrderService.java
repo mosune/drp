@@ -1,5 +1,7 @@
 package com.drp.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.Order;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
@@ -45,4 +47,11 @@ public interface OrderService {
 	 * @return
 	 */
     Page<Order> find(PageParam pageParam);
+
+	/**
+	 * 添加订货单
+	 * @param json
+	 * @return
+	 */
+	JSONObject addOrder(JSONArray json);
 }

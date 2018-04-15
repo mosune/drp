@@ -8,7 +8,7 @@
 		<result property="id" column="id"/>
 		<result property="orderId" column="order_id"/>
 		<result property="goodsId" column="goods_id"/>
-		<result property="quantity" column="quantity"/>
+		<result property="num" column="num"/>
 		<result property="createTime" column="create_time"/>
 		<result property="createBy" column="create_by"/>
 		<result property="updateBy" column="update_by"/>
@@ -19,7 +19,7 @@
 		<if test="id != null and id != ''"> and id = #{id} </if>
 		<if test="order_id != null"> and order_id = #{order_id} </if>
 		<if test="goods_id != null"> and goods_id = #{goods_id} </if>
-		<if test="quantity != null"> and quantity = #{quantity} </if>
+		<if test="num != null"> and num = #{num} </if>
 		<if test="create_time != null"> and create_time = #{create_time} </if>
 		<if test="create_by != null and create_by != ''"> and create_by = #{create_by} </if>
 		<if test="update_by != null and update_by != ''"> and update_by = #{update_by} </if>
@@ -38,9 +38,9 @@
 		insert into
 		<include refid="table" />
 		(
-			id, order_id, goods_id, quantity, create_time, create_by, update_by, update_time
+			id, order_id, goods_id, num, create_time, create_by, update_by, update_time
 		) values(
-			#{id}, #{orderId}, #{goodsId}, #{quantity}, #{createTime}, #{createBy}, #{updateBy}, #{updateTime}
+			#{id}, #{orderId}, #{goodsId}, #{num}, #{createTime}, #{createBy}, #{updateBy}, #{updateTime}
 		)
 	</insert>
 	
@@ -48,10 +48,10 @@
 		insert into
 		<include refid="table" />
 		(
-			id, order_id, goods_id, quantity, create_time, create_by, update_by, update_time
+			id, order_id, goods_id, num, create_time, create_by, update_by, update_time
 		) values
 		<foreach collection="list" item="item" index="index" separator="," >
-			(#{item.id}, #{item.orderId}, #{item.goodsId}, #{item.quantity}, #{item.createTime}, #{item.createBy}, #{item.updateBy}, #{item.updateTime})
+			(#{item.id}, #{item.orderId}, #{item.goodsId}, #{item.num}, #{item.createTime}, #{item.createBy}, #{item.updateBy}, #{item.updateTime})
 		</foreach>
 	</insert>
 	
@@ -70,7 +70,7 @@
 			id = #{id},
 			order_id = #{orderId},
 			goods_id = #{goodsId},
-			quantity = #{quantity},
+			num = #{num},
 			create_time = #{createTime},
 			create_by = #{createBy},
 			update_by = #{updateBy},

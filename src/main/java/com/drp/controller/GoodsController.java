@@ -87,7 +87,7 @@ public class GoodsController extends BaseController {
 	@RequestMapping("getData.do")
 	public JSONObject getData(Goods goods) {
 		JSONObject result = new JSONObject();
-		if (StringUtils.isEmpty(goods.getId())) {
+		if (goods.getId() == null) {
 			result.put("msg", "数据错误，请刷新重试");
 			return result;
 		}
@@ -103,7 +103,7 @@ public class GoodsController extends BaseController {
 	@RequestMapping(value = "delete.do")
 	public JSONObject delete(Goods goods) {
 		JSONObject result = new JSONObject();
-		if (StringUtils.isEmpty(goods.getId())) {
+		if (goods.getId() == null) {
 			result.put("msg", "数据错误，请刷新重试");
 			return result;
 		}
@@ -118,7 +118,7 @@ public class GoodsController extends BaseController {
 	@RequestMapping(value = "updateStatus.do")
 	public JSONObject updateStatus(Goods goods) {
 		JSONObject result = new JSONObject();
-		if (StringUtils.isEmpty(goods.getId())) {
+		if (goods.getId() == null) {
 			result.put("msg", "数据错误，请刷新重试");
 			return result;
 		}

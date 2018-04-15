@@ -122,7 +122,7 @@
             columns: [
                 {field: 'opt',width: '15%', title: '选择', align: 'center',
                     formatter: function(value, row){
-                        return '<input type="checkbox" value="\''+row.id+'\'" name="goodsChoose" />';
+                        return '<input type="checkbox" value="'+row.id+'" name="goodsChoose" />';
                     }},
                 {field: 'name',width: '15%', title: '名称', align: 'center'},
                 {field: 'cateName', width: '10%', title: '类别', align: 'center'},
@@ -131,7 +131,7 @@
                 {field: 'remark',width: '20%', title: '描述', align: 'center'},
                 {field: 'num',width: '15%', title: '数量', align: 'center',
                     formatter: function(value, row){
-                        return '<input type="text" id="\''+row.id+'\'" />';
+                        return '<input type="text" id="'+row.id+'" />';
                     }}
             ],
             toolbar: '#toolbar'
@@ -145,6 +145,25 @@
 
     function search() {
         _goodsTable.bootstrapTable("refresh");
+    }
+
+    function addOrder() {
+        var json = [];
+        $('input[name="goodsChoose"]:checked').each(function(){
+            var j = {};
+            j.key = $(this).val();
+            j.value = $("#"+$(this).val()+"").val();
+            json.push(j);
+        });
+        var a = JSON.stringify(json);
+        $.ajax({
+            url: "<%=root%>order/addOrder.do",
+            type: "post",
+            data: {order:a},
+            dataType: "json",
+            success:function(data) {
+            }
+        });
     }
 
     function openModel(id) {

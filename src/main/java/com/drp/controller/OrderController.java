@@ -1,5 +1,6 @@
 package com.drp.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.Goods;
 import com.drp.data.entity.Order;
@@ -64,6 +65,18 @@ public class OrderController extends BaseController {
 	@RequestMapping("addPage.do")
 	public String addPage() {
 		return "/order/add";
+	}
+
+	/**
+	 * 添加采购单
+	 * @param order
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("addOrder.do")
+	public JSONObject addOrder(String order) {
+		JSONArray json = JSONArray.parseArray(order);
+		return orderService.addOrder(json);
 	}
 
 }

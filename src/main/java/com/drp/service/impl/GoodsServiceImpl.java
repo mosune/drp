@@ -68,17 +68,16 @@ public class GoodsServiceImpl implements GoodsService {
 		map.put("delete_tag", "0");
 		List<Goods> list = goodsDao.getList(map);
 		if (CollectionUtils.isNotEmpty(list)) {
-			if (StringUtils.isNotEmpty(goods.getId()) && !goods.getId().equals(list.get(0).getId())) {
+			if (goods.getId() != null && goods.getId() != list.get(0).getId()) {
 				result.put("msg", "该名称商品已存在");
 				return result;
 			}
-			if (StringUtils.isEmpty(goods.getId())) {
+			if (goods.getId() == 0) {
 				result.put("msg", "该名称商品已存在");
 				return result;
 			}
 		}
-		if (StringUtils.isEmpty(goods.getId())) {
-			goods.setId(IDUtils.getUUID());
+		if (goods.getId() == null) {
 			goods.setCreateBy(UserUtil.getCurUserId());
 			goods.setCreateTime(new Date());
 			goods.setDeleteTag("N");
