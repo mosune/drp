@@ -118,25 +118,25 @@
             sortable: true,
             idField: 'id',
             columns: [
-                {field: 'name',width: '15%', title: '名称', align: 'center'},
-                {field: 'cateName', width: '10%', title: '类别', align: 'center'},
-                {field: 'salePrice', width: '10%', title: '售卖价格', align: 'center'},
-                {field: 'originalPrice', width: '10%', title: '成本价格', align: 'center'},
+                {field: 'number',width: '15%', title: '单号', align: 'center'},
+                {field: 'totalPrice', width: '10%', title: '总金额', align: 'center'},
                 {field: 'status',width: '10%', title: '状态', align: 'center',
                     formatter : function(value) {
                         if (value == 'ON') return "上架";
                         else return "下架";
                     }},
-                {field: 'remark',width: '20%', title: '描述', align: 'center'},
                 {field: 'createTime',width: '10%', title: '创建时间', align: 'center',
+                    formatter : function(value) {
+                        return $(this).dateFormat(value, 'yyyy-MM-dd HH:mm:ss');
+                    }},
+                {field: 'inTime',width: '10%', title: '入库时间', align: 'center',
                     formatter : function(value) {
                         return $(this).dateFormat(value, 'yyyy-MM-dd HH:mm:ss');
                     }},
                 {field: 'opt',width: '10%', title: '操作', align: 'center',
                     formatter: function(value, row){
                         return '<button type="button" class="btn btn-info btn-xs" onclick="openModel(\''+row.id+'\')">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;'
-                            + '<button type="button" class="btn btn-danger btn-xs" onclick="deleteData(\''+row.id+'\')">删除</button>&nbsp;&nbsp;&nbsp;&nbsp;'
-                            + '<button type="button" class="btn btn-primary btn-xs" onclick="updateStatus(\''+row.id+'\', \''+row.status+'\')">状态</button>';
+                            + '<button type="button" class="btn btn-danger btn-xs" onclick="deleteData(\''+row.id+'\')">删除</button>&nbsp;&nbsp;&nbsp;&nbsp;';
                     }}
             ],
             toolbar: '#toolbar'
@@ -255,15 +255,15 @@
         function(isConfirm){
             if (isConfirm) {
                 $.ajax({
-                    url: "<%=root%>goods/delete.do",
+                    url: "<%=root%>order/delete.do",
                     type: "post",
                     data: {id:id},
                     success:function(result){
                         if (result.msg) {
                             swal("取消", result.msg, "error");
                         } else {
-                            swal("成功!", "您删除了这个书本", "success");
-                            _goodsTable.bootstrapTable("refresh");
+                            swal("成功!", "您删除了这个订单", "success");
+                            _orderTable.bootstrapTable("refresh");
                         }
                     }
                 })

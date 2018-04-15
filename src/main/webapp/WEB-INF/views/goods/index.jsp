@@ -134,8 +134,8 @@
                     }},
                 {field: 'opt',width: '10%', title: '操作', align: 'center',
                     formatter: function(value, row){
-                        return '<button type="button" class="btn btn-info btn-xs" onclick="openModel(\''+row.id+'\')">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;'
-                            + '<button type="button" class="btn btn-danger btn-xs" onclick="deleteData(\''+row.id+'\')">删除</button>&nbsp;&nbsp;&nbsp;&nbsp;'
+                        return '<button type="button" class="btn btn-info btn-xs" onclick="openModel(\''+row.id+'\')">编辑</button>&nbsp;&nbsp;'
+                            + '<button type="button" class="btn btn-danger btn-xs" onclick="deleteData(\''+row.id+'\')">删除</button>&nbsp;&nbsp;'
                             + '<button type="button" class="btn btn-primary btn-xs" onclick="updateStatus(\''+row.id+'\', \''+row.status+'\')">状态</button>';
                     }}
             ],

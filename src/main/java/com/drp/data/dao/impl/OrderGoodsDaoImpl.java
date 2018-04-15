@@ -12,5 +12,9 @@ import com.drp.data.dao.OrderGoodsDao;
  */
 @Repository("orderGoodsDao")
 public class OrderGoodsDaoImpl extends BaseDaoImpl<OrderGoods> implements OrderGoodsDao {
-	
+
+    @Override
+    public void deleteByOrderId(String orderId) {
+        getSqlSession().delete(getSqlName("deleteByOrderId"), orderId);
+    }
 }

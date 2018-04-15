@@ -20,8 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
+import java.util.*;
 
 
 /**
@@ -76,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setUserId(UserUtil.getCurUserId());
 		order.setShopId(UserUtil.getCurShopId());
 		order.setNumber(num);
-		order.setStatus(0);
+		order.setStatus(1);
 		order.setCreateTime(new Date());
 		order.setCreateBy(UserUtil.getCurUserId());
 		order.setUpdateBy(UserUtil.getCurUserId());
@@ -92,7 +91,7 @@ public class OrderServiceImpl implements OrderService {
 			orderGoods.setNum(Integer.valueOf((String) jsonObj.get("value")));
 			Goods goods = new Goods(Integer.valueOf((String) jsonObj.get("key")));
 			goods = goodsDao.get(goods);
-			totalPrice.add(goods.getOriginalPrice().multiply(new BigDecimal((String) jsonObj.get("value"))));
+			totalPrice = totalPrice.add(goods.getOriginalPrice().multiply(new BigDecimal((String) jsonObj.get("value"))));
 			orderGoods.setCreateTime(new Date());
 			orderGoods.setCreateBy(IDUtils.getUUID());
 			orderGoods.setUpdateBy(IDUtils.getUUID());
@@ -102,6 +101,24 @@ public class OrderServiceImpl implements OrderService {
 		order.setTotalPrice(totalPrice);
 		orderDao.insert(order);
 		return null;
+	}
+
+	@Override
+	public JSONObject delete(String id) {
+		JSONObject result = new JSONObject();
+		Order order = new Order(id);
+		order = orderDao.get(order);
+		if (order == null) {
+			result.put("msg", "数据错误，请刷新重试");
+			return result;
+		}
+		if (!(order.getStatus() == 1 || order.getStatus() == 11)) {
+			result.put("msg", "该状态项目不可修改");
+			return result;
+		}
+		orderDao.delete(order);
+		orderGoodsDao.deleteByOrderId(order.getId());
+		return result;
 	}
 
 }

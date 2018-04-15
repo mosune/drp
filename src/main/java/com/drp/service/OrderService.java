@@ -54,4 +54,11 @@ public interface OrderService {
 	 * @return
 	 */
 	JSONObject addOrder(JSONArray json);
+
+	/**
+	 * 删除订单
+	 * @param id
+	 * @return
+	 */
+	JSONObject delete(String id);
 }

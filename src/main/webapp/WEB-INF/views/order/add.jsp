@@ -160,10 +160,17 @@
             url: "<%=root%>order/addOrder.do",
             type: "post",
             data: {order:a},
+            async: false,
             dataType: "json",
             success:function(data) {
+                if (data.msg) {
+                    toastr.error(data.msg);
+                } else {
+                    toastr.info("添加成功");
+                }
             }
         });
+        window.location.href = "<%=root%>/order/index.do";
     }
 
     function openModel(id) {

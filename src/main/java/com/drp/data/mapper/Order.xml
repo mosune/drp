@@ -124,11 +124,10 @@
 	<!-- 获取总数据 -->
 	<select id="getCount" parameterType="java.util.Map" resultType="integer">
 		select count(*) from
-			goods as a
-		left join
-			category as b
-		on
-			a.cate_id = b.id
+		<include refid="table" />
+		<where>
+			<include refid="sql_where" />
+		</where>
 	</select>
 	
 </mapper>

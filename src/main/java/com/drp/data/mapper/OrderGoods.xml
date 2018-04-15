@@ -109,5 +109,11 @@
 		order by
 		<include refid="sql_order_key" />
 	</select>
+
+	<delete id="deleteByOrderId" parameterType="string">
+		delete from
+		<include refid="table" />
+		where order_id = #{0}
+	</delete>
 	
 </mapper>

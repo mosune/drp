@@ -7,6 +7,7 @@ import com.drp.data.entity.Order;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import com.drp.util.UserUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,8 +76,25 @@ public class OrderController extends BaseController {
 	@ResponseBody
 	@RequestMapping("addOrder.do")
 	public JSONObject addOrder(String order) {
+		JSONObject result = new JSONObject();
 		JSONArray json = JSONArray.parseArray(order);
-		return orderService.addOrder(json);
+		if (json.size() == 0 ) {
+			result.put("msg", "请选择需要采购的货物");
+			return result;
+		}
+		orderService.addOrder(json);
+		return null;
+	}
+
+	@ResponseBody
+	@RequestMapping("delete.do")
+	public JSONObject delete(String id) {
+		JSONObject result = new JSONObject();
+		if (StringUtils.isEmpty(id)) {
+			result.put("msg", "数据错误，请刷新重试");
+			return result;
+		}
+		return orderService.delete(id);
 	}
 
 }
