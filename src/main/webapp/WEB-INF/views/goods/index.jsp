@@ -120,8 +120,8 @@
             columns: [
                 {field: 'name',width: '15%', title: '名称', align: 'center'},
                 {field: 'cateName', width: '10%', title: '类别', align: 'center'},
-                {field: 'salePrice', width: '10%', title: '售卖价格', align: 'center'},
-                {field: 'originalPrice', width: '10%', title: '成本价格', align: 'center'},
+                {field: 'salePrice', width: '10%', title: '售卖价格（元）', align: 'center'},
+                {field: 'originalPrice', width: '10%', title: '成本价格（元）', align: 'center'},
                 {field: 'status',width: '10%', title: '状态', align: 'center',
                     formatter : function(value) {
                         if (value == 'ON') return "上架";

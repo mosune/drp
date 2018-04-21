@@ -35,67 +35,6 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" style="display: none;" data-keyboard="false" data-backdrop="static" id="modal" aria-hidden="true" role="dialog" aria-labelledby="modalHeader">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <form id="myForm" class="form-horizontal">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label" for="name">名称：</label>
-                                    <div class="col-sm-8">
-                                        <input class="form-control" id="name" name="name" type="text" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <label class="col-sm-4 control-label" for="cate">类别：</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control m-b" name="cate" id="cate">
-                                        <option value="0">请选择</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label" for="originalPrice">成本价：</label>
-                                    <div class="col-sm-8">
-                                        <input class="form-control" id="originalPrice" name="originalPrice" type="text" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label" for="salePrice">售卖价：</label>
-                                    <div class="col-sm-8">
-                                        <input class="form-control" id="salePrice" name="salePrice" type="text" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <label class="col-sm-2 control-label" for="desc">描述：</label>
-                                <div class="col-sm-10">
-                                    <textarea class="form-control" id="desc"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" onclick="saveOrUpdate();">保存</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="closeModal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <input type="hidden" id="hideValue" />
 </body>
 <script src="<%=root %>/resources/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
 <script src="<%=root %>/resources/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
@@ -119,11 +58,15 @@
             idField: 'id',
             columns: [
                 {field: 'number',width: '15%', title: '单号', align: 'center'},
-                {field: 'totalPrice', width: '10%', title: '总金额', align: 'center'},
+                {field: 'totalPrice', width: '10%', title: '总金额（元）', align: 'center'},
                 {field: 'status',width: '10%', title: '状态', align: 'center',
                     formatter : function(value) {
-                        if (value == 'ON') return "上架";
-                        else return "下架";
+                        if (value == 1) return "待入库";
+                        else if(value == 2) return "已入库";
+                        else if(value == 3) return "采购已取消";
+                        else if(value == 11) return "待出库";
+                        else if(value == 12) return "已出库";
+                        else return "销售已取消";
                     }},
                 {field: 'createTime',width: '10%', title: '创建时间', align: 'center',
                     formatter : function(value) {
@@ -135,7 +78,7 @@
                     }},
                 {field: 'opt',width: '10%', title: '操作', align: 'center',
                     formatter: function(value, row){
-                        return '<button type="button" class="btn btn-info btn-xs" onclick="openModel(\''+row.id+'\')">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;'
+                        return '<button type="button" class="btn btn-info btn-xs">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;'
                             + '<button type="button" class="btn btn-danger btn-xs" onclick="deleteData(\''+row.id+'\')">删除</button>&nbsp;&nbsp;&nbsp;&nbsp;';
                     }}
             ],
@@ -150,93 +93,6 @@
 
     function search() {
         _goodsTable.bootstrapTable("refresh");
-    }
-
-    function openModel(id) {
-        $("#cate").empty();
-        $("#cate").append("<option value='0'>请选择</option>");
-        $.ajax({
-            url: "<%=root%>category/getSecondLevel.do",
-            type: "post",
-            async: false,
-            dataType: "json",
-            success:function(data) {
-                for (var i = 0; i < data.list.length; i++) {
-                    $("#cate").append("<option value="+data.list[i].id+">"+data.list[i].name+"</option>");
-                }
-            }
-        });
-        if (id) {
-            $("#hideValue").val(id);
-            $.ajax({
-                url: "<%=root%>goods/getData.do",
-                type: "post",
-                data: {
-                    id:id
-                },
-                dataType: "json",
-                success:function(result) {
-                    if (result.msg) {
-                        toastr.error(result.msg);
-                        return;
-                    } else {
-                        $("#name").val(result.goods.name);
-                        $("#originalPrice").val(result.goods.originalPrice);
-                        $("#salePrice").val(result.goods.salePrice);
-                        $("#desc").val(result.goods.remark);
-                        $("#cate").find("option[value = '"+result.goods.cateId+"']").attr("selected","selected");
-                    }
-                }
-            });
-        } else {
-            $("#hideValue").val("");
-            $("#name").val("");
-            $("#cate option:first").prop("selected", 'selected');
-            $("#originalPrice").val("");
-            $("#salePrice").val("");
-            $("#desc").val("");
-            $("#hideValue").val("");
-        }
-        $("#modal").modal("show");
-    }
-    
-    function saveOrUpdate() {
-        var name = $("#name").val();
-        var cateId = $("#cate").val();
-        var originalPrice = $("#originalPrice").val();
-        var salePrice = $("#salePrice").val();
-        var remark = $("#desc").val();
-        var id = $("#hideValue").val();
-        if (isNaN(originalPrice)) {
-            toastr.error("成本价请输入数字");
-            return;
-        }
-        if (isNaN(salePrice)) {
-            toastr.error("售卖价请输入数字");
-            return;
-        }
-        $.ajax({
-            url: "<%=root%>goods/addOrUpdate.do",
-            type: "post",
-            data: {
-                name:name,
-                cateId:cateId,
-                originalPrice:originalPrice,
-                salePrice:salePrice,
-                remark:remark,
-                id:id
-            },
-            dataType: "json",
-            success:function(result) {
-                if (result.msg) {
-                    toastr.error(result.msg);
-                } else {
-                    toastr.info("操作成功");
-                    _goodsTable.bootstrapTable("refresh");
-                    $('#modal').modal('hide');
-                }
-            }
-        });
     }
 
     function deleteData(id) {
@@ -264,43 +120,6 @@
                         } else {
                             swal("成功!", "您删除了这个订单", "success");
                             _orderTable.bootstrapTable("refresh");
-                        }
-                    }
-                })
-            } else {
-                swal("取消", "谢谢您的考虑:)", "error");
-            }
-        });
-    }
-
-    function updateStatus(id, status) {
-        swal({
-            title: "确认修改状态么？",
-            text: "要慎重啊！这个操作可是不能反悔的",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "修改",
-            cancelButtonText: "取消",
-            closeOnConfirm: false,
-            closeOnCancel: false,
-            showLoaderOnConfirm: true
-        },
-        function(isConfirm){
-            if (isConfirm) {
-                $.ajax({
-                    url: "<%=root%>goods/updateStatus.do",
-                    type: "post",
-                    data: {
-                        id:id,
-                        status:status
-                    },
-                    success:function(result){
-                        if (result.msg) {
-                            swal("取消", result.msg, "error");
-                        } else {
-                            swal("成功!", "您修改了状态", "success");
-                            _goodsTable.bootstrapTable("refresh");
                         }
                     }
                 })
