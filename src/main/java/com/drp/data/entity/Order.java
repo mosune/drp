@@ -27,7 +27,9 @@ public class Order implements Serializable {
 	private Integer shopId; //门店Id
 	private String number; //单号
 	private BigDecimal totalPrice; //总金额
-	private Integer status; //状态：待入库：01，已入库：02，采购已取消：03，待出库：11，已出库：12，销售已取消：13
+	//状态：待入库：01，已入库：02，采购已取消：03,采购退货：04，采购退货成功：05，退货取消：06，
+	// 待出库：11，已出库：12，销售已取消：13,销售退货：14，销售退货成功：15，销售退货取消：16
+	private Integer status;
 	private Date createTime; //
 	private Date outTime; //
 	private Date inTime; //

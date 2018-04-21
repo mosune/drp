@@ -17,4 +17,6 @@ public interface GoodsDao extends BaseDao<Goods> {
      * @return
      */
     Page<Goods> find(PageParam pageParam);
+
+    Goods findGoods(Integer id);
 }

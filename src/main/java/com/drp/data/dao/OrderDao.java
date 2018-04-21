@@ -17,4 +17,6 @@ public interface OrderDao extends BaseDao<Order> {
      * @return
      */
     Page<Order> find(PageParam pageParam);
+
+    Order findOrder(String orderId);
 }

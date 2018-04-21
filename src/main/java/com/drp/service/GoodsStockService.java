@@ -3,7 +3,12 @@ package com.drp.service;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.drp.data.entity.Goods;
 import com.drp.data.entity.GoodsStock;
+import com.drp.util.Page;
+import com.drp.util.PageParam;
 
 /**
  * 
@@ -40,4 +45,18 @@ public interface GoodsStockService {
 	 */
 	GoodsStock get(GoodsStock goodsStock);
 
+
+	/**
+	 * 获取首页列表
+	 * @param pageParam
+	 * @return
+	 */
+	Page<GoodsStock> find(PageParam pageParam);
+
+	/**
+	 * 采购单入库确认
+	 * @param orderId
+	 * @return
+	 */
+	JSONObject purchaseIn(String orderId,String type);
 }

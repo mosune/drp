@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 import com.drp.data.entity.Order;
 import com.drp.data.dao.OrderDao;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 
  * @author gcg
@@ -23,5 +26,13 @@ public class OrderDaoImpl extends BaseDaoImpl<Order> implements OrderDao {
         Integer count = getSqlSession().selectOne(getSqlName("getCount"), pageParam.getMap());
         page.setTotal(count == null ? 0 : count);
         return page;
+    }
+
+    @Override
+    public Order findOrder(String orderId) {
+        Map<String,String> map = new HashMap<String, String>();
+        map.put("orderId",orderId);
+        Order order = getSqlSession().selectOne(getSqlName("selectBy"),map);
+        return order;
     }
 }

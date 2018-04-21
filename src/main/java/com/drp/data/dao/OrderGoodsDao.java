@@ -2,6 +2,8 @@ package com.drp.data.dao;
 
 import com.drp.data.entity.OrderGoods;
 
+import java.util.List;
+
 /**
  * 
  * @author gcg
@@ -15,4 +17,5 @@ public interface OrderGoodsDao extends BaseDao<OrderGoods> {
      */
     void deleteByOrderId(String orderId);
 
+    List<OrderGoods> findOrderGoods(String orderId);
 }

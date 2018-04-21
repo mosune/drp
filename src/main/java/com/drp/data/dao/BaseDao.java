@@ -49,7 +49,7 @@ public interface BaseDao<T> {
 
     /**
      * 删除记录
-     * @param obj
+     * @param entity
      * @return
      */
     int delete(T entity);

@@ -1,5 +1,6 @@
 package com.drp.data.dao.impl;
 
+import com.drp.data.entity.GoodsStock;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import org.apache.ibatis.session.RowBounds;
@@ -7,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import com.drp.data.entity.Goods;
 import com.drp.data.dao.GoodsDao;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 
@@ -23,5 +27,13 @@ public class GoodsDaoImpl extends BaseDaoImpl<Goods> implements GoodsDao {
         Integer count = getSqlSession().selectOne(getSqlName("getCount"), pageParam.getMap());
         page.setTotal(count == null ? 0 : count);
         return page;
+    }
+
+    @Override
+    public Goods findGoods(Integer id) {
+        Map<String,Integer> map = new HashMap<String, Integer>();
+        map.put("orderId",id);
+        Goods goods = getSqlSession().selectOne(getSqlName("selectBy"), map);
+        return goods;
     }
 }

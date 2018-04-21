@@ -27,11 +27,12 @@ public class GoodsStockLog implements Serializable {
 	private Integer previousStock; //原始库存
 	private Integer quantity; //进货
 	private Integer currentStock; //当前库存
-	private String type; //类型：in 进货| out 出库
+	private String type; //类型：in 进货| out 出库 | back_in 销售退货| back_out 采购退货
 	private String createBy; //
 	private Date createTime; //
 	private String updateBy; //
 	private Date updateTime; //
+	private String number;
 	
 	public GoodsStockLog() {
 		super();
