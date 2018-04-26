@@ -6,13 +6,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link href="<%=root %>/resources/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
-    <title>添加采购单</title>
+    <title>添加退货单</title>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>添加采购单</h5>
+            <h5>添加退货单</h5>
         </div>
         <div class="ibox-content">
             <div class="row">
@@ -99,7 +99,7 @@
             url: "<%=root%>order/addOrder.do",
             type: "post",
             data: {order:a,
-                    type:1},
+                type:4},
             async: false,
             dataType: "json",
             success:function(data) {
@@ -110,7 +110,7 @@
                 }
             }
         });
-        window.location.href = "<%=root%>/order/index.do";
+        window.location.href = "<%=root%>/order/return.do";
     }
 </script>
 </html>

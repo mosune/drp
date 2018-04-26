@@ -3,8 +3,11 @@ package com.drp.service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.Order;
+import com.drp.data.entity.dto.OrderGoodsDto;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
+
+import java.util.List;
 
 /**
  * 
@@ -51,9 +54,10 @@ public interface OrderService {
 	/**
 	 * 添加订货单
 	 * @param json
+	 * @param type
 	 * @return
 	 */
-	JSONObject addOrder(JSONArray json);
+	JSONObject addOrder(JSONArray json, int type);
 
 	/**
 	 * 删除订单
@@ -61,4 +65,11 @@ public interface OrderService {
 	 * @return
 	 */
 	JSONObject delete(String id);
+
+	/**
+	 * 获取订单货物信息
+	 * @param id
+	 * @return
+	 */
+    List<OrderGoodsDto> getGoods(String id);
 }

@@ -6,6 +6,7 @@ import com.drp.data.dao.GoodsDao;
 import com.drp.data.dao.OrderGoodsDao;
 import com.drp.data.entity.Goods;
 import com.drp.data.entity.OrderGoods;
+import com.drp.data.entity.dto.OrderGoodsDto;
 import com.drp.util.IDUtils;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
@@ -21,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
 
 /**
  * 
@@ -67,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional
-	public JSONObject addOrder(JSONArray json) {
+	public JSONObject addOrder(JSONArray json, int type) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 		String num = formatter.format(new Date());
 		Order order = new Order();
@@ -75,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setUserId(UserUtil.getCurUserId());
 		order.setShopId(UserUtil.getCurShopId());
 		order.setNumber(num);
-		order.setStatus(1);
+		order.setStatus(type);
 		order.setCreateTime(new Date());
 		order.setCreateBy(UserUtil.getCurUserId());
 		order.setUpdateBy(UserUtil.getCurUserId());
@@ -119,6 +119,11 @@ public class OrderServiceImpl implements OrderService {
 		orderDao.delete(order);
 		orderGoodsDao.deleteByOrderId(order.getId());
 		return result;
+	}
+
+	@Override
+	public List<OrderGoodsDto> getGoods(String id) {
+		return orderDao.getGoods(id);
 	}
 
 }

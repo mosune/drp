@@ -115,7 +115,8 @@
 		select * from
 		<include refid="table" />
 		<where>
-			<include refid="sql_where" />
+			shop_id = #{shop_id} and status in (#{status})
+			<if test="name != null and name != ''"><![CDATA[ and name LIKE concat('%',#{name}, '%')]]></if>
 		</where>
 		order by
 		<include refid="sql_order_key" />
@@ -126,7 +127,24 @@
 		select count(*) from
 		<include refid="table" />
 		<where>
-			<include refid="sql_where" />
+			shop_id = #{shop_id} and status in (#{status})
+			<if test="name != null and name != ''"><![CDATA[ and name LIKE concat('%',#{name}, '%')]]></if>
+		</where>
+	</select>
+
+	<select id="getGoodsList" parameterType="string" resultType="orderGoodsDto">
+		select g.num as num, gd.name as goodsName, gd.original_price as originalPrice from `order` o left join order_goods g on o.id = g.order_id left join goods gd on g.goods_id = gd.id
+		<where>
+			o.id = #{id}
+		</where>
+		order by o.create_time desc
+	</select>
+
+	<!-- 获取总数据 -->
+	<select id="getGoodsCount" parameterType="java.util.Map" resultType="integer">
+		select count(*) from `order` o left join order_goods g on o.id = g.order_id left join goods gd on g.goods_id = gd.id
+		<where>
+			o.id = #{order_id}
 		</where>
 	</select>
 	

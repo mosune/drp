@@ -1,8 +1,11 @@
 package com.drp.data.dao;
 
 import com.drp.data.entity.Order;
+import com.drp.data.entity.dto.OrderGoodsDto;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
+
+import java.util.List;
 
 /**
  * 
@@ -19,4 +22,11 @@ public interface OrderDao extends BaseDao<Order> {
     Page<Order> find(PageParam pageParam);
 
     Order findOrder(String orderId);
+
+    /**
+     * 通过订单id获取货物列表
+     * @param id
+     * @return
+     */
+    List<OrderGoodsDto> getGoods(String id);
 }

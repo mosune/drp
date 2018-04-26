@@ -6,49 +6,31 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link href="<%=root %>/resources/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
-    <title>图书采购订单管理</title>
+    <title>图书退货订单管理</title>
 </head>
 <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>图书采购订单管理</h5>
+                <h5>图书退货订单管理</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
                     <div class="col-sm-6 m-b-xs">
                         <div class="input-group">
                             <input type="text" id="nameLike" placeholder="名称" class="input-sm form-control"> <span class="input-group-btn">
-                                        <button type="button" onclick="search();" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                        <button type="button" onclick="search();" class="btn btn-sm btn-primary">搜索</button> </span>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div id="toolbar">
-                        <a href="<%=root%>order/addPage.do"><button type="button" class="btn btn-primary btn-sm">添加采货单</button></a>
+                        <a href="<%=root%>order/addReturn.do"><button type="button" class="btn btn-primary btn-sm">添加退货单</button></a>
                     </div>
                     <div class="col-sm-12">
                         <table class="table table-striped table-bordered table-hover" id="orderTable">
                         </table>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" style="display: none;" data-keyboard="false" data-backdrop="static" id="modal" aria-hidden="true" role="dialog" aria-labelledby="modalHeader">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <form id="myForm" class="form-horizontal">
-                        <div class="row">
-                            <table class="table table-striped table-bordered table-hover" id="goodTable">
-                            </table>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="closeModal">关闭</button>
                 </div>
             </div>
         </div>
@@ -79,10 +61,9 @@
                 {field: 'totalPrice', width: '10%', title: '总金额（元）', align: 'center'},
                 {field: 'status',width: '10%', title: '状态', align: 'center',
                     formatter : function(value) {
-                        if (value === 1) return "待入库";
-                        else if(value === 2) return "已入库";
-                        else if(value === 3) return "采购已取消";
-                        else return "销售已取消";
+                        if (value === 4) return "采购退货";
+                        else if(value === 5) return "采购退货成功";
+                        else if(value === 6) return "退货取消";
                     }},
                 {field: 'createTime',width: '10%', title: '创建时间', align: 'center',
                     formatter : function(value) {
@@ -94,7 +75,7 @@
                     }},
                 {field: 'opt',width: '10%', title: '操作', align: 'center',
                     formatter: function(value, row){
-                        return '<button type="button" class="btn btn-info btn-xs" onclick="openModel(\''+row.id+'\')">详情</button>&nbsp;&nbsp;&nbsp;&nbsp;'
+                        return '<button type="button" class="btn btn-info btn-xs">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;'
                             + '<button type="button" class="btn btn-danger btn-xs" onclick="deleteData(\''+row.id+'\')">删除</button>&nbsp;&nbsp;&nbsp;&nbsp;';
                     }}
             ],
@@ -104,7 +85,7 @@
 
     function queryParams(params) {
         params.nameLike = $('#nameLike').val();
-        params.status = "1,2,3";
+        params.status = "4,5,6";
         return params;
     }
 
@@ -145,30 +126,5 @@
             }
         });
     }
-
-    function openModel(id) {
-        $("#modal").modal("show");
-        var _goodTable;
-        _goodTable = $('#goodTable').bootstrapTable({
-            sidePagination:'server',//设置为服务器端分页
-            url: '<%=root%>/order/getGoods.do',
-            method: 'post',
-            contentType: 'application/x-www-form-urlencoded;charset=utf-8',
-            striped: true,
-            queryParams : function(params) {
-                params.id = id;
-                return params;
-            },
-            columns: [
-                {field: 'goodsName',width: '40%', title: '货物名称', align: 'center'},
-                {field: 'num',width: '30%', title: '数量', align: 'center'},
-                {field: 'originalPrice',width: '30%', title: '成本价（元）', align: 'center'}
-            ],
-        });
-    }
-
-    $("#modal").on("hidden.bs.modal", function() {
-        $("#statusTable").bootstrapTable('destroy');
-    });
 </script>
 </html>

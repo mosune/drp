@@ -15,7 +15,7 @@
         <setting name="useGeneratedKeys" value="true"/>
         <!-- 使用列的别名来替换列名 默认为true-->
         <setting name="useColumnLabel" value="true"/>
-        <setting name="logImpl" value="LOG4J"/>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
     </settings>
 
     <typeAliases>
@@ -35,6 +35,7 @@
 
         <typeAlias type="com.drp.data.entity.dto.CategoryDto" alias="categoryDto" />
         <typeAlias type="com.drp.data.entity.dto.GoodsDto" alias="goodsDto" />
+        <typeAlias type="com.drp.data.entity.dto.OrderGoodsDto" alias="orderGoodsDto" />
     </typeAliases>
 
 </configuration>

@@ -2,8 +2,8 @@ package com.drp.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.drp.data.entity.Goods;
 import com.drp.data.entity.Order;
+import com.drp.data.entity.dto.OrderGoodsDto;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import com.drp.util.UserUtil;
@@ -12,11 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.drp.service.OrderService;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 
@@ -40,6 +40,15 @@ public class OrderController extends BaseController {
 	}
 
 	/**
+	 * 跳转首页
+	 * @return
+	 */
+	@RequestMapping("/return.do")
+	public String returns() {
+		return "/return/index";
+	}
+
+	/**
 	 * 首页列表
 	 * @param limit
 	 * @param offset
@@ -47,11 +56,12 @@ public class OrderController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("list.do")
-	public JSONObject list(int limit, int offset, String nameLike) {
+	public JSONObject list(int limit, int offset, String nameLike, String status) {
 		JSONObject result = new JSONObject();
-		HashMap<String, Object> map = new HashMap<String, Object>();
-//		map.put("shop_id", UserUtil.getCurShopId());
-//		map.put("name", nameLike);
+		HashMap<String, Object> map = new HashMap<String, Object>(3);
+		map.put("shop_id", UserUtil.getCurShopId());
+		map.put("name", nameLike);
+		map.put("status", status);
 		PageParam pageParam = new PageParam(offset, limit, map);
 		Page<Order> page = orderService.find(pageParam);
 		result.put("total", page.getTotal());
@@ -69,23 +79,38 @@ public class OrderController extends BaseController {
 	}
 
 	/**
+	 *
+	 * @return
+	 */
+	@RequestMapping("addReturn.do")
+	public String addReturn() {
+		return "/return/add";
+	}
+
+
+	/**
 	 * 添加采购单
 	 * @param order
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("addOrder.do")
-	public JSONObject addOrder(String order) {
+	public JSONObject addOrder(String order, int type) {
 		JSONObject result = new JSONObject();
 		JSONArray json = JSONArray.parseArray(order);
 		if (json.size() == 0 ) {
 			result.put("msg", "请选择需要采购的货物");
 			return result;
 		}
-		orderService.addOrder(json);
+		orderService.addOrder(json, type);
 		return null;
 	}
 
+	/**
+	 * 删除订购单
+	 * @param id
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("delete.do")
 	public JSONObject delete(String id) {
@@ -95,6 +120,24 @@ public class OrderController extends BaseController {
 			return result;
 		}
 		return orderService.delete(id);
+	}
+
+	/**
+	 * 获取订购单相关的货物信息
+	 * @param id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getGoods.do")
+	public JSONObject getGoods(String id) {
+		JSONObject result = new JSONObject();
+		if (StringUtils.isEmpty(id)) {
+			result.put("msg", "数据错误，请刷新重试");
+			return result;
+		}
+		List<OrderGoodsDto> list = orderService.getGoods(id);
+		result.put("rows", list);
+		return result;
 	}
 
 }

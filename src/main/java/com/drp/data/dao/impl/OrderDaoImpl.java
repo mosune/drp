@@ -1,5 +1,6 @@
 package com.drp.data.dao.impl;
 
+import com.drp.data.entity.dto.OrderGoodsDto;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import org.apache.ibatis.session.RowBounds;
@@ -9,6 +10,7 @@ import com.drp.data.entity.Order;
 import com.drp.data.dao.OrderDao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,5 +36,10 @@ public class OrderDaoImpl extends BaseDaoImpl<Order> implements OrderDao {
         map.put("orderId",orderId);
         Order order = getSqlSession().selectOne(getSqlName("selectBy"),map);
         return order;
+    }
+
+    @Override
+    public List<OrderGoodsDto> getGoods(String id) {
+        return getSqlSession().selectList(getSqlName("getGoodsList"), id);
     }
 }
