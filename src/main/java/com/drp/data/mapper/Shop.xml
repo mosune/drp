@@ -5,12 +5,12 @@
 	<sql id="table"> shop </sql>
 	
 	<resultMap type="shop" id="shopMap">
-		<result property="id" column="id"/>
+		<result property="shopNum" column="shopNum"/>
 		<result property="name" column="name"/>
 		<result property="phone" column="phone"/>
 		<result property="area" column="area"/>
 		<result property="address" column="address"/>
-		<result property="desc" column="desc"/>
+		<result property="remark" column="remark"/>
 		<result property="status" column="status"/>
 		<result property="createBy" column="create_by"/>
 		<result property="createTime" column="create_time"/>
@@ -19,12 +19,12 @@
 	</resultMap>
 	
 	<sql id="sql_where">
-		<if test="id != null"> and id = #{id} </if>
+		<if test="shopNum != null"> and shopNum = #{shopNum} </if>
 		<if test="name != null and name != ''"> and name = #{name} </if>
 		<if test="phone != null and phone != ''"> and phone = #{phone} </if>
 		<if test="area != null and area != ''"> and area = #{area} </if>
 		<if test="address != null and address != ''"> and address = #{address} </if>
-		<if test="desc != null and desc != ''"> and desc = #{desc} </if>
+		<if test="remark != null and remark != ''"> and remark = #{remark} </if>
 		<if test="status != null and status != ''"> and status = #{status} </if>
 		<if test="create_by != null and create_by != ''"> and create_by = #{create_by} </if>
 		<if test="create_time != null"> and create_time = #{create_time} </if>
@@ -33,20 +33,20 @@
 	</sql>
 	
 	<sql id="sql_where_key">
-		id = #{id}
+		shopNum = #{shopNum}
 	</sql>
 	
 	<sql id="sql_order_key">
-		id
+		shopNum
 	</sql>
 	
 	<insert id="insert" parameterType="shop" >
 		insert into
 		<include refid="table" />
 		(
-			id, name, phone, area, address, desc, status, create_by, create_time, update_by, update_time
+			shopNum, name, phone, area, address, remark, status, create_by, create_time, update_by, update_time
 		) values(
-			#{id}, #{name}, #{phone}, #{area}, #{address}, #{desc}, #{status}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}
+			#{shopNum}, #{name}, #{phone}, #{area}, #{address}, #{remark}, #{status}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}
 		)
 	</insert>
 	
@@ -54,10 +54,10 @@
 		insert into
 		<include refid="table" />
 		(
-			id, name, phone, area, address, desc, status, create_by, create_time, update_by, update_time
+			shopNum, name, phone, area, address, remark, status, create_by, create_time, update_by, update_time
 		) values
 		<foreach collection="list" item="item" index="index" separator="," >
-			(#{item.id}, #{item.name}, #{item.phone}, #{item.area}, #{item.address}, #{item.desc}, #{item.status}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
+			(#{item.shopNum}, #{item.name}, #{item.phone}, #{item.area}, #{item.address}, #{item.remark}, #{item.status}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
 		</foreach>
 	</insert>
 	
@@ -73,12 +73,12 @@
 		update
 		<include refid="table" />
 		<set>
-			id = #{id},
+			shopNum = #{shopNum},
 			name = #{name},
 			phone = #{phone},
 			area = #{area},
 			address = #{address},
-			desc = #{desc},
+			remark = #{remark},
 			status = #{status},
 			create_by = #{createBy},
 			create_time = #{createTime},
@@ -117,6 +117,24 @@
 		</where>
 		order by
 		<include refid="sql_order_key" />
+	</select>
+
+	<!-- 按参数查询（分页） -->
+	<select id="selectPage" parameterType="java.util.Map" resultMap="shopMap">
+		select * from
+		<where>
+			<if test="name != null and name != ''"><![CDATA[ and name LIKE concat('%',#{name}, '%')]]></if>
+		</where>
+		order by
+		a.create_time desc
+	</select>
+
+	<!-- 获取总数据 -->
+	<select id="getCount" parameterType="java.util.Map" resultType="integer">
+		select count(*) from
+		<where>
+			<if test="name != null and name != ''"><![CDATA[ and name LIKE concat('%',#{name}, '%')]]></if>
+		</where>
 	</select>
 	
 </mapper>

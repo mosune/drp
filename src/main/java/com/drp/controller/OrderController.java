@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.drp.service.OrderService;
@@ -40,12 +41,31 @@ public class OrderController extends BaseController {
 	}
 
 	/**
-	 * 跳转首页
+	 * 跳转退货管理
 	 * @return
 	 */
 	@RequestMapping("/return.do")
 	public String returns() {
 		return "/return/index";
+	}
+
+    /**
+     * 跳转退货管理
+     * @return
+     */
+    @RequestMapping("/sale.do")
+    public String sale() {
+        return "/sale/index";
+    }
+
+	@RequestMapping("/ret.do")
+	public String ret() {
+		return "/ret/index";
+	}
+
+	@RequestMapping("/storage.do")
+	public String storage() {
+		return "/storage/index";
 	}
 
 	/**
@@ -56,7 +76,7 @@ public class OrderController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("list.do")
-	public JSONObject list(int limit, int offset, String nameLike, String status) {
+	public JSONObject list(int limit, int offset, String nameLike, @RequestParam("status[]") Integer[] status) {
 		JSONObject result = new JSONObject();
 		HashMap<String, Object> map = new HashMap<String, Object>(3);
 		map.put("shop_id", UserUtil.getCurShopId());
@@ -85,6 +105,16 @@ public class OrderController extends BaseController {
 	@RequestMapping("addReturn.do")
 	public String addReturn() {
 		return "/return/add";
+	}
+
+    @RequestMapping("addSale.do")
+    public String addSale() {
+        return "/sale/add";
+    }
+
+	@RequestMapping("addRet.do")
+	public String addRet() {
+		return "/ret/add";
 	}
 
 

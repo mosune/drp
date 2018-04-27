@@ -68,6 +68,9 @@
                             <a class="J_menuItem" href="<%=root %>">岗位管理</a>
                         </li>
                         <li>
+                            <a class="J_menuItem" href="<%=root %>shop/index.do">门店管理</a>
+                        </li>
+                        <li>
                             <a class="J_menuItem" href="<%=root %>">操作日志</a>
                         </li>
                     </ul>
@@ -107,10 +110,10 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem" href="<%=root %>">图书销售管理</a>
+                            <a class="J_menuItem" href="<%=root %>order/sale.do">图书销售管理</a>
                         </li>
                         <li>
-                            <a class="J_menuItem" href="<%=root %>">图书退货管理</a>
+                            <a class="J_menuItem" href="<%=root %>order/ret.do">图书退货管理</a>
                         </li>
                     </ul>
                 </li>
@@ -121,7 +124,7 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem" href="<%=root %>">图书入库管理</a>
+                            <a class="J_menuItem" href="<%=root %>order/storage.do">图书入库管理</a>
                         </li>
                         <li>
                             <a class="J_menuItem" href="<%=root %>">图书出库管理</a>

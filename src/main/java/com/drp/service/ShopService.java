@@ -1,9 +1,9 @@
 package com.drp.service;
 
-import java.util.List;
-import java.util.Map;
-
+import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.Shop;
+import com.drp.util.Page;
+import com.drp.util.PageParam;
 
 /**
  * 
@@ -21,17 +21,17 @@ public interface ShopService {
 	
 	/**
 	 * 删除（按主键）
-	 * @param shop
+	 * @param shopNum
 	 * @return
 	 */
-	int delete(Shop shop);
+	JSONObject delete(Integer shopNum);
 
 	/**
 	 * 修改（按主键）
 	 * @param shop
 	 * @return
 	 */
-	int update(Shop shop);
+	JSONObject update(Shop shop);
 
 	/**
 	 * 获取（按主键）
@@ -40,4 +40,17 @@ public interface ShopService {
 	 */
 	Shop get(Shop shop);
 
+	/**
+	 * 添加或删除门店
+	 * @param shop
+	 * @return
+	 */
+    JSONObject add(Shop shop);
+
+	/**
+	 * 列表
+	 * @param pageParam
+	 * @return
+	 */
+	Page<Shop> find(PageParam pageParam);
 }

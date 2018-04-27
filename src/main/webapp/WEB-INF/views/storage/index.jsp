@@ -6,26 +6,26 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link href="<%=root %>/resources/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
-    <title>图书采购订单管理</title>
+    <title>图书入库管理</title>
 </head>
 <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>图书采购订单管理</h5>
+                <h5>图书入库管理</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
                     <div class="col-sm-6 m-b-xs">
                         <div class="input-group">
                             <input type="text" id="nameLike" placeholder="名称" class="input-sm form-control"> <span class="input-group-btn">
-                                        <button type="button" onclick="search();" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                        <button type="button" onclick="search();" class="btn btn-sm btn-primary">搜索</button> </span>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div id="toolbar">
-                        <a href="<%=root%>order/addPage.do"><button type="button" class="btn btn-primary btn-sm">添加采货单</button></a>
+                        <a href="<%=root%>order/addRet.do"><button type="button" class="btn btn-primary btn-sm">添加退货单</button></a>
                     </div>
                     <div class="col-sm-12">
                         <table class="table table-striped table-bordered table-hover" id="orderTable">
@@ -82,12 +82,15 @@
                         if (value === 1) return "待入库";
                         else if(value === 2) return "已入库";
                         else if(value === 3) return "采购已取消";
+                        else if(value === 14) return "销售退货";
+                        else if(value === 15) return "销售退货成功";
+                        else if(value === 16) return "销售退货取消";
                     }},
                 {field: 'createTime',width: '10%', title: '创建时间', align: 'center',
                     formatter : function(value) {
                         return $(this).dateFormat(value, 'yyyy-MM-dd HH:mm:ss');
                     }},
-                {field: 'inTime',width: '10%', title: '入库时间', align: 'center',
+                {field: 'outTime',width: '10%', title: '出库时间', align: 'center',
                     formatter : function(value) {
                         return $(this).dateFormat(value, 'yyyy-MM-dd HH:mm:ss');
                     }},
@@ -105,8 +108,7 @@
         params.nameLike = $('#nameLike').val();
         var dataArr = new Array();
         dataArr.push(1);
-        dataArr.push(2);
-        dataArr.push(3);
+        dataArr.push(14);
         params.status = dataArr;
         return params;
     }

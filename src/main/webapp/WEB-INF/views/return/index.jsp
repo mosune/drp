@@ -35,6 +35,24 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" style="display: none;" data-keyboard="false" data-backdrop="static" id="modal" aria-hidden="true" role="dialog" aria-labelledby="modalHeader">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form id="myForm" class="form-horizontal">
+                        <div class="row">
+                            <table class="table table-striped table-bordered table-hover" id="goodTable">
+                            </table>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="closeModal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script src="<%=root %>/resources/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
 <script src="<%=root %>/resources/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
@@ -69,13 +87,13 @@
                     formatter : function(value) {
                         return $(this).dateFormat(value, 'yyyy-MM-dd HH:mm:ss');
                     }},
-                {field: 'inTime',width: '10%', title: '入库时间', align: 'center',
+                {field: 'outTime',width: '10%', title: '出库时间', align: 'center',
                     formatter : function(value) {
                         return $(this).dateFormat(value, 'yyyy-MM-dd HH:mm:ss');
                     }},
                 {field: 'opt',width: '10%', title: '操作', align: 'center',
                     formatter: function(value, row){
-                        return '<button type="button" class="btn btn-info btn-xs">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;'
+                        return '<button type="button" class="btn btn-info btn-xs" onclick="openModel(\''+row.id+'\')">详情</button>&nbsp;&nbsp;&nbsp;&nbsp;'
                             + '<button type="button" class="btn btn-danger btn-xs" onclick="deleteData(\''+row.id+'\')">删除</button>&nbsp;&nbsp;&nbsp;&nbsp;';
                     }}
             ],
@@ -85,12 +103,16 @@
 
     function queryParams(params) {
         params.nameLike = $('#nameLike').val();
-        params.status = "4,5,6";
+        var dataArr = new Array();
+        dataArr.push(4);
+        dataArr.push(5);
+        dataArr.push(6);
+        params.status = dataArr;
         return params;
     }
 
     function search() {
-        _goodsTable.bootstrapTable("refresh");
+        _orderTable.bootstrapTable("refresh");
     }
 
     function deleteData(id) {
@@ -126,5 +148,30 @@
             }
         });
     }
+
+    function openModel(id) {
+        $("#modal").modal("show");
+        var _goodTable;
+        _goodTable = $('#goodTable').bootstrapTable({
+            sidePagination:'server',//设置为服务器端分页
+            url: '<%=root%>/order/getGoods.do',
+            method: 'post',
+            contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+            striped: true,
+            queryParams : function(params) {
+                params.id = id;
+                return params;
+            },
+            columns: [
+                {field: 'goodsName',width: '40%', title: '货物名称', align: 'center'},
+                {field: 'num',width: '30%', title: '数量', align: 'center'},
+                {field: 'originalPrice',width: '30%', title: '成本价（元）', align: 'center'}
+            ],
+        });
+    }
+
+    $("#modal").on("hidden.bs.modal", function() {
+        $("#statusTable").bootstrapTable('destroy');
+    });
 </script>
 </html>

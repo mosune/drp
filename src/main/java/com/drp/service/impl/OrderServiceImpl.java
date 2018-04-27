@@ -66,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public JSONObject addOrder(JSONArray json, int type) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 		String num = formatter.format(new Date());
@@ -104,6 +104,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public JSONObject delete(String id) {
 		JSONObject result = new JSONObject();
 		Order order = new Order(id);
@@ -112,8 +113,8 @@ public class OrderServiceImpl implements OrderService {
 			result.put("msg", "数据错误，请刷新重试");
 			return result;
 		}
-		if (!(order.getStatus() == 1 || order.getStatus() == 11)) {
-			result.put("msg", "该状态项目不可修改");
+		if (!(order.getStatus() == 1 || order.getStatus() == 11 || order.getStatus() == 4 || order.getStatus() == 14)) {
+			result.put("msg", "该状态订单不可修改");
 			return result;
 		}
 		orderDao.delete(order);

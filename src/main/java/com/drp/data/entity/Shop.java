@@ -21,12 +21,12 @@ public class Shop implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Integer id; //
+	private Integer shopNum; // 门店编号
 	private String name; //门店名称
 	private String phone; //电话
 	private String area; //地区
 	private String address; //地址
-	private String desc; //描述
+	private String remark; //描述
 	private String status; //状态：是否可用
 	private String createBy; //
 	private Date createTime; //
@@ -37,8 +37,8 @@ public class Shop implements Serializable {
 		super();
 	}
 
-	public Shop(Integer id) {
-		this.id = id;
+	public Shop(Integer shopNum) {
+		this.shopNum = shopNum;
 	}
 
 }

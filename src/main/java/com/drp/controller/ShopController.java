@@ -1,11 +1,18 @@
 package com.drp.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.drp.data.entity.Shop;
+import com.drp.util.Page;
+import com.drp.util.PageParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.drp.service.ShopService;
+
+import java.util.HashMap;
 
 /**
  * 
@@ -20,11 +27,89 @@ public class ShopController extends BaseController {
 	private ShopService shopService;
 	
 	@RequestMapping("/index.do")
-	public ModelAndView index() {
-		ModelAndView mv = new ModelAndView();
-		
-		mv.setViewName("/shop/index");
-		return mv;
+	public String index() {
+		return "/shop/index";
+	}
+
+	/**
+	 * 首页列表
+	 * @param limit
+	 * @param offset
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("list.do")
+	public JSONObject list(int limit, int offset, String nameLike) {
+		JSONObject result = new JSONObject();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("name", nameLike);
+		PageParam pageParam = new PageParam(offset, limit, map);
+		Page<Shop> page = shopService.find(pageParam);
+		result.put("total", page.getTotal());
+		result.put("rows", page.getRows());
+		return result;
+	}
+
+	/**
+	 * 添加
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("add.do")
+	public JSONObject add(Shop shop) {
+		JSONObject result = new JSONObject();
+		if (StringUtils.isEmpty(shop.getName())) {
+			result.put("msg", "名称不能为空");
+			return result;
+		}
+		return shopService.add(shop);
+	}
+
+	/**
+	 * 修改
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("update.do")
+	public JSONObject update(Shop shop) {
+		JSONObject result = new JSONObject();
+		if (StringUtils.isEmpty(shop.getName())) {
+			result.put("msg", "名称不能为空");
+			return result;
+		}
+		return shopService.update(shop);
+	}
+
+	/**
+	 * 删除
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("delete.do")
+	public JSONObject delete(Integer shopNum) {
+		JSONObject result = new JSONObject();
+		if (shopNum == null) {
+			result.put("msg", "名称不能为空");
+			return result;
+		}
+		return shopService.delete(shopNum);
+	}
+
+	/**
+	 * 删除
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getData.do")
+	public JSONObject getData(Integer shopNum) {
+		JSONObject result = new JSONObject();
+		if (shopNum == null) {
+			result.put("msg", "名称不能为空");
+			return result;
+		}
+		Shop shop = new Shop(shopNum);
+		result.put("shop", shop);
+		return result;
 	}
 	
 }
