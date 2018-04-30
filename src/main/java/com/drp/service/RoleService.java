@@ -68,4 +68,11 @@ public interface RoleService {
 	 * @return
 	 */
     List<Role> getList();
+
+	/**
+	 * 获取角色相关信息
+	 * @param id
+	 * @return
+	 */
+	JSONObject getData(Integer id);
 }

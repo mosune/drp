@@ -100,5 +100,9 @@
 		order by
 		<include refid="sql_order_key" />
 	</select>
+
+	<select id="getParentMenu">
+		select * from where parent is null
+	</select>
 	
 </mapper>

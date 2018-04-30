@@ -108,10 +108,7 @@ public class RoleController extends BaseController {
 			result.put("msg", "数据错误，请刷新重试");
 			return result;
 		}
-		Role role = new Role(id);
-		role = roleService.get(role);
-		result.put("role", role);
-		return result;
+		return roleService.getData(id);
 	}
 
 	/**

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 import com.drp.data.entity.Menu;
 import com.drp.data.dao.MenuDao;
 
+import java.util.List;
+
 /**
  * 
  * @author gcg
@@ -12,5 +14,9 @@ import com.drp.data.dao.MenuDao;
  */
 @Repository("menuDao")
 public class MenuDaoImpl extends BaseDaoImpl<Menu> implements MenuDao {
-	
+
+    @Override
+    public List<Menu> getParentMenu() {
+        return getSqlSession().selectList(getSqlName("getParentMenu"));
+    }
 }

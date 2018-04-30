@@ -2,7 +2,9 @@ package com.drp.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.drp.data.dao.AdminUserDao;
+import com.drp.data.dao.MenuDao;
 import com.drp.data.entity.AdminUser;
+import com.drp.data.entity.Menu;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import com.drp.util.UserUtil;
@@ -32,6 +34,9 @@ public class RoleServiceImpl implements RoleService {
 
 	@Autowired
 	private AdminUserDao adminUserDao;
+
+	@Autowired
+	private MenuDao menuDao;
 
 	@Override
 	public Object save(Role role) {
@@ -114,6 +119,17 @@ public class RoleServiceImpl implements RoleService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", 0);
 		return roleDao.getList(map);
+	}
+
+	@Override
+	public JSONObject getData(Integer id) {
+		JSONObject result = new JSONObject();
+		Role role = new Role(id);
+		role = roleDao.get(role);
+		result.put("role", role);
+		List<Menu> list = menuDao.getParentMenu();
+		result.put("menuList", list);
+		return result;
 	}
 
 }
