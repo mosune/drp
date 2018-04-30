@@ -22,17 +22,13 @@ public class Role implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id; //
-	private Integer shopId; //门店Id
 	private String name; //岗位名称
-	private String type; //岗位类型
 	private String status; //状态：VALID／INVALID
 	private String createBy; //
 	private Date createTime; //
 	private String updateBy; //
 	private Date updateTime; //
-	private Date sysCreateTime; //
-	private Date sysUpdateTime; //
-	
+
 	public Role() {
 		super();
 	}

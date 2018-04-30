@@ -6,13 +6,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link href="<%=root %>/resources/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
-    <title>门店管理</title>
+    <title>岗位管理</title>
 </head>
 <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>门店基本信息</h5>
+                <h5>岗位基本信息</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -28,7 +28,7 @@
                         <button type="button" onclick="openModel();" class="btn btn-primary btn-sm">添加</button>
                     </div>
                     <div class="col-sm-12">
-                        <table class="table table-striped table-bordered table-hover" id="shopTable">
+                        <table class="table table-striped table-bordered table-hover" id="roleTable">
                         </table>
                     </div>
                 </div>
@@ -43,51 +43,9 @@
                     <form id="myForm" class="form-horizontal">
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label" for="shopNum">门店编号：</label>
-                                    <div class="col-sm-8">
-                                        <input class="form-control" id="shopNum" name="shopNum" type="text" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <label class="col-sm-4 control-label" for="name">门店名称：</label>
+                                <label class="col-sm-4 control-label" for="name">名称：</label>
                                 <div class="col-sm-8">
                                     <input class="form-control" id="name" name="name" type="text" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label" for="phone">电话：</label>
-                                    <div class="col-sm-8">
-                                        <input class="form-control" id="phone" name="phone" type="text" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <label class="col-sm-4 control-label" for="area">地区：</label>
-                                <div class="col-sm-8">
-                                    <input class="form-control" id="area" name="area" type="text" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label" for="address">地址：</label>
-                                    <div class="col-sm-8">
-                                        <input class="form-control" id="address" name="address" type="text" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <label class="col-sm-2 control-label" for="desc">描述：</label>
-                                <div class="col-sm-10">
-                                    <textarea class="form-control" id="desc"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -107,11 +65,11 @@
 <script src="<%=root %>/resources/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
 <script src="<%=root %>/resources/js/jquery.extends.js"></script>
 <script type="text/javascript">
-    var _shopTable;
+    var _roleTable;
     $(document).ready(function() {
-        _shopTable = $('#shopTable').bootstrapTable({
+        _roleTable = $('#roleTable').bootstrapTable({
             sidePagination:'server',//设置为服务器端分页
-            url: '<%=root%>/shop/list.do',
+            url: '<%=root%>/role/list.do',
             method: 'post',
             contentType: 'application/x-www-form-urlencoded;charset=utf-8',
             striped: true,
@@ -124,15 +82,10 @@
             sortable: true,
             idField: 'id',
             columns: [
-                {field: 'shopNum',width: '10%', title: '商店编号', align: 'center'},
                 {field: 'name', width: '10%', title: '名称', align: 'center'},
-                {field: 'phone', width: '10%', title: '电话', align: 'center'},
-                {field: 'area', width: '10%', title: '地区', align: 'center'},
-                {field: 'address',width: '15%', title: '地址', align: 'center'},
-                {field: 'remark',width: '20%', title: '描述', align: 'center'},
                 {field: 'status',width: '5%', title: '状态', align: 'center',
                     formatter : function(value) {
-                        if (value == 'ON') return "已启用";
+                        if (value === '0') return "已启用";
                         else return "未启用";
                     }},
                 {field: 'createTime',width: '10%', title: '创建时间', align: 'center',
@@ -141,9 +94,9 @@
                     }},
                 {field: 'opt',width: '10%', title: '操作', align: 'center',
                     formatter: function(value, row){
-                        return '<button type="button" class="btn btn-info btn-xs" onclick="openModel(\''+row.shopNum+'\')">编辑</button>&nbsp;&nbsp;'
-                            + '<button type="button" class="btn btn-danger btn-xs" onclick="deleteData(\''+row.shopNum+'\')">删除</button>&nbsp;&nbsp;'
-                            + '<button type="button" class="btn btn-primary btn-xs" onclick="updateStatus(\''+row.shopNum+'\')">状态</button>';
+                        return '<button type="button" class="btn btn-info btn-xs" onclick="openModel(\''+row.id+'\')">编辑</button>&nbsp;&nbsp;'
+                            + '<button type="button" class="btn btn-danger btn-xs" onclick="deleteData(\''+row.id+'\')">删除</button>&nbsp;&nbsp;'
+                            + '<button type="button" class="btn btn-primary btn-xs" onclick="updateStatus(\''+row.id+'\')">状态</button>';
                     }}
             ],
             toolbar: '#toolbar'
@@ -156,17 +109,17 @@
     }
 
     function search() {
-        _shopTable.bootstrapTable("refresh");
+        _roleTable.bootstrapTable("refresh");
     }
 
     function openModel(id) {
         if (id) {
             $("#hideValue").val(id);
             $.ajax({
-                url: "<%=root%>shop/getData.do",
+                url: "<%=root%>role/getData.do",
                 type: "post",
                 data: {
-                    shopNum:id
+                    id:id
                 },
                 dataType: "json",
                 success:function(result) {
@@ -174,53 +127,32 @@
                         toastr.error(result.msg);
                         return;
                     } else {
-                        $("#shopNum").attr("disabled", true);
-                        $("#shopNum").val(result.shop.shopNum);
-                        $("#name").val(result.shop.name);
-                        $("#phone").val(result.shop.phone);
-                        $("#area").val(result.shop.area);
-                        $("#address").val(result.shop.address);
-                        $("#desc").val(result.shop.remark);
+                        $("#name").val(result.role.name);
                     }
                 }
             });
         } else {
-            $("#shopNum").attr("disabled", false);
-            $("#shopNum").val("");
             $("#name").val("");
-            $("#phone").val("");
-            $("#area").val("");
-            $("#address").val("");
-            $("#desc").val("");
             $("#hideValue").val("");
         }
         $("#modal").modal("show");
     }
     
     function saveOrUpdate() {
-        var shopNum = $("#shopNum").val();
         var name = $("#name").val();
-        var phone = $("#phone").val();
-        var area = $("#area").val();
-        var address = $("#address").val();
-        var desc = $("#desc").val();
         var id = $("#hideValue").val();
         var str;
         if (id) {
-            str = "<%=root%>shop/update.do";
+            str = "<%=root%>role/update.do";
         } else {
-            str = "<%=root%>shop/add.do";
+            str = "<%=root%>role/add.do";
         }
         $.ajax({
             url: str,
             type: "post",
             data: {
-                shopNum:shopNum,
-                name:name,
-                phone:phone,
-                area:area,
-                address:address,
-                remark:desc
+                id:id,
+                name:name
             },
             dataType: "json",
             success:function(result) {
@@ -228,7 +160,7 @@
                     toastr.error(result.msg);
                 } else {
                     toastr.info("操作成功");
-                    _shopTable.bootstrapTable("refresh");
+                    _roleTable.bootstrapTable("refresh");
                     $('#modal').modal('hide');
                 }
             }
@@ -251,15 +183,15 @@
         function(isConfirm){
             if (isConfirm) {
                 $.ajax({
-                    url: "<%=root%>shop/delete.do",
+                    url: "<%=root%>role/delete.do",
                     type: "post",
-                    data: {shopNum:id},
+                    data: {id:id},
                     success:function(result){
                         if (result.msg) {
                             swal("取消", result.msg, "error");
                         } else {
-                            swal("成功!", "您删除了这个门店", "success");
-                            _shopTable.bootstrapTable("refresh");
+                            swal("成功!", "您删除了这个岗位", "success");
+                            _roleTable.bootstrapTable("refresh");
                         }
                     }
                 })
@@ -285,17 +217,17 @@
         function(isConfirm){
             if (isConfirm) {
                 $.ajax({
-                    url: "<%=root%>shop/updateStatus.do",
+                    url: "<%=root%>role/updateStatus.do",
                     type: "post",
                     data: {
-                        shopNum:id
+                        id:id
                     },
                     success:function(result){
                         if (result.msg) {
                             swal("取消", result.msg, "error");
                         } else {
                             swal("成功!", "您修改了状态", "success");
-                            _shopTable.bootstrapTable("refresh");
+                            _roleTable.bootstrapTable("refresh");
                         }
                     }
                 })

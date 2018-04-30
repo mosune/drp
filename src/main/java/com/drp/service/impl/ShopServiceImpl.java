@@ -66,10 +66,8 @@ public class ShopServiceImpl implements ShopService {
 		map.put("shop_num", shop.getShopNum());
 		List<Shop> list = shopDao.getList(map);
 		if (CollectionUtils.isEmpty(list)) {
-			if (shop.getShopNum() != null) {
-				result.put("msg", "该门店不存在");
-				return result;
-			}
+			result.put("msg", "该门店不存在");
+			return result;
 		}
 		Shop oldShop = list.get(0);
 		oldShop.setName(shop.getName());
@@ -113,6 +111,32 @@ public class ShopServiceImpl implements ShopService {
 	@Override
 	public Page<Shop> find(PageParam pageParam) {
 		return shopDao.find(pageParam);
+	}
+
+	@Override
+	public JSONObject updateStatus(Integer shopNum) {
+		JSONObject result = new JSONObject();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("shop_num", shopNum);
+		List<Shop> list = shopDao.getList(map);
+		if (CollectionUtils.isEmpty(list)) {
+			result.put("msg", "该门店不存在");
+			return result;
+		}
+		Shop shop = list.get(0);
+		if (shop.getStatus().equals("ON")) shop.setStatus("OFF");
+		else shop.setStatus("ON");
+		shop.setUpdateTime(new Date());
+		shop.setUpdateBy(UserUtil.getCurUserId());
+		shopDao.update(shop);
+		return result;
+	}
+
+	@Override
+	public List<Shop> getList() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("status", "ON");
+		return shopDao.getList(map);
 	}
 
 }

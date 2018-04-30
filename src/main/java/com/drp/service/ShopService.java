@@ -5,6 +5,8 @@ import com.drp.data.entity.Shop;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 
+import java.util.List;
+
 /**
  * 
  * @author gcg
@@ -53,4 +55,17 @@ public interface ShopService {
 	 * @return
 	 */
 	Page<Shop> find(PageParam pageParam);
+
+	/**
+	 * 修改状态
+	 * @param shopNum
+	 * @return
+	 */
+	JSONObject updateStatus(Integer shopNum);
+
+	/**
+	 * 获取门店列表
+	 * @return
+	 */
+    List<Shop> getList();
 }

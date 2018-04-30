@@ -6,28 +6,18 @@
 	
 	<resultMap type="menu" id="menuMap">
 		<result property="id" column="id"/>
-		<result property="code" column="code"/>
+		<result property="url" column="code"/>
 		<result property="name" column="name"/>
 		<result property="level" column="level"/>
 		<result property="parent" column="parent"/>
-		<result property="status" column="status"/>
-		<result property="createBy" column="create_by"/>
-		<result property="createTime" column="create_time"/>
-		<result property="updateBy" column="update_by"/>
-		<result property="updateTime" column="update_time"/>
 	</resultMap>
 	
 	<sql id="sql_where">
 		<if test="id != null"> and id = #{id} </if>
-		<if test="code != null and code != ''"> and code = #{code} </if>
+		<if test="url != null and url != ''"> and url = #{url} </if>
 		<if test="name != null and name != ''"> and name = #{name} </if>
 		<if test="level != null"> and level = #{level} </if>
 		<if test="parent != null and parent != ''"> and parent = #{parent} </if>
-		<if test="status != null and status != ''"> and status = #{status} </if>
-		<if test="create_by != null and create_by != ''"> and create_by = #{create_by} </if>
-		<if test="create_time != null"> and create_time = #{create_time} </if>
-		<if test="update_by != null and update_by != ''"> and update_by = #{update_by} </if>
-		<if test="update_time != null"> and update_time = #{update_time} </if>
 	</sql>
 	
 	<sql id="sql_where_key">
@@ -42,9 +32,9 @@
 		insert into
 		<include refid="table" />
 		(
-			id, code, name, level, parent, status, create_by, create_time, update_by, update_time
+			id, code, url, level, parent
 		) values(
-			#{id}, #{code}, #{name}, #{level}, #{parent}, #{status}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}
+			#{id}, #{code}, #{url}, #{level}, #{parent}
 		)
 	</insert>
 	
@@ -52,10 +42,10 @@
 		insert into
 		<include refid="table" />
 		(
-			id, code, name, level, parent, status, create_by, create_time, update_by, update_time
+			id, code, url, level, parent
 		) values
 		<foreach collection="list" item="item" index="index" separator="," >
-			(#{item.id}, #{item.code}, #{item.name}, #{item.level}, #{item.parent}, #{item.status}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
+			(#{item.id}, #{item.url}, #{item.name}, #{item.level}, #{item.parent})
 		</foreach>
 	</insert>
 	
@@ -73,14 +63,9 @@
 		<set>
 			id = #{id},
 			code = #{code},
-			name = #{name},
+			url = #{url},
 			level = #{level},
 			parent = #{parent},
-			status = #{status},
-			create_by = #{createBy},
-			create_time = #{createTime},
-			update_by = #{updateBy},
-			update_time = #{updateTime}
 		</set>
 		<where>
 			<include refid="sql_where_key" />

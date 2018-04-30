@@ -65,7 +65,7 @@
                             <a class="J_menuItem" href="<%=root %>adminUser/index.do">员工管理</a>
                         </li>
                         <li>
-                            <a class="J_menuItem" href="<%=root %>">岗位管理</a>
+                            <a class="J_menuItem" href="<%=root %>role/index.do">岗位管理</a>
                         </li>
                         <li>
                             <a class="J_menuItem" href="<%=root %>shop/index.do">门店管理</a>
@@ -161,7 +161,7 @@
                         <a class="dropdown-toggle count-info" onclick="showModal();" href="javascript:;">修改密码</a>
                     </li>
                     <li class="dropdown">
-                        <a class="dropdown-toggle count-info" href="<%=root %>/loginOut.do">退出</a>
+                        <a class="dropdown-toggle count-info" href="<%=root %>logout.do">退出</a>
                     </li>
                 </ul>
             </nav>

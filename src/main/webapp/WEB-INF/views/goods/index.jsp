@@ -195,7 +195,6 @@
             $("#originalPrice").val("");
             $("#salePrice").val("");
             $("#desc").val("");
-            $("#hideValue").val("");
         }
         $("#modal").modal("show");
     }

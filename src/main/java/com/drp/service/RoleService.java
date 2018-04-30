@@ -1,9 +1,11 @@
 package com.drp.service;
 
-import java.util.List;
-import java.util.Map;
-
+import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.Role;
+import com.drp.util.Page;
+import com.drp.util.PageParam;
+
+import java.util.List;
 
 /**
  * 
@@ -21,17 +23,17 @@ public interface RoleService {
 	
 	/**
 	 * 删除（按主键）
-	 * @param role
+	 * @param id
 	 * @return
 	 */
-	int delete(Role role);
+	JSONObject delete(Integer id);
 
 	/**
 	 * 修改（按主键）
 	 * @param role
 	 * @return
 	 */
-	int update(Role role);
+	JSONObject update(Role role);
 
 	/**
 	 * 获取（按主键）
@@ -40,4 +42,30 @@ public interface RoleService {
 	 */
 	Role get(Role role);
 
+	/**
+	 * 查询列表
+	 * @param pageParam
+	 * @return
+	 */
+    Page<Role> find(PageParam pageParam);
+
+	/**
+	 * 添加岗位
+	 * @param role
+	 * @return
+	 */
+	JSONObject add(Role role);
+
+	/**
+	 * 修改项目状态
+	 * @param id
+	 * @return
+	 */
+	JSONObject updateStatus(Integer id);
+
+	/**
+	 * 查询列表
+	 * @return
+	 */
+    List<Role> getList();
 }

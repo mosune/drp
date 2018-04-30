@@ -20,20 +20,15 @@ public class Relation implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String id; //
+	private Integer id; //
 	private String menuId; //菜单id
 	private String roleId; //角色id
-	private String status; //状态：VALID／INVALID
-	private String createBy; //
-	private Date createTime; //
-	private String updateBy; //
-	private Date updateTime; //
-	
+
 	public Relation() {
 		super();
 	}
 
-	public Relation(String id) {
+	public Relation(Integer id) {
 		this.id = id;
 	}
 

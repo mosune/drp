@@ -1,6 +1,5 @@
 package com.drp.data.entity;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -34,6 +33,7 @@ public class AdminUser implements Serializable {
 	private Date createTime; //
 	private String updateBy; //
 	private Date updateTime; //
+	private String salt;
 	
 	public AdminUser() {
 		super();

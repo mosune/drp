@@ -1,14 +1,19 @@
 package com.drp.shiro.realm;
 
+import com.drp.data.dao.AdminUserDao;
 import com.drp.data.entity.AdminUser;
-import com.drp.service.AdminUserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * FileName: UserRealm
@@ -21,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserRealm extends AuthorizingRealm {
 
     @Autowired
-    private AdminUserService adminUserService;
+    private AdminUserDao adminUserDao;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -37,14 +42,27 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String userName = (String) token.getPrincipal();
-        // User user = this.userService.findUserByName(userName);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("account", userName);
+        List<AdminUser> users = adminUserDao.getList(map);
 
-        /*if (user == null) {
+        if (CollectionUtils.isEmpty(users)) {
             throw new UnknownAccountException(); // 用户不存在
         }
-        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(
-                user, user.getPassword(), ByteSource.Util.bytes(user.getUserName()), getName()); // 检验账户*/
-        return null;
+
+        AdminUser user = users.get(0);
+
+        if (user.getStatus().equals("1")) {
+            throw new LockedAccountException(); // 账户被冻结
+        }
+
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
+                user, //用户名
+                user.getPassword(), //密码
+                ByteSource.Util.bytes(user.getAccount() + user.getSalt()),//salt=username+salt
+                getName()  //realm name
+        );
+        return authenticationInfo;
     }
 
 }

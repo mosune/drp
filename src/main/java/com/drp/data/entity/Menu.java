@@ -22,16 +22,11 @@ public class Menu implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id; //
-	private String code; //
 	private String name; //名称
+	private String url; //
 	private Integer level; //等级
-	private String parent; //上级
-	private String status; //状态：VALID／INVALID
-	private String createBy; //
-	private Date createTime; //
-	private String updateBy; //
-	private Date updateTime; //
-	
+	private Integer parent; //上级
+
 	public Menu() {
 		super();
 	}

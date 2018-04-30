@@ -1,20 +1,11 @@
 package com.drp.controller;
 
-import com.drp.data.entity.AdminUser;
 import lombok.extern.log4j.Log4j;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.ExcessiveAttemptsException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.web.util.SavedRequest;
-import org.apache.shiro.web.util.WebUtils;
+import org.apache.shiro.authc.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * FileName: LoginController
@@ -34,30 +25,26 @@ public class LoginController {
     }
 
     @RequestMapping(value = "login.do")
-    public String login(String userName, String password, HttpServletRequest request) {
+    public ModelAndView login(String userName, String password) {
         ModelAndView mv = new ModelAndView();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(userName, password, true);
-        // usernamePasswordToken.setRememberMe(true);
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(userName, password);
         try {
             SecurityUtils.getSubject().login(usernamePasswordToken);
-            // log.info(((AdminUser)(SecurityUtils.getSubject().getPrincipal())).getUserName() + " login success");
-            Session session = SecurityUtils.getSubject().getSession();
-            SavedRequest savedRequest = WebUtils.getSavedRequest(request);
-            if (savedRequest != null) {
-                return "redirect:" + savedRequest.getRequestURI().substring(savedRequest.getRequestURI().indexOf("/", 1));
-            } else {
-                mv.addObject("id", session.getId());
-                mv.setViewName("index");
-                return "redirect:index.jsp";
-            }
-            // BeanUtils
+            mv.setViewName("/index");
         } catch (UnknownAccountException exception) {
-            return "redirect:/goLogin.do";
+            mv.addObject("msg", "用户不存在");
+            mv.setViewName("/login");
         } catch (IncorrectCredentialsException exception) {
-            return "redirect:/goLogin.do";
+            mv.addObject("msg", "密码错误");
+            mv.setViewName("/login");
         } catch (ExcessiveAttemptsException exception) {
-            return "redirect:/goLogin.do";
+            mv.addObject("msg", "账户已锁定，请10分钟之后再试");
+            mv.setViewName("/login");
+        } catch (LockedAccountException exception) {
+            mv.addObject("msg", "账户已被冻结，请联系管理员");
+            mv.setViewName("/login");
         }
+        return mv;
     }
 
     @RequestMapping(value = "goLogin.do")
@@ -68,7 +55,7 @@ public class LoginController {
     @RequestMapping(value = "logout.do")
     public void logout() {
         SecurityUtils.getSubject().logout();
-        System.out.println("logout success");
+        log.info("logout success");
     }
 
     @RequestMapping(value = "authorization.do")

@@ -5,7 +5,7 @@
 	<sql id="table"> shop </sql>
 	
 	<resultMap type="shop" id="shopMap">
-		<result property="shopNum" column="shopNum"/>
+		<result property="shopNum" column="shop_num"/>
 		<result property="name" column="name"/>
 		<result property="phone" column="phone"/>
 		<result property="area" column="area"/>
@@ -19,7 +19,7 @@
 	</resultMap>
 	
 	<sql id="sql_where">
-		<if test="shopNum != null"> and shopNum = #{shopNum} </if>
+		<if test="shop_num != null"> and shop_num = #{shop_num} </if>
 		<if test="name != null and name != ''"> and name = #{name} </if>
 		<if test="phone != null and phone != ''"> and phone = #{phone} </if>
 		<if test="area != null and area != ''"> and area = #{area} </if>
@@ -33,18 +33,18 @@
 	</sql>
 	
 	<sql id="sql_where_key">
-		shopNum = #{shopNum}
+		shop_num = #{shopNum}
 	</sql>
 	
 	<sql id="sql_order_key">
-		shopNum
+		shop_num
 	</sql>
 	
 	<insert id="insert" parameterType="shop" >
 		insert into
 		<include refid="table" />
 		(
-			shopNum, name, phone, area, address, remark, status, create_by, create_time, update_by, update_time
+			shop_num, name, phone, area, address, remark, status, create_by, create_time, update_by, update_time
 		) values(
 			#{shopNum}, #{name}, #{phone}, #{area}, #{address}, #{remark}, #{status}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}
 		)
@@ -54,7 +54,7 @@
 		insert into
 		<include refid="table" />
 		(
-			shopNum, name, phone, area, address, remark, status, create_by, create_time, update_by, update_time
+			shop_num, name, phone, area, address, remark, status, create_by, create_time, update_by, update_time
 		) values
 		<foreach collection="list" item="item" index="index" separator="," >
 			(#{item.shopNum}, #{item.name}, #{item.phone}, #{item.area}, #{item.address}, #{item.remark}, #{item.status}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
@@ -73,7 +73,7 @@
 		update
 		<include refid="table" />
 		<set>
-			shopNum = #{shopNum},
+			shop_num = #{shopNum},
 			name = #{name},
 			phone = #{phone},
 			area = #{area},
@@ -110,28 +110,17 @@
 
 	<!-- 按参数查询（分页） -->
 	<select id="selectPage" parameterType="java.util.Map" resultMap="shopMap">
-		select * from
-		<include refid="table" />
-		<where>
-			<include refid="sql_where" />
-		</where>
-		order by
-		<include refid="sql_order_key" />
-	</select>
-
-	<!-- 按参数查询（分页） -->
-	<select id="selectPage" parameterType="java.util.Map" resultMap="shopMap">
-		select * from
+		select * from shop
 		<where>
 			<if test="name != null and name != ''"><![CDATA[ and name LIKE concat('%',#{name}, '%')]]></if>
 		</where>
 		order by
-		a.create_time desc
+		create_time desc
 	</select>
 
 	<!-- 获取总数据 -->
 	<select id="getCount" parameterType="java.util.Map" resultType="integer">
-		select count(*) from
+		select count(*) from shop
 		<where>
 			<if test="name != null and name != ''"><![CDATA[ and name LIKE concat('%',#{name}, '%')]]></if>
 		</where>

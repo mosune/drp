@@ -108,7 +108,35 @@ public class ShopController extends BaseController {
 			return result;
 		}
 		Shop shop = new Shop(shopNum);
+		shop = shopService.get(shop);
 		result.put("shop", shop);
+		return result;
+	}
+
+	/**
+	 * 删除
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("updateStatus.do")
+	public JSONObject updateStatus(Integer shopNum) {
+		JSONObject result = new JSONObject();
+		if (shopNum == null) {
+			result.put("msg", "名称不能为空");
+			return result;
+		}
+		return shopService.updateStatus(shopNum);
+	}
+
+	/**
+	 * 查询门店列表
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getList.do")
+	public JSONObject getList() {
+		JSONObject result = new JSONObject();
+		result.put("list", shopService.getList());
 		return result;
 	}
 	

@@ -36,6 +36,7 @@
         <typeAlias type="com.drp.data.entity.dto.CategoryDto" alias="categoryDto" />
         <typeAlias type="com.drp.data.entity.dto.GoodsDto" alias="goodsDto" />
         <typeAlias type="com.drp.data.entity.dto.OrderGoodsDto" alias="orderGoodsDto" />
+        <typeAlias type="com.drp.data.entity.dto.AdminUserDto" alias="adminUserDto" />
     </typeAliases>
 
 </configuration>

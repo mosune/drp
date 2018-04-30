@@ -1,11 +1,19 @@
 package com.drp.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.drp.data.entity.Role;
+import com.drp.util.Page;
+import com.drp.util.PageParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.drp.service.RoleService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 
@@ -20,11 +28,117 @@ public class RoleController extends BaseController {
 	private RoleService roleService;
 	
 	@RequestMapping("/index.do")
-	public ModelAndView index() {
-		ModelAndView mv = new ModelAndView();
-		
-		mv.setViewName("/role/index");
-		return mv;
+	public String index() {
+		return "/role/index";
+	}
+
+	/**
+	 * 首页列表
+	 * @param limit
+	 * @param offset
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("list.do")
+	public JSONObject list(int limit, int offset, String nameLike) {
+		JSONObject result = new JSONObject();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("name", nameLike);
+		PageParam pageParam = new PageParam(offset, limit, map);
+		Page<Role> page = roleService.find(pageParam);
+		result.put("total", page.getTotal());
+		result.put("rows", page.getRows());
+		return result;
+	}
+
+	/**
+	 * 添加
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("add.do")
+	public JSONObject add(Role role) {
+		JSONObject result = new JSONObject();
+		if (StringUtils.isEmpty(role.getName())) {
+			result.put("msg", "名称不能为空");
+			return result;
+		}
+		return roleService.add(role);
+	}
+
+	/**
+	 * 修改
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("update.do")
+	public JSONObject update(Role role) {
+		JSONObject result = new JSONObject();
+		if (StringUtils.isEmpty(role.getName())) {
+			result.put("msg", "名称不能为空");
+			return result;
+		}
+		return roleService.update(role);
+	}
+
+	/**
+	 * 删除
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("delete.do")
+	public JSONObject delete(Integer id) {
+		JSONObject result = new JSONObject();
+		if (id == null) {
+			result.put("msg", "数据错误，请刷新重试");
+			return result;
+		}
+		return roleService.delete(id);
+	}
+
+	/**
+	 * 删除
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getData.do")
+	public JSONObject getData(Integer id) {
+		JSONObject result = new JSONObject();
+		if (id == null) {
+			result.put("msg", "数据错误，请刷新重试");
+			return result;
+		}
+		Role role = new Role(id);
+		role = roleService.get(role);
+		result.put("role", role);
+		return result;
+	}
+
+	/**
+	 * 删除
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("updateStatus.do")
+	public JSONObject updateStatus(Integer id) {
+		JSONObject result = new JSONObject();
+		if (id == null) {
+			result.put("msg", "数据错误，请刷新重试");
+			return result;
+		}
+		return roleService.updateStatus(id);
+	}
+
+	/**
+	 * 查询岗位列表
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getList.do")
+	public JSONObject getList() {
+		JSONObject result = new JSONObject();
+		result.put("list", roleService.getList());
+		return result;
 	}
 	
 }
