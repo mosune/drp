@@ -7,20 +7,14 @@ import java.util.UUID;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.drp.data.dao.GoodsDao;
-import com.drp.data.dao.OrderDao;
-import com.drp.data.dao.OrderGoodsDao;
-import com.drp.data.entity.Goods;
-import com.drp.data.entity.Order;
-import com.drp.data.entity.OrderGoods;
+import com.drp.data.dao.*;
+import com.drp.data.entity.*;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import com.drp.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.drp.data.entity.GoodsStock;
-import com.drp.data.dao.GoodsStockDao;
 import com.drp.service.GoodsStockService;
 
 
@@ -40,6 +34,8 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 	private OrderGoodsDao orderGoodsDao;
 	@Autowired
 	private GoodsDao goodsDao;
+	@Autowired
+	private GoodsStockLogDao goodsStockLogDao;
 
 	@Override
 	public Object save(GoodsStock goodsStock) {
@@ -67,7 +63,7 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 	}
 
 	@Override
-	public JSONObject purchaseIn(String orderId,String type) {
+	public JSONObject stock(String orderId,String type) {
 		JSONObject result = new JSONObject();
 		Order order = orderDao.findOrder(orderId);
 		if (order == null) {
@@ -106,6 +102,10 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 				goodsStock.setUpdateBy(UserUtil.getCurUserId());
 				goodsStock.setUpdateTime(new Date());
 
+				goodsStockDao.insert(goodsStock);
+
+				this.createStockLog( goodsStock, orderGoods, order, type);
+
 			} else {
 				goodsStock.setShopId(order.getShopId());
 				goodsStock.setGoodsId(orderGoods.getGoodsId().toString());
@@ -124,9 +124,38 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 				goodsStock.setUpdateBy(UserUtil.getCurUserId());
 				goodsStock.setUpdateTime(new Date());
 
+				goodsStockDao.update(goodsStock);
+
+				this.createStockLog( goodsStock, orderGoods, order, type);
+
 			}
 		}
 		return result;
+	}
+
+	private void createStockLog(GoodsStock goodsStock,OrderGoods orderGoods,Order order,String type){
+
+		GoodsStockLog stockLog = new GoodsStockLog();
+
+		if (type.indexOf("in") != -1) {
+			stockLog.setPreviousStock(goodsStock.getCurrentStock()-orderGoods.getNum());
+
+		} else {
+			stockLog.setPreviousStock(goodsStock.getCurrentStock()+orderGoods.getNum());
+
+		}
+		stockLog.setShopId(goodsStock.getShopId());
+		stockLog.setGoodsId(goodsStock.getGoodsId());
+		stockLog.setQuantity(orderGoods.getNum());
+		stockLog.setCurrentStock(goodsStock.getCurrentStock());
+		stockLog.setType(type);
+		stockLog.setNumber(order.getNumber());
+		stockLog.setCreateBy(UserUtil.getCurUserId());
+		stockLog.setCreateTime(new Date());
+		stockLog.setUpdateBy(UserUtil.getCurUserId());
+		stockLog.setUpdateTime(new Date());
+
+		goodsStockLogDao.insert(stockLog);
 	}
 
 }

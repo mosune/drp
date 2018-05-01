@@ -54,9 +54,9 @@ public interface GoodsStockService {
 	Page<GoodsStock> find(PageParam pageParam);
 
 	/**
-	 * 采购单入库确认
+	 * 入库出库确认
 	 * @param orderId
 	 * @return
 	 */
-	JSONObject purchaseIn(String orderId,String type);
+	JSONObject stock(String orderId,String type);
 }
