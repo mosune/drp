@@ -16,4 +16,11 @@ public interface MenuDao extends BaseDao<Menu> {
      * @return
      */
     List<Menu> getParentMenu();
+
+    /**
+     * 获取所有菜单
+     * @param id
+     * @return
+     */
+    List<Menu> getAllMenu(Integer id);
 }

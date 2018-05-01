@@ -2,9 +2,9 @@ package com.drp.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.drp.data.dao.AdminUserDao;
-import com.drp.data.dao.MenuDao;
+import com.drp.data.dao.RelationDao;
 import com.drp.data.entity.AdminUser;
-import com.drp.data.entity.Menu;
+import com.drp.data.entity.Relation;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import com.drp.util.UserUtil;
@@ -15,11 +15,9 @@ import org.springframework.stereotype.Service;
 import com.drp.data.entity.Role;
 import com.drp.data.dao.RoleDao;
 import com.drp.service.RoleService;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 
@@ -36,7 +34,7 @@ public class RoleServiceImpl implements RoleService {
 	private AdminUserDao adminUserDao;
 
 	@Autowired
-	private MenuDao menuDao;
+	private RelationDao relationDao;
 
 	@Override
 	public Object save(Role role) {
@@ -117,8 +115,17 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public List<Role> getList() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("status", 0);
-		return roleDao.getList(map);
+		map.put("status", "0");
+		List<Role> list = roleDao.getList(map);
+		Iterator<Role> it = list.iterator();
+		while (it.hasNext()) {
+			Role role = it.next();
+			if (role.getId() == 1) {
+				it.remove();
+				break;
+			}
+		}
+		return list;
 	}
 
 	@Override
@@ -127,8 +134,22 @@ public class RoleServiceImpl implements RoleService {
 		Role role = new Role(id);
 		role = roleDao.get(role);
 		result.put("role", role);
-		List<Menu> list = menuDao.getParentMenu();
-		result.put("menuList", list);
+		return result;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public JSONObject savePower(int id, String power) {
+		JSONObject result = new JSONObject();
+		power = power.substring(0, power.length() - 1);
+		String[] menus = power.split(",");
+		relationDao.deleteByRoleId(id);
+		for (String m : menus) {
+			Relation relation = new Relation();
+			relation.setRoleId(id);
+			relation.setMenuId(Integer.valueOf(m));
+			relationDao.insert(relation);
+		}
 		return result;
 	}
 

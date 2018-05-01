@@ -118,7 +118,7 @@
 			b.name as levelName
 		from category a LEFT join category b on a.level = b.id
 		<where>
-			a.shop_id = #{shop_id}
+			<if test="shop_id != null and shop_id != ''"> and a.shop_id = #{shop_id}</if>
 			<if test="name != null and name != ''"><![CDATA[ and a.name LIKE concat('%',#{name}, '%')]]></if>
 		</where>
 			order by a.create_time DESC

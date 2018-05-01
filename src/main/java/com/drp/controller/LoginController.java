@@ -1,11 +1,14 @@
 package com.drp.controller;
 
+import com.drp.util.UserUtil;
 import lombok.extern.log4j.Log4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * FileName: LoginController
@@ -25,11 +28,14 @@ public class LoginController {
     }
 
     @RequestMapping(value = "login.do")
-    public ModelAndView login(String userName, String password) {
+    public ModelAndView login(String userName, String password, HttpSession session) {
         ModelAndView mv = new ModelAndView();
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(userName, password);
         try {
             SecurityUtils.getSubject().login(usernamePasswordToken);
+            session.setAttribute("menus", UserUtil.getCurUser().getMenus());
+            session.setAttribute("name", UserUtil.getCurName());
+            session.setMaxInactiveInterval(60 * 60);
             mv.setViewName("/index");
         } catch (UnknownAccountException exception) {
             mv.addObject("msg", "用户不存在");
@@ -53,14 +59,10 @@ public class LoginController {
     }
 
     @RequestMapping(value = "logout.do")
-    public void logout() {
+    public String logout(HttpSession session) {
+        session.invalidate();
         SecurityUtils.getSubject().logout();
-        log.info("logout success");
-    }
-
-    @RequestMapping(value = "authorization.do")
-    public String authorization() {
-        return "/authorization.jsp";
+        return "/login";
     }
 
 }

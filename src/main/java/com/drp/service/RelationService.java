@@ -1,8 +1,6 @@
 package com.drp.service;
 
-import java.util.List;
-import java.util.Map;
-
+import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.Relation;
 
 /**
@@ -39,5 +37,12 @@ public interface RelationService {
 	 * @return
 	 */
 	Relation get(Relation relation);
+
+	/**
+	 * 通过角色id获取关系
+	 * @param id
+	 * @return
+	 */
+	JSONObject getRelation(int id);
 
 }

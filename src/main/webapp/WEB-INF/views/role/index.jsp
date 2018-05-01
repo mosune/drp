@@ -59,7 +59,39 @@
         </div>
     </div>
 
+    <div class="modal fade" style="display: none;" data-keyboard="false" data-backdrop="static" id="power" aria-hidden="true" role="dialog" aria-labelledby="modalHeader">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form id="myForm2" class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">菜单权限：</label>
+                                        <div class="col-sm-10">
+                                            <div class="col-sm-10">
+                                                <c:forEach items="${menus}" var="menu">
+                                                    <label class="checkbox-inline"><input name="menus" type="checkbox" value="${menu.id}">${menu.name}</label>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" onclick="savePower();">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="closeModal2">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <input type="hidden" id="hideValue" />
+    <input type="hidden" id="powerId"/>
 </body>
 <script src="<%=root %>/resources/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
 <script src="<%=root %>/resources/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
@@ -94,9 +126,12 @@
                     }},
                 {field: 'opt',width: '10%', title: '操作', align: 'center',
                     formatter: function(value, row){
-                        return '<button type="button" class="btn btn-info btn-xs" onclick="openModel(\''+row.id+'\')">编辑</button>&nbsp;&nbsp;'
-                            + '<button type="button" class="btn btn-danger btn-xs" onclick="deleteData(\''+row.id+'\')">删除</button>&nbsp;&nbsp;'
-                            + '<button type="button" class="btn btn-primary btn-xs" onclick="updateStatus(\''+row.id+'\')">状态</button>';
+                        if (row.id != 1) {
+                            return '<button type="button" class="btn btn-info btn-xs" onclick="openModel(\'' + row.id + '\')">编辑</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-warning btn-xs" onclick="openPower(\'' + row.id + '\')">权限</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-danger btn-xs" onclick="deleteData(\'' + row.id + '\')">删除</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary btn-xs" onclick="updateStatus(\'' + row.id + '\')">状态</button>';
+                        }
                     }}
             ],
             toolbar: '#toolbar'
@@ -137,6 +172,29 @@
         }
         $("#modal").modal("show");
     }
+
+    function openPower(id) {
+        $("input:checkbox").each( function() {
+            $(this).prop("checked", false);
+        });
+        $.ajax({
+            url: "<%=root%>relation/getRelation.do",
+            type: "post",
+            data: {
+                id:id
+            },
+            dataType: "json",
+            success:function(result) {
+                if (result.list) {
+                    $(result.list).each(function(i, o) {
+                        $("input:checkbox[value="+o.menuId+"]").prop("checked", "checked");
+                    })
+                }
+            }
+        });
+        $("#powerId").val(id);
+        $("#power").modal("show");
+    }
     
     function saveOrUpdate() {
         var name = $("#name").val();
@@ -147,6 +205,12 @@
         } else {
             str = "<%=root%>role/add.do";
         }
+        var checkedValue = "";
+        $('input[name="menus"]').each(function(){
+            if(this.checked){
+                checkedValue += this.value.toString() + ",";
+            }
+        });
         $.ajax({
             url: str,
             type: "post",
@@ -162,6 +226,34 @@
                     toastr.info("操作成功");
                     _roleTable.bootstrapTable("refresh");
                     $('#modal').modal('hide');
+                }
+            }
+        });
+    }
+
+    function savePower() {
+        var id = $("#powerId").val();
+        var checkedValue = "";
+        $('input[name="menus"]').each(function(){
+            if(this.checked){
+                checkedValue += this.value.toString() + ",";
+            }
+        });
+        $.ajax({
+            url: "<%=root%>/role/savePower.do",
+            type: "post",
+            data: {
+                id:id,
+                power:checkedValue
+            },
+            dataType: "json",
+            success:function(result) {
+                if (result.msg) {
+                    toastr.error(result.msg);
+                } else {
+                    toastr.info("操作成功");
+                    _roleTable.bootstrapTable("refresh");
+                    $('#power').modal('hide');
                 }
             }
         });

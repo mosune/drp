@@ -19,4 +19,9 @@ public class MenuDaoImpl extends BaseDaoImpl<Menu> implements MenuDao {
     public List<Menu> getParentMenu() {
         return getSqlSession().selectList(getSqlName("getParentMenu"));
     }
+
+    @Override
+    public List<Menu> getAllMenu(Integer id) {
+        return getSqlSession().selectList(getSqlName("getAllMenu"), id);
+    }
 }

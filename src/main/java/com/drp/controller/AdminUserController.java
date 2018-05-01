@@ -5,6 +5,7 @@ import com.drp.data.entity.AdminUser;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +44,7 @@ public class AdminUserController extends BaseController {
      * @return
      */
     @ResponseBody
+    @RequiresRoles("admin")
     @RequestMapping("list.do")
     public JSONObject list(int limit, int offset, String nameLike) {
         JSONObject result = new JSONObject();
@@ -60,6 +62,7 @@ public class AdminUserController extends BaseController {
      * @return
      */
     @ResponseBody
+    @RequiresRoles("admin")
     @RequestMapping("add.do")
     public JSONObject add(AdminUser adminUser) {
         JSONObject result = new JSONObject();
@@ -75,6 +78,7 @@ public class AdminUserController extends BaseController {
      * @return
      */
     @ResponseBody
+    @RequiresRoles("admin")
     @RequestMapping("update.do")
     public JSONObject update(AdminUser adminUser) {
         JSONObject result = new JSONObject();
@@ -90,6 +94,7 @@ public class AdminUserController extends BaseController {
      * @return
      */
     @ResponseBody
+    @RequiresRoles("admin")
     @RequestMapping("delete.do")
     public JSONObject delete(String id) {
         JSONObject result = new JSONObject();
@@ -105,6 +110,7 @@ public class AdminUserController extends BaseController {
      * @return
      */
     @ResponseBody
+    @RequiresRoles("admin")
     @RequestMapping("getData.do")
     public JSONObject getData(String id) {
         JSONObject result = new JSONObject();
@@ -123,6 +129,7 @@ public class AdminUserController extends BaseController {
      * @return
      */
     @ResponseBody
+    @RequiresRoles("admin")
     @RequestMapping("updateStatus.do")
     public JSONObject updateStatus(String id) {
         JSONObject result = new JSONObject();

@@ -79,7 +79,7 @@ public class OrderController extends BaseController {
 	public JSONObject list(int limit, int offset, String nameLike, @RequestParam("status[]") Integer[] status) {
 		JSONObject result = new JSONObject();
 		HashMap<String, Object> map = new HashMap<String, Object>(3);
-		map.put("shop_id", UserUtil.getCurShopId());
+		if (!UserUtil.getCurUserId().equals("1")) map.put("shop_id", UserUtil.getCurShopId());
 		map.put("name", nameLike);
 		map.put("status", status);
 		PageParam pageParam = new PageParam(offset, limit, map);

@@ -94,5 +94,13 @@
 		order by
 		<include refid="sql_order_key" />
 	</select>
+
+	<delete id="deleteByRoleId" parameterType="integer">
+		delete from relation where role_id = #{0}
+	</delete>
+
+	<select id="getRelation" parameterType="integer" resultType="integer">
+		select menu_id from relation where role_id = #{0}
+	</select>
 	
 </mapper>

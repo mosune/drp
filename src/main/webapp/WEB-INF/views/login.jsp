@@ -1,27 +1,47 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2017/12/29
-  Time: 16:38
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page isELIgnored="false" language="java"
          contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-    String path = request.getContextPath();
-    String root = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
+<%@ include file="base.jsp" %>
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>login</title>
+    <title> - 登录</title>
+    <link href="<%=root %>/resources/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="<%=root %>/resources/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="<%=root %>/resources/css/animate.css" rel="stylesheet">
+    <link href="<%=root %>/resources/css/style.css?v=4.1.0" rel="stylesheet">
+    <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
 </head>
-<body>
-    <h1 style="color: #9c191a;">${msg}</h1>
-    <form method="post" action="<%=root%>/login.do">
-        姓名：<input type="text" name="userName" />
-        密码：<input type="password" name="password" />
-        <input type="submit" value="登录" />
-    </form>
+
+<body class="gray-bg">
+<div class="middle-box text-center loginscreen  animated fadeInDown">
+    <div>
+        <div>
+
+            <h1 class="logo-name">DRP</h1>
+
+        </div>
+        <h3>欢迎使用图书进销存系统</h3>
+
+        <form class="m-t" role="form" method="post" action="<%=root %>/login.do">
+            <div class="form-group">
+                <input class="form-control" name="userName" placeholder="用户名" required="">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="密码" required="">
+            </div>
+            <button type="submit" class="btn btn-primary block full-width m-b">登 录</button>
+
+
+            <p class="text-muted text-center" style="color:red;" >${msg}</p>
+
+        </form>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="<%=root %>/resources/js/jquery.min.js?v=2.1.4"></script>
+<script src="<%=root %>/resources/js/bootstrap.min.js?v=3.3.6"></script>
 </body>
+
 </html>

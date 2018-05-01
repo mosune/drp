@@ -75,4 +75,6 @@ public interface RoleService {
 	 * @return
 	 */
 	JSONObject getData(Integer id);
+
+    JSONObject savePower(int id, String power);
 }

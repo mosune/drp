@@ -36,112 +36,25 @@
                         <span class="nav-label">主页</span>
                     </a>
                 </li>
-                <%--<c:forEach items="${user.menus}" var="allMenu">
+                <c:forEach items="${menus}" var="allMenu">
                     <li>
-                        <c:if test="${allMenu.pid == 0}">
+                        <c:if test="${allMenu.parent == null}">
                             <a href="#">
-                                <span class="nav-label">${allMenu.menuName}</span>
+                                <span class="nav-label">${allMenu.name}</span>
                                 <span class="fa arrow"></span>
                             </a>
                         </c:if>
                         <ul class="nav nav-second-level">
-                            <c:forEach items="${user.menus}" var="menu">
-                                <c:if test="${allMenu.id == menu.pid && menu.pid != 0}">
+                            <c:forEach items="${menus}" var="menu">
+                                <c:if test="${allMenu.id == menu.parent && menu.parent != null}">
                                     <li>
-                                        <a class="J_menuItem" href="<%=root %>${menu.path}">${menu.menuName}</a>
+                                        <a class="J_menuItem" href="<%=root%>${menu.url}">${menu.name}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
                         </ul>
                     </li>
-                </c:forEach>--%>
-                <li>
-                    <a href="#">
-                        <span class="nav-label">系统设置</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="<%=root %>adminUser/index.do">员工管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="<%=root %>role/index.do">岗位管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="<%=root %>shop/index.do">门店管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="<%=root %>">操作日志</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="nav-label">图书管理</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="<%=root %>category/index.do">书本分类管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="<%=root %>goods/index.do">书本基本信息管理</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="nav-label">图书采购管理</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="<%=root %>order/index.do">图书采购订单管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="<%=root %>order/return.do">图书采购退货管理</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="nav-label">图书销售管理</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="<%=root %>order/sale.do">图书销售管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="<%=root %>order/ret.do">图书退货管理</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="nav-label">图书库存管理</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="<%=root %>order/storage.do">图书入库管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="<%=root %>">图书出库管理</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="nav-label">财务管理</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="<%=root %>">图书进销存对账</a>
-                        </li>
-                    </ul>
-                </li>
+                </c:forEach>
             </ul>
         </div>
     </nav>

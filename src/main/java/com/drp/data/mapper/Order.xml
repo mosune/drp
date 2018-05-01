@@ -115,10 +115,11 @@
 		select * from
 		<include refid="table" />
 		<where>
-			shop_id = #{shop_id} and status in
+			status in
 			<foreach collection="status" index="index" item="item" open="(" separator="," close=")">
 				#{item}
 			</foreach>
+			<if test="shop_id != null and shop_id != ''"> and shop_id = #{shop_id}</if>
 			<if test="name != null and name != ''"><![CDATA[ and number LIKE concat('%',#{name}, '%')]]></if>
 		</where>
 		order by
@@ -130,10 +131,11 @@
 		select count(*) from
 		<include refid="table" />
 		<where>
-			shop_id = #{shop_id} and status in
+			status in
 			<foreach collection="status" index="index" item="item" open="(" separator="," close=")">
 				#{item}
 			</foreach>
+			<if test="shop_id != null and shop_id != ''"> and shop_id = #{shop_id}</if>
 			<if test="name != null and name != ''"><![CDATA[ and number LIKE concat('%',#{name}, '%')]]></if>
 		</where>
 	</select>

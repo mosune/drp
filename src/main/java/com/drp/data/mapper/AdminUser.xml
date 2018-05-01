@@ -131,4 +131,8 @@
 			<if test="name != null and name != ''"><![CDATA[ and u.name LIKE concat('%',#{name}, '%')]]></if>
 		</where>
 	</select>
+
+	<select id="findRoleName" parameterType="integer" resultType="string">
+		select name from role where id = #{0}
+	</select>
 </mapper>

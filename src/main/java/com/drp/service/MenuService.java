@@ -1,9 +1,8 @@
 package com.drp.service;
 
-import java.util.List;
-import java.util.Map;
-
 import com.drp.data.entity.Menu;
+
+import java.util.List;
 
 /**
  * 
@@ -39,5 +38,11 @@ public interface MenuService {
 	 * @return
 	 */
 	Menu get(Menu menu);
+
+	/**
+	 * 获取父级菜单
+	 * @return
+	 */
+	List<Menu> getParentList();
 
 }

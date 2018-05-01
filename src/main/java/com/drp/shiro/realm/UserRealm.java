@@ -1,7 +1,9 @@
 package com.drp.shiro.realm;
 
 import com.drp.data.dao.AdminUserDao;
+import com.drp.data.dao.MenuDao;
 import com.drp.data.entity.AdminUser;
+import com.drp.data.entity.Menu;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -28,13 +30,16 @@ public class UserRealm extends AuthorizingRealm {
     @Autowired
     private AdminUserDao adminUserDao;
 
+    @Autowired
+    private MenuDao menuDao;
+
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         AdminUser user = (AdminUser) principals.getPrimaryPrincipal(); // 获取凭证
         // this.getAuthorizationCache().remove(principals);
 
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        // simpleAuthorizationInfo.setRoles(this.adminUser.findRoleByName(user.getUserName())); // 添加职位列表
+        simpleAuthorizationInfo.setRoles(adminUserDao.findRoleName(user.getRoleId())); // 添加职位列表
         // simpleAuthorizationInfo.setStringPermissions(this.userService.findPerByName(user.getUserName())); // 添加权限列表
         return simpleAuthorizationInfo;
     }
@@ -55,6 +60,9 @@ public class UserRealm extends AuthorizingRealm {
         if (user.getStatus().equals("1")) {
             throw new LockedAccountException(); // 账户被冻结
         }
+
+        List<Menu> menus = menuDao.getAllMenu(user.getRoleId());
+        user.setMenus(menus);
 
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 user, //用户名

@@ -1,8 +1,10 @@
 package com.drp.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,15 @@ public class RelationServiceImpl implements RelationService {
 	@Override
 	public Relation get(Relation relation) {
 		return this.relationDao.get(relation);
+	}
+
+	@Override
+	public JSONObject getRelation(int id) {
+		JSONObject result = new JSONObject();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("role_id", id);
+		result.put("list", relationDao.getList(map));
+		return result;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.drp.util;
 
 import com.drp.data.entity.AdminUser;
+import org.apache.shiro.SecurityUtils;
 
 import java.util.Date;
 
@@ -12,32 +13,13 @@ import java.util.Date;
  **/
 public class UserUtil {
 
-    private UserUtil(){};
-
-    private static AdminUser user = null;
-
-    static {
-        user = new AdminUser();
-        user.setId("1");
-        user.setAccount("gcg");
-        user.setCreateBy("admin");
-        user.setCreateTime(new Date());
-        user.setMobile("110");
-        user.setName("葛大哥");
-        user.setPassword("123456");
-        user.setRoleId("1");
-        user.setShopId(10000);
-        user.setStatus("1");
-        user.setUpdateBy("gcg");
-        user.setUpdateTime(new Date());
-
-    }
+    private UserUtil(){}
 
     /**
      * 获取userId
      */
     public static String getCurUserId() {
-        return user.getId();
+        return ((AdminUser) SecurityUtils.getSubject().getPrincipal()).getId();
     }
 
     /**
@@ -45,7 +27,7 @@ public class UserUtil {
      * @return
      */
     public static String getCurName() {
-        return user.getName();
+        return ((AdminUser) SecurityUtils.getSubject().getPrincipal()).getName();
     }
 
     /**
@@ -53,7 +35,7 @@ public class UserUtil {
      * @return
      */
     public static Integer getCurShopId() {
-        return user.getShopId();
+        return ((AdminUser) SecurityUtils.getSubject().getPrincipal()).getShopId();
     }
 
     /**
@@ -61,7 +43,7 @@ public class UserUtil {
      * @return
      */
     public static String getCurAccount() {
-        return user.getAccount();
+        return ((AdminUser) SecurityUtils.getSubject().getPrincipal()).getAccount();
     }
 
     /**
@@ -69,7 +51,7 @@ public class UserUtil {
      * @return
      */
     public static AdminUser getCurUser() {
-        return user;
+        return ((AdminUser) SecurityUtils.getSubject().getPrincipal());
     }
 
 }

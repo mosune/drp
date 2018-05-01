@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.lang.String;
 import java.lang.Integer;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -27,13 +28,15 @@ public class AdminUser implements Serializable {
 	private Integer shopId; //门店Id
 	private String name; //姓名
 	private String mobile; //电话
-	private String roleId; //角色
+	private Integer roleId; //角色
 	private String status; //状态：是否可用
 	private String createBy; //
 	private Date createTime; //
 	private String updateBy; //
 	private Date updateTime; //
 	private String salt;
+
+	private List<Menu> menus;
 	
 	public AdminUser() {
 		super();

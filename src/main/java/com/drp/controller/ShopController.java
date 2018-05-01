@@ -5,6 +5,7 @@ import com.drp.data.entity.Shop;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,7 @@ public class ShopController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
+	@RequiresRoles("admin")
 	@RequestMapping("list.do")
 	public JSONObject list(int limit, int offset, String nameLike) {
 		JSONObject result = new JSONObject();
@@ -55,6 +57,7 @@ public class ShopController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
+	@RequiresRoles("admin")
 	@RequestMapping("add.do")
 	public JSONObject add(Shop shop) {
 		JSONObject result = new JSONObject();
@@ -70,6 +73,7 @@ public class ShopController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
+	@RequiresRoles("admin")
 	@RequestMapping("update.do")
 	public JSONObject update(Shop shop) {
 		JSONObject result = new JSONObject();
@@ -85,6 +89,7 @@ public class ShopController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
+	@RequiresRoles("admin")
 	@RequestMapping("delete.do")
 	public JSONObject delete(Integer shopNum) {
 		JSONObject result = new JSONObject();
@@ -100,6 +105,7 @@ public class ShopController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
+	@RequiresRoles("admin")
 	@RequestMapping("getData.do")
 	public JSONObject getData(Integer shopNum) {
 		JSONObject result = new JSONObject();
@@ -118,6 +124,7 @@ public class ShopController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
+	@RequiresRoles("admin")
 	@RequestMapping("updateStatus.do")
 	public JSONObject updateStatus(Integer shopNum) {
 		JSONObject result = new JSONObject();
@@ -133,6 +140,7 @@ public class ShopController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
+	@RequiresRoles("admin")
 	@RequestMapping("getList.do")
 	public JSONObject getList() {
 		JSONObject result = new JSONObject();

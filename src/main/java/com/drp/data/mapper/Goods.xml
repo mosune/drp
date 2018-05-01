@@ -131,7 +131,8 @@
 		on
 			a.cate_id = b.id
 		<where>
-			a.shop_id = #{shop_id} and delete_tag = 'N'
+			delete_tag = 'N'
+			<if test="shop_id != null and shop_id != ''"> and a.shop_id = #{shop_id}</if>
 			<if test="name != null and name != ''"><![CDATA[ and a.name LIKE concat('%',#{name}, '%')]]></if>
 		</where>
 		order by

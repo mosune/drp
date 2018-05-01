@@ -2,15 +2,18 @@ package com.drp.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.Role;
+import com.drp.service.MenuService;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.drp.service.RoleService;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,10 +29,15 @@ public class RoleController extends BaseController {
 
 	@Autowired
 	private RoleService roleService;
-	
+
+	@Autowired
+	private MenuService menuService;
+
 	@RequestMapping("/index.do")
-	public String index() {
-		return "/role/index";
+	public ModelAndView index() {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("menus", menuService.getParentList());
+		return mv;
 	}
 
 	/**
@@ -39,6 +47,7 @@ public class RoleController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
+	@RequiresRoles("admin")
 	@RequestMapping("list.do")
 	public JSONObject list(int limit, int offset, String nameLike) {
 		JSONObject result = new JSONObject();
@@ -56,6 +65,7 @@ public class RoleController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
+	@RequiresRoles("admin")
 	@RequestMapping("add.do")
 	public JSONObject add(Role role) {
 		JSONObject result = new JSONObject();
@@ -71,6 +81,7 @@ public class RoleController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
+	@RequiresRoles("admin")
 	@RequestMapping("update.do")
 	public JSONObject update(Role role) {
 		JSONObject result = new JSONObject();
@@ -86,6 +97,7 @@ public class RoleController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
+	@RequiresRoles("admin")
 	@RequestMapping("delete.do")
 	public JSONObject delete(Integer id) {
 		JSONObject result = new JSONObject();
@@ -101,6 +113,7 @@ public class RoleController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
+	@RequiresRoles("admin")
 	@RequestMapping("getData.do")
 	public JSONObject getData(Integer id) {
 		JSONObject result = new JSONObject();
@@ -116,6 +129,7 @@ public class RoleController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
+	@RequiresRoles("admin")
 	@RequestMapping("updateStatus.do")
 	public JSONObject updateStatus(Integer id) {
 		JSONObject result = new JSONObject();
@@ -131,11 +145,18 @@ public class RoleController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
+	@RequiresRoles("admin")
 	@RequestMapping("getList.do")
 	public JSONObject getList() {
 		JSONObject result = new JSONObject();
 		result.put("list", roleService.getList());
 		return result;
 	}
-	
+
+	@ResponseBody
+	@RequiresRoles("admin")
+	@RequestMapping("savePower.do")
+	public JSONObject savePower(int id, String power) {
+		return roleService.savePower(id, power);
+	}
 }

@@ -4,6 +4,8 @@ import com.drp.data.entity.AdminUser;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 
+import java.util.Set;
+
 /**
  * 
  * @author gcg
@@ -18,4 +20,5 @@ public interface AdminUserDao extends BaseDao<AdminUser> {
      */
     Page<AdminUser> find(PageParam pageParam);
 
+    Set<String> findRoleName(Integer id);
 }

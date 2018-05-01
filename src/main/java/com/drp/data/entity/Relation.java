@@ -21,8 +21,8 @@ public class Relation implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id; //
-	private String menuId; //菜单id
-	private String roleId; //角色id
+	private Integer menuId; //菜单id
+	private Integer roleId; //角色id
 
 	public Relation() {
 		super();

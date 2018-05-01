@@ -39,7 +39,7 @@ public class BaseController {
             map.put("status", 403);
             writeJson(map, response);
         } else {
-            response.sendRedirect("/tally/authorization.jsp");
+            response.sendRedirect("/drp/404.jsp");
         }
     }
 

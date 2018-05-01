@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 import com.drp.data.entity.AdminUser;
 import com.drp.data.dao.AdminUserDao;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 
  * @author gcg
@@ -23,5 +26,13 @@ public class AdminUserDaoImpl extends BaseDaoImpl<AdminUser> implements AdminUse
         Integer count = getSqlSession().selectOne(getSqlName("getCount"), pageParam.getMap());
         page.setTotal(count == null ? 0 : count);
         return page;
+    }
+
+    @Override
+    public Set<String> findRoleName(Integer id) {
+        String name = getSqlSession().selectOne(getSqlName("findRoleName"), id);
+        Set<String> set = new HashSet<String>();
+        set.add(name);
+        return set;
     }
 }

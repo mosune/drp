@@ -99,7 +99,7 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager" />
         <property name="loginUrl" value="/goLogin.do" />
-        <property name="unauthorizedUrl" value="/unauthorized.jsp" />
+        <property name="unauthorizedUrl" value="/404.jsp" />
         <property name="filters">
             <util:map>
                 <entry key="kickout" value-ref="kickoutSessionControlFilter" />
@@ -110,8 +110,6 @@
                 /resources/** = anon
                 /index.jsp = anon
                 /login.do = anon
-                /unauthorized.jsp = anon
-                /logout.do = logout
                 /** = kickout,authc
             </value>
         </property>

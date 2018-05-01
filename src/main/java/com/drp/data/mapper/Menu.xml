@@ -6,7 +6,7 @@
 	
 	<resultMap type="menu" id="menuMap">
 		<result property="id" column="id"/>
-		<result property="url" column="code"/>
+		<result property="url" column="url"/>
 		<result property="name" column="name"/>
 		<result property="level" column="level"/>
 		<result property="parent" column="parent"/>
@@ -101,8 +101,16 @@
 		<include refid="sql_order_key" />
 	</select>
 
-	<select id="getParentMenu">
-		select * from where parent is null
+	<select id="getParentMenu" resultMap="menuMap">
+		select * from menu where parent is null
 	</select>
-	
+
+	<select id="getAllMenu" parameterType="integer" resultMap="menuMap">
+		select * from menu where
+			id in
+				(select r.menu_id from admin_user u left join relation r on u.role_id = r.role_id  where u.role_id = #{0} )
+			or parent in
+				(select r.menu_id from admin_user u left join relation r on u.role_id = r.role_id  where u.role_id = #{0} ) order by level asc
+	</select>
+
 </mapper>
