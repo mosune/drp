@@ -23,7 +23,7 @@ public class GoodsStock implements Serializable {
 	
 	private String id; //
 	private Integer shopId; //门店Id
-	private String goodsId; //商品Id
+	private Integer goodsId; //商品Id
 	private Integer originalStock; //原始库存
 	private Integer inQuantity; //进货
 	private Integer outQuentity; //出货

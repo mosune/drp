@@ -1,8 +1,6 @@
 package com.drp.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.drp.data.entity.Goods;
 import com.drp.data.entity.GoodsStock;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
@@ -65,13 +63,28 @@ public class GoodsStockController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/purchaseIn.do")
-	public JSONObject purchaseIn(String orderId,String type) {
+	public JSONObject purchaseIn(String orderId, String type) {
 		JSONObject result = new JSONObject();
 		if (StringUtils.isEmpty(orderId)) {
 			result.put("msg", "请选择需要入库的采购单");
 			return result;
 		}
-		goodsStockService.purchaseIn(orderId, type);
-		return null;
+		return goodsStockService.stock(orderId, type);
+	}
+
+	/**
+	 * 采购单取消
+	 * @param orderId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/delete.do")
+	public JSONObject delete(String orderId, String type) {
+		JSONObject result = new JSONObject();
+		if (StringUtils.isEmpty(orderId)) {
+			result.put("msg", "请选择需要取消的采购单");
+			return result;
+		}
+		return goodsStockService.delete(orderId, type);
 	}
 }

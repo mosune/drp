@@ -30,12 +30,4 @@ public class GoodsStockDaoImpl extends BaseDaoImpl<GoodsStock> implements GoodsS
         page.setTotal(count == null ? 0 : count);
         return page;
     }
-
-    @Override
-    public GoodsStock findGoodsStock(Integer goodsId) {
-        Map<String,Integer> map = new HashMap<String, Integer>();
-        map.put("orderId",goodsId);
-        GoodsStock goodsStock = getSqlSession().selectOne(getSqlName("selectBy"), map);
-        return goodsStock;
-    }
 }

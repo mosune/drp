@@ -31,14 +31,6 @@ public class OrderDaoImpl extends BaseDaoImpl<Order> implements OrderDao {
     }
 
     @Override
-    public Order findOrder(String orderId) {
-        Map<String,String> map = new HashMap<String, String>();
-        map.put("orderId",orderId);
-        Order order = getSqlSession().selectOne(getSqlName("selectBy"),map);
-        return order;
-    }
-
-    @Override
     public List<OrderGoodsDto> getGoods(String id) {
         return getSqlSession().selectList(getSqlName("getGoodsList"), id);
     }

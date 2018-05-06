@@ -1,11 +1,6 @@
 package com.drp.service;
 
-import java.util.List;
-import java.util.Map;
-
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.drp.data.entity.Goods;
 import com.drp.data.entity.GoodsStock;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
@@ -59,4 +54,12 @@ public interface GoodsStockService {
 	 * @return
 	 */
 	JSONObject stock(String orderId,String type);
+
+	/**
+	 * 取消采购单
+	 * @param orderId
+	 * @param type
+	 * @return
+	 */
+	JSONObject delete(String orderId, String type);
 }

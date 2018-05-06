@@ -1,21 +1,19 @@
 package com.drp.service.impl;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.drp.data.dao.*;
 import com.drp.data.entity.*;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import com.drp.util.UserUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.drp.service.GoodsStockService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -63,32 +61,39 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public JSONObject stock(String orderId,String type) {
 		JSONObject result = new JSONObject();
-		Order order = orderDao.findOrder(orderId);
+		Order order = new Order(orderId);
+		order = orderDao.get(order);
 		if (order == null) {
 			result.put("msg", "该采购订单不存在");
 			return result;
 		}
-		List<OrderGoods> orderGoodsList = orderGoodsDao.findOrderGoods(order.getId());
-		if (orderGoodsList == null || orderGoodsList.size() == 0) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("order_id", orderId);
+		List<OrderGoods> orderGoodsList = orderGoodsDao.getList(map);
+		if (CollectionUtils.isEmpty(orderGoodsList)) {
 			result.put("msg", "该采购订单商品不存在");
 			return result;
 		}
 		for (OrderGoods orderGoods : orderGoodsList) {
-			Goods goods = goodsDao.findGoods(orderGoods.getGoodsId());
+			Goods goods = new Goods(orderGoods.getGoodsId());
+			goods = goodsDao.get(goods);
 			if (goods == null) {
 				result.put("msg", "该商品不存在");
 				return result;
 			}
-			GoodsStock goodsStock = goodsStockDao.findGoodsStock(orderGoods.getGoodsId());
-			if (goodsStock == null) {
+			map.clear();
+			map.put("goods_id", goods.getId());
+			List<GoodsStock> goodsStocks = goodsStockDao.getList(map);
+			if (CollectionUtils.isEmpty(goodsStocks)) {
+				GoodsStock goodsStock = new GoodsStock();
 				goodsStock.setId(UUID.randomUUID().toString());
-				goodsStock.setShopId(order.getShopId());
-				goodsStock.setGoodsId(orderGoods.getGoodsId().toString());
+				goodsStock.setShopId(UserUtil.getCurShopId());
+				goodsStock.setGoodsId(goods.getId());
 				goodsStock.setOriginalStock(0);
 				goodsStock.setOutQuentity(0);
-				goodsStock.setCurrentStock(0);
 				if (type.indexOf("in") != -1) {
 					goodsStock.setInQuantity(orderGoods.getNum());
 					goodsStock.setCurrentStock(orderGoods.getNum());
@@ -107,8 +112,9 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 				this.createStockLog( goodsStock, orderGoods, order, type);
 
 			} else {
-				goodsStock.setShopId(order.getShopId());
-				goodsStock.setGoodsId(orderGoods.getGoodsId().toString());
+				GoodsStock goodsStock = goodsStocks.get(0);
+				goodsStock.setShopId(UserUtil.getCurShopId());
+				goodsStock.setGoodsId(goods.getId());
 				if (type.indexOf("in") != -1) {
 					goodsStock.setInQuantity(goodsStock.getInQuantity() + orderGoods.getNum());
 					goodsStock.setCurrentStock(orderGoods.getNum());
@@ -130,6 +136,29 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 
 			}
 		}
+		if (type.equals("in")) order.setStatus(2);
+		else order.setStatus(15);
+		order.setInTime(new Date());
+		order.setUpdateTime(new Date());
+		order.setUpdateBy(UserUtil.getCurUserId());
+		orderDao.update(order);
+		return result;
+	}
+
+	@Override
+	public JSONObject delete(String orderId, String type) {
+		JSONObject result = new JSONObject();
+		Order order = new Order(orderId);
+		order = orderDao.get(order);
+		if (order == null) {
+			result.put("msg", "该采购订单不存在");
+			return result;
+		}
+		if (type.equals("in")) order.setStatus(3);
+		else order.setStatus(16);
+		order.setUpdateTime(new Date());
+		order.setUpdateBy(UserUtil.getCurUserId());
+		orderDao.update(order);
 		return result;
 	}
 

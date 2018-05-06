@@ -1,6 +1,5 @@
 package com.drp.data.dao.impl;
 
-import com.drp.data.entity.GoodsStock;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import org.apache.ibatis.session.RowBounds;
@@ -10,6 +9,7 @@ import com.drp.data.entity.Goods;
 import com.drp.data.dao.GoodsDao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,8 +32,8 @@ public class GoodsDaoImpl extends BaseDaoImpl<Goods> implements GoodsDao {
     @Override
     public Goods findGoods(Integer id) {
         Map<String,Integer> map = new HashMap<String, Integer>();
-        map.put("orderId",id);
-        Goods goods = getSqlSession().selectOne(getSqlName("selectBy"), map);
-        return goods;
+        map.put("id",id);
+        List<Goods> goods = getSqlSession().selectList(getSqlName("selectBy"), map);
+        return goods.get(0);
     }
 }

@@ -21,8 +21,6 @@ public interface OrderDao extends BaseDao<Order> {
      */
     Page<Order> find(PageParam pageParam);
 
-    Order findOrder(String orderId);
-
     /**
      * 通过订单id获取货物列表
      * @param id

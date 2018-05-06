@@ -117,6 +117,10 @@ public class OrderController extends BaseController {
 		return "/ret/add";
 	}
 
+	@RequestMapping("out.do")
+	public String out() {
+		return "/out/index";
+	}
 
 	/**
 	 * 添加采购单
