@@ -69,7 +69,7 @@
                     </a>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
-                    <li class="dropdown">你好,${user.realName}</li>
+                    <li class="dropdown">你好,${name}</li>
                     <li class="dropdown">
                         <a class="dropdown-toggle count-info" onclick="showModal();" href="javascript:;">修改密码</a>
                     </li>
@@ -164,15 +164,16 @@
             return;
         }
         $.ajax({
-            url: "<%=root%>/updatePwd.do",
+            url: "<%=root%>adminUser/updatePwd.do",
             type: "post",
             data: {
                 oldPassword:$("#oldPassword").val(),
-                newPassword:$("#newPassword").val()
+                newPassword:$("#newPassword").val(),
+                confirmPassword:$("#confirmPassword").val()
             },
             dataType: "json",
             success:function(result) {
-                if(result.flag == 0) toastr.error("原密码错误!");
+                if(result.msg) toastr.error(result.msg);
                 else {
                     toastr.success("密码修改成功!");
                     $("#myModal").modal("hide");

@@ -5,7 +5,6 @@ import com.drp.data.entity.Category;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import com.drp.util.UserUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

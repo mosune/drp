@@ -1,9 +1,9 @@
 package com.drp.service;
 
-import java.util.List;
-import java.util.Map;
-
 import com.drp.data.entity.OperationLog;
+import com.drp.data.entity.dto.OperationLogDto;
+import com.drp.util.Page;
+import com.drp.util.PageParam;
 
 /**
  * 
@@ -40,4 +40,5 @@ public interface OperationLogService {
 	 */
 	OperationLog get(OperationLog operationLog);
 
+    Page<OperationLogDto> find(PageParam pageParam);
 }

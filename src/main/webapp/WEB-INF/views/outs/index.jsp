@@ -6,21 +6,21 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link href="<%=root %>/resources/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
-    <title>图书入库管理</title>
+    <title>图书出库管理</title>
 </head>
 <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>图书入库管理</h5>
+                <h5>图书出库管理</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">采购入库</a>
+                            <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">退货出库</a>
                             </li>
-                            <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">退货入库</a>
+                            <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">销售出库</a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -111,12 +111,9 @@
                 {field: 'totalPrice', width: '10%', title: '总金额（元）', align: 'center'},
                 {field: 'status',width: '10%', title: '状态', align: 'center',
                     formatter : function(value) {
-                        if (value === 1) return "待入库";
-                        else if(value === 2) return "已入库";
-                        else if(value === 3) return "采购已取消";
-                        else if(value === 14) return "销售退货";
-                        else if(value === 15) return "销售退货成功";
-                        else if(value === 16) return "销售退货取消";
+                        if (value === 4) return "采购退货";
+                        else if(value === 5) return "采购退货成功";
+                        else if(value === 6) return "退货取消";
                     }},
                 {field: 'createTime',width: '10%', title: '创建时间', align: 'center',
                     formatter : function(value) {
@@ -125,7 +122,7 @@
                 {field: 'opt',width: '10%', title: '操作', align: 'center',
                     formatter: function(value, row){
                         return '<button type="button" class="btn btn-info btn-xs" onclick="openModel(\''+row.id+'\')">详情</button>&nbsp;&nbsp;' +
-                            '<button type="button" class="btn btn-primary btn-xs" onclick="inDepot(\''+row.id+'\', 1)">入库</button>&nbsp;&nbsp;'
+                            '<button type="button" class="btn btn-primary btn-xs" onclick="outDepot(\''+row.id+'\', 1)">出库</button>&nbsp;&nbsp;'
                             + '<button type="button" class="btn btn-danger btn-xs" onclick="deleteData(\''+row.id+'\', 1)">取消</button>&nbsp;&nbsp;';
                     }}
             ],
@@ -153,12 +150,9 @@
                 {field: 'totalPrice', width: '10%', title: '总金额（元）', align: 'center'},
                 {field: 'status',width: '10%', title: '状态', align: 'center',
                     formatter : function(value) {
-                        if (value === 1) return "待入库";
-                        else if(value === 2) return "已入库";
-                        else if(value === 3) return "采购已取消";
-                        else if(value === 14) return "销售退货";
-                        else if(value === 15) return "销售退货成功";
-                        else if(value === 16) return "销售退货取消";
+                        if (value === 11) return "待出库";
+                        else if(value === 12) return "已出库";
+                        else if(value === 13) return "销售已取消";
                     }},
                 {field: 'createTime',width: '10%', title: '创建时间', align: 'center',
                     formatter : function(value) {
@@ -167,7 +161,7 @@
                 {field: 'opt',width: '10%', title: '操作', align: 'center',
                     formatter: function(value, row){
                         return '<button type="button" class="btn btn-info btn-xs" onclick="openModel(\''+row.id+'\')">详情</button>&nbsp;&nbsp;' +
-                            '<button type="button" class="btn btn-primary btn-xs" onclick="inDepot(\''+row.id+'\')">入库</button>&nbsp;&nbsp;'
+                            '<button type="button" class="btn btn-primary btn-xs" onclick="outDepot(\''+row.id+'\')">出库</button>&nbsp;&nbsp;'
                             + '<button type="button" class="btn btn-danger btn-xs" onclick="deleteData(\''+row.id+'\')">取消</button>&nbsp;&nbsp;';
                     }}
             ],
@@ -178,7 +172,7 @@
     function queryParams(params) {
         params.nameLike = $('#nameLike1').val();
         var dataArr = new Array();
-        dataArr.push(1);
+        dataArr.push(4);
         params.status = dataArr;
         return params;
     }
@@ -186,7 +180,7 @@
     function queryParams2(params) {
         params.nameLike = $('#nameLike2').val();
         var dataArr = new Array();
-        dataArr.push(14);
+        dataArr.push(11);
         params.status = dataArr;
         return params;
     }
@@ -199,9 +193,9 @@
         _orderCaiTable.bootstrapTable("refresh");
     }
 
-    function inDepot(id, type) {
+    function outDepot(id, type) {
         swal({
-            title: "确认入库么？",
+            title: "确认出库么？",
             text: "要慎重啊！这个操作可是不能反悔的",
             type: "warning",
             showCancelButton: true,
@@ -214,8 +208,8 @@
         },
         function(isConfirm){
             if (isConfirm) {
-                if (type == 1) type = 'in';
-                else type = 'back_in';
+                if (type == 1) type = 'out';
+                else type = 'back_out';
                 $.ajax({
                     url: "<%=root%>goodsStock/purchaseIn.do",
                     type: "post",
@@ -227,7 +221,7 @@
                         if (result.msg) {
                             swal("取消", result.msg, "error");
                         } else {
-                            swal("成功!", "入库成功", "success");
+                            swal("成功!", "出库成功", "success");
                             _orderDingTable.bootstrapTable("refresh");
                             _orderCaiTable.bootstrapTable("refresh");
                         }
@@ -254,8 +248,8 @@
         },
         function(isConfirm){
             if (isConfirm) {
-                if (type == 1) type = 'in';
-                else type = 'back_in';
+                if (type == 1) type = 'out';
+                else type = 'back_out';
                 $.ajax({
                     url: "<%=root%>goodsStock/delete.do",
                     type: "post",

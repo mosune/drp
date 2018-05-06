@@ -119,7 +119,7 @@ public class OrderController extends BaseController {
 
 	@RequestMapping("out.do")
 	public String out() {
-		return "/out/index";
+		return "/outs/index";
 	}
 
 	/**

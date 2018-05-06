@@ -3,6 +3,9 @@ package com.drp.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.drp.data.entity.dto.OperationLogDto;
+import com.drp.util.Page;
+import com.drp.util.PageParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +43,11 @@ public class OperationLogServiceImpl implements OperationLogService {
 	@Override
 	public OperationLog get(OperationLog operationLog) {
 		return this.operationLogDao.get(operationLog);
+	}
+
+	@Override
+	public Page<OperationLogDto> find(PageParam pageParam) {
+		return this.operationLogDao.find(pageParam);
 	}
 
 }

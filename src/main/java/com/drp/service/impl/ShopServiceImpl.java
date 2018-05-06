@@ -2,7 +2,9 @@ package com.drp.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.drp.data.dao.AdminUserDao;
+import com.drp.data.dao.OperationLogDao;
 import com.drp.data.entity.AdminUser;
+import com.drp.data.entity.OperationLog;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import com.drp.util.UserUtil;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.drp.data.entity.Shop;
 import com.drp.data.dao.ShopDao;
 import com.drp.service.ShopService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -33,6 +36,9 @@ public class ShopServiceImpl implements ShopService {
 
 	@Autowired
 	private AdminUserDao adminUserDao;
+
+	@Autowired
+	private OperationLogDao operationLogDao;
 
 	@Override
 	public Object save(Shop shop) {
@@ -56,10 +62,19 @@ public class ShopServiceImpl implements ShopService {
 			return result;
 		}
 		shopDao.delete(shop);
+
+		OperationLog operationLog = new OperationLog();
+		operationLog.setAdminUserId(UserUtil.getCurUserId());
+		operationLog.setCreateBy(UserUtil.getCurUserId());
+		operationLog.setCreateTime(new Date());
+		operationLog.setShopId(UserUtil.getCurShopId());
+		operationLog.setDescCode("删除门店" + shop.getName());
+		operationLogDao.insert(operationLog);
 		return result;
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public JSONObject update(Shop shop) {
 		JSONObject result = new JSONObject();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -79,6 +94,14 @@ public class ShopServiceImpl implements ShopService {
 		oldShop.setUpdateBy(UserUtil.getCurUserId());
 		oldShop.setUpdateTime(new Date());
 		shopDao.update(oldShop);
+
+		OperationLog operationLog = new OperationLog();
+		operationLog.setAdminUserId(UserUtil.getCurUserId());
+		operationLog.setCreateBy(UserUtil.getCurUserId());
+		operationLog.setCreateTime(new Date());
+		operationLog.setShopId(UserUtil.getCurShopId());
+		operationLog.setDescCode("修改门店" + shop.getName());
+		operationLogDao.insert(operationLog);
 		return result;
 	}
 
@@ -88,6 +111,7 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public JSONObject add(Shop shop) {
 		JSONObject result = new JSONObject();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -105,6 +129,14 @@ public class ShopServiceImpl implements ShopService {
 		shop.setUpdateBy(UserUtil.getCurUserId());
 		shop.setUpdateTime(new Date());
 		shopDao.insert(shop);
+
+		OperationLog operationLog = new OperationLog();
+		operationLog.setAdminUserId(UserUtil.getCurUserId());
+		operationLog.setCreateBy(UserUtil.getCurUserId());
+		operationLog.setCreateTime(new Date());
+		operationLog.setShopId(UserUtil.getCurShopId());
+		operationLog.setDescCode("添加门店" + shop.getName());
+		operationLogDao.insert(operationLog);
 		return result;
 	}
 
@@ -114,6 +146,7 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public JSONObject updateStatus(Integer shopNum) {
 		JSONObject result = new JSONObject();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -129,6 +162,14 @@ public class ShopServiceImpl implements ShopService {
 		shop.setUpdateTime(new Date());
 		shop.setUpdateBy(UserUtil.getCurUserId());
 		shopDao.update(shop);
+
+		OperationLog operationLog = new OperationLog();
+		operationLog.setAdminUserId(UserUtil.getCurUserId());
+		operationLog.setCreateBy(UserUtil.getCurUserId());
+		operationLog.setCreateTime(new Date());
+		operationLog.setShopId(UserUtil.getCurShopId());
+		operationLog.setDescCode("修改门店状态" + shop.getName());
+		operationLogDao.insert(operationLog);
 		return result;
 	}
 

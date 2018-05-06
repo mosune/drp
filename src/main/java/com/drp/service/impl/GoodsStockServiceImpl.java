@@ -119,7 +119,7 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 					goodsStock.setInQuantity(goodsStock.getInQuantity() + orderGoods.getNum());
 					goodsStock.setCurrentStock(orderGoods.getNum());
 				} else {
-					if (goodsStock.getCurrentStock() == 0) {
+					if (goodsStock.getCurrentStock() < orderGoods.getNum()) {
 						result.put("msg", "该商品库存不足，无法出库！");
 						return result;
 					} else {
@@ -137,8 +137,11 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 			}
 		}
 		if (type.equals("in")) order.setStatus(2);
-		else order.setStatus(15);
+		else if (type.equals("back_in")) order.setStatus(15);
+		else if (type.equals("out")) order.setStatus(5);
+		else order.setStatus(12);
 		order.setInTime(new Date());
+		order.setOutTime(new Date());
 		order.setUpdateTime(new Date());
 		order.setUpdateBy(UserUtil.getCurUserId());
 		orderDao.update(order);
@@ -155,7 +158,9 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 			return result;
 		}
 		if (type.equals("in")) order.setStatus(3);
-		else order.setStatus(16);
+		else if (type.equals("back_in")) order.setStatus(16);
+		else if (type.equals("out")) order.setStatus(6);
+		else order.setStatus(13);
 		order.setUpdateTime(new Date());
 		order.setUpdateBy(UserUtil.getCurUserId());
 		orderDao.update(order);

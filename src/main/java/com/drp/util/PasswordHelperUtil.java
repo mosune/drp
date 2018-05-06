@@ -31,4 +31,14 @@ public class PasswordHelperUtil {
 
         return user;
     }
+
+    public static boolean checkPassword(String password, AdminUser user) {
+        String newPassword = new SimpleHash(
+                algorithmName,
+                password,
+                ByteSource.Util.bytes(user.getAccount() + user.getSalt()),
+                hashIterations).toHex();
+
+        return user.getPassword().equals(newPassword);
+    }
 }

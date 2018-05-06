@@ -112,14 +112,34 @@
 	</select>
 
 	<!-- 按参数查询（分页） -->
-	<select id="selectPage" parameterType="java.util.Map" resultMap="goodsStockMap">
-		select * from
-		<include refid="table" />
+	<select id="selectPage" parameterType="java.util.Map" resultType="goodsStockDto">
+		select
+			s.current_stock as currentStock,
+			s.create_time as createTime,
+			s.update_time as updateTime,
+			g.name as goodsName,
+			g.id as goodsId
+		from goods_stock s
+			left join goods g
+		on s.goods_id = g.id
 		<where>
-			<include refid="sql_where" />
+			<if test="shop_id != null and shop_id != ''"> and g.shop_id = #{shop_id}</if>
+			<if test="name != null and name != ''"><![CDATA[ and g.name LIKE concat('%',#{name}, '%')]]></if>
 		</where>
-		order by
-		<include refid="sql_order_key" />
+		order by s.update_time desc
+	</select>
+
+	<!-- 按参数查询（分页） -->
+	<select id="getCount" parameterType="java.util.Map" resultType="integer">
+		select
+			count(*)
+		from goods_stock s
+			left join goods g
+		on s.goods_id = g.id
+		<where>
+			<if test="shop_id != null and shop_id != ''"> and g.shop_id = #{shop_id}</if>
+			<if test="name != null and name != ''"><![CDATA[ and g.name LIKE concat('%',#{name}, '%')]]></if>
+		</where>
 	</select>
 	
 </mapper>

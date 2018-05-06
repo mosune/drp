@@ -25,7 +25,6 @@
         <typeAlias type="com.drp.data.entity.GoodsStock" alias="goodsStock" />
         <typeAlias type="com.drp.data.entity.GoodsStockLog" alias="goodsStockLog" />
         <typeAlias type="com.drp.data.entity.Menu" alias="menu" />
-        <typeAlias type="com.drp.data.entity.OperationCode" alias="operationCode" />
         <typeAlias type="com.drp.data.entity.OperationLog" alias="operationLog" />
         <typeAlias type="com.drp.data.entity.Order" alias="order" />
         <typeAlias type="com.drp.data.entity.OrderGoods" alias="orderGoods" />
@@ -37,6 +36,8 @@
         <typeAlias type="com.drp.data.entity.dto.GoodsDto" alias="goodsDto" />
         <typeAlias type="com.drp.data.entity.dto.OrderGoodsDto" alias="orderGoodsDto" />
         <typeAlias type="com.drp.data.entity.dto.AdminUserDto" alias="adminUserDto" />
+        <typeAlias type="com.drp.data.entity.dto.GoodsStockDto" alias="goodsStockDto" />
+        <typeAlias type="com.drp.data.entity.dto.OperationLogDto" alias="operationLogDto" />
     </typeAliases>
 
 </configuration>

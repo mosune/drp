@@ -171,7 +171,7 @@
     }
 
     $("#modal").on("hidden.bs.modal", function() {
-        $("#statusTable").bootstrapTable('destroy');
+        $("#goodTable").bootstrapTable('destroy');
     });
 </script>
 </html>

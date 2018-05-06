@@ -60,4 +60,13 @@ public interface AdminUserService {
 	 * @return
 	 */
 	JSONObject updateStatus(String id);
+
+	/**
+	 * 修改密码
+	 * @param oldPassword
+	 * @param newPassword
+	 * @param confirmPassword
+	 * @return
+	 */
+    JSONObject updatePwd(String oldPassword, String newPassword, String confirmPassword);
 }

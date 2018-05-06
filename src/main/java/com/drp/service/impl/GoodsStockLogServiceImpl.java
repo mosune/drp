@@ -1,14 +1,16 @@
 package com.drp.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
+import com.drp.util.Page;
+import com.drp.util.PageParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.drp.data.entity.GoodsStockLog;
 import com.drp.data.dao.GoodsStockLogDao;
 import com.drp.service.GoodsStockLogService;
+
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -40,6 +42,16 @@ public class GoodsStockLogServiceImpl implements GoodsStockLogService {
 	@Override
 	public GoodsStockLog get(GoodsStockLog goodsStockLog) {
 		return this.goodsStockLogDao.get(goodsStockLog);
+	}
+
+	@Override
+	public Page<GoodsStockLog> find(PageParam pageParam) {
+		return goodsStockLogDao.find(pageParam);
+	}
+
+	@Override
+	public List<GoodsStockLog> getList(HashMap<String, Object> map) {
+		return goodsStockLogDao.getList(map);
 	}
 
 }

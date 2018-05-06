@@ -21,14 +21,6 @@ public class RelationController extends BaseController {
 
 	@Autowired
 	private RelationService relationService;
-	
-	@RequestMapping("/index.do")
-	public ModelAndView index() {
-		ModelAndView mv = new ModelAndView();
-		
-		mv.setViewName("/relation/index");
-		return mv;
-	}
 
 	@ResponseBody
 	@RequiresRoles("admin")

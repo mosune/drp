@@ -113,15 +113,23 @@
 		</where>
 	</select>
 
+	<!-- 按数量 -->
+	<select id="getCount" parameterType="java.util.Map" resultType="integer">
+		select count(*) from
+		<include refid="table" />
+		<where>
+			<if test="goods_id != null and goods_id != ''"> and goods_id = #{goods_id} </if>
+		</where>
+	</select>
+
 	<!-- 按参数查询（分页） -->
 	<select id="selectPage" parameterType="java.util.Map" resultMap="goodsStockLogMap">
 		select * from
 		<include refid="table" />
 		<where>
-			<include refid="sql_where" />
+			<if test="goods_id != null and goods_id != ''"> and goods_id = #{goods_id} </if>
 		</where>
-		order by
-		<include refid="sql_order_key" />
+		order by create_time desc
 	</select>
 	
 </mapper>

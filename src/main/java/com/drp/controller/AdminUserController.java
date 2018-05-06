@@ -139,5 +139,18 @@ public class AdminUserController extends BaseController {
         }
         return adminUserService.updateStatus(id);
     }
+
+    /**
+     * 修改密码
+     * @param oldPassword
+     * @param newPassword
+     * @param confirmPassword
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("updatePwd.do")
+    public JSONObject updatePwd(String oldPassword, String newPassword, String confirmPassword) {
+        return adminUserService.updatePwd(oldPassword, newPassword, confirmPassword);
+    }
 	
 }

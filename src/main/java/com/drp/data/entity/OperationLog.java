@@ -27,9 +27,7 @@ public class OperationLog implements Serializable {
 	private Integer shopId; //门店Id
 	private String createBy; //
 	private Date createTime; //
-	private String updateBy; //
-	private Date updateTime; //
-	
+
 	public OperationLog() {
 		super();
 	}

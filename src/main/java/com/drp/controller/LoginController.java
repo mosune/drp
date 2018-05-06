@@ -58,6 +58,11 @@ public class LoginController {
         return "/login";
     }
 
+    @RequestMapping(value = "toHome.do")
+    public String toHome() {
+        return "/home";
+    }
+
     @RequestMapping(value = "logout.do")
     public String logout(HttpSession session) {
         session.invalidate();

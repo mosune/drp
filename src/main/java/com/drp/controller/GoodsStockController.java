@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.drp.service.GoodsStockService;
 
@@ -27,13 +26,10 @@ public class GoodsStockController extends BaseController {
 
 	@Autowired
 	private GoodsStockService goodsStockService;
-	
-	@RequestMapping("/index.do")
-	public ModelAndView index() {
-		ModelAndView mv = new ModelAndView();
-		
-		mv.setViewName("/goodsStock/index");
-		return mv;
+
+	@RequestMapping("index.do")
+	public String index() {
+		return "/stock/index";
 	}
 
 	/**

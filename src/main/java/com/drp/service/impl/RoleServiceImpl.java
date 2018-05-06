@@ -2,8 +2,10 @@ package com.drp.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.drp.data.dao.AdminUserDao;
+import com.drp.data.dao.OperationLogDao;
 import com.drp.data.dao.RelationDao;
 import com.drp.data.entity.AdminUser;
+import com.drp.data.entity.OperationLog;
 import com.drp.data.entity.Relation;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
@@ -36,12 +38,16 @@ public class RoleServiceImpl implements RoleService {
 	@Autowired
 	private RelationDao relationDao;
 
+	@Autowired
+	private OperationLogDao operationLogDao;
+
 	@Override
 	public Object save(Role role) {
 		return this.roleDao.insert(role);
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public JSONObject delete(Integer id) {
 		JSONObject result = new JSONObject();
 		Role role = new Role(id);
@@ -58,10 +64,19 @@ public class RoleServiceImpl implements RoleService {
 			return result;
 		}
 		roleDao.delete(role);
+
+		OperationLog operationLog = new OperationLog();
+		operationLog.setAdminUserId(UserUtil.getCurUserId());
+		operationLog.setCreateBy(UserUtil.getCurUserId());
+		operationLog.setCreateTime(new Date());
+		operationLog.setShopId(UserUtil.getCurShopId());
+		operationLog.setDescCode("删除角色" + oldRole.getName());
+		operationLogDao.insert(operationLog);
 		return result;
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public JSONObject update(Role role) {
 		JSONObject result = new JSONObject();
 		Role oldRole = roleDao.get(role);
@@ -73,6 +88,14 @@ public class RoleServiceImpl implements RoleService {
 		oldRole.setUpdateBy(UserUtil.getCurUserId());
 		oldRole.setUpdateTime(new Date());
 		roleDao.update(oldRole);
+
+		OperationLog operationLog = new OperationLog();
+		operationLog.setAdminUserId(UserUtil.getCurUserId());
+		operationLog.setCreateBy(UserUtil.getCurUserId());
+		operationLog.setCreateTime(new Date());
+		operationLog.setShopId(UserUtil.getCurShopId());
+		operationLog.setDescCode("修改角色" + oldRole.getName());
+		operationLogDao.insert(operationLog);
 		return result;
 	}
 
@@ -87,6 +110,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public JSONObject add(Role role) {
 		role.setStatus("0");
 		role.setCreateBy(UserUtil.getCurUserId());
@@ -94,10 +118,19 @@ public class RoleServiceImpl implements RoleService {
 		role.setUpdateBy(UserUtil.getCurUserId());
 		role.setUpdateTime(new Date());
 		roleDao.insert(role);
+
+		OperationLog operationLog = new OperationLog();
+		operationLog.setAdminUserId(UserUtil.getCurUserId());
+		operationLog.setCreateBy(UserUtil.getCurUserId());
+		operationLog.setCreateTime(new Date());
+		operationLog.setShopId(UserUtil.getCurShopId());
+		operationLog.setDescCode("添加角色" + role.getName());
+		operationLogDao.insert(operationLog);
 		return new JSONObject();
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public JSONObject updateStatus(Integer id) {
 		JSONObject result = new JSONObject();
 		Role role = new Role(id);
@@ -109,6 +142,14 @@ public class RoleServiceImpl implements RoleService {
 		if (role.getStatus().equals("0")) role.setStatus("1");
 		else role.setStatus("0");
 		roleDao.update(role);
+
+		OperationLog operationLog = new OperationLog();
+		operationLog.setAdminUserId(UserUtil.getCurUserId());
+		operationLog.setCreateBy(UserUtil.getCurUserId());
+		operationLog.setCreateTime(new Date());
+		operationLog.setShopId(UserUtil.getCurShopId());
+		operationLog.setDescCode("添加角色状态" + role.getName());
+		operationLogDao.insert(operationLog);
 		return result;
 	}
 
@@ -150,6 +191,14 @@ public class RoleServiceImpl implements RoleService {
 			relation.setMenuId(Integer.valueOf(m));
 			relationDao.insert(relation);
 		}
+
+		OperationLog operationLog = new OperationLog();
+		operationLog.setAdminUserId(UserUtil.getCurUserId());
+		operationLog.setCreateBy(UserUtil.getCurUserId());
+		operationLog.setCreateTime(new Date());
+		operationLog.setShopId(UserUtil.getCurShopId());
+		operationLog.setDescCode("修改角色权限" + id);
+		operationLogDao.insert(operationLog);
 		return result;
 	}
 
