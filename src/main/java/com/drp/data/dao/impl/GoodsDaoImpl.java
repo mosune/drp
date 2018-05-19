@@ -28,12 +28,4 @@ public class GoodsDaoImpl extends BaseDaoImpl<Goods> implements GoodsDao {
         page.setTotal(count == null ? 0 : count);
         return page;
     }
-
-    @Override
-    public Goods findGoods(Integer id) {
-        Map<String,Integer> map = new HashMap<String, Integer>();
-        map.put("id",id);
-        List<Goods> goods = getSqlSession().selectList(getSqlName("selectBy"), map);
-        return goods.get(0);
-    }
 }

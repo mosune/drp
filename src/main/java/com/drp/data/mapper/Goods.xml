@@ -125,7 +125,7 @@
 			a.status as status,
 			a.create_time as createTime,
 			b.name as cateName,
-			s.original_stock as currentStock
+			s.current_stock as currentStock
 		from
 			goods as a
 		left join
