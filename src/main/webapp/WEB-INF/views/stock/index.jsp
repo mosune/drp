@@ -74,6 +74,10 @@
             idField: 'id',
             columns: [
                 {field: 'goodsName',width: '10%', title: '商品名称', align: 'center'},
+                {field: 'cateName',width: '10%', title: '品类名称', align: 'center'},
+                {field: 'currentStock',width: '10%', title: '当前库存', align: 'center'},
+                {field: 'inQuantity',width: '10%', title: '入库数量', align: 'center'},
+                {field: 'outQuentity',width: '10%', title: '出库数量', align: 'center'},
                 {field: 'createTime',width: '20%', title: '创建时间', align: 'center',
                     formatter : function(value) {
                         return $(this).dateFormat(value, 'yyyy-MM-dd HH:mm:ss');

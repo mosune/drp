@@ -18,4 +18,7 @@ public class GoodsStockDto extends GoodsStock {
     // 商品名称
     private String goodsName;
 
+    // 品类名称
+    private String cateName;
+
 }

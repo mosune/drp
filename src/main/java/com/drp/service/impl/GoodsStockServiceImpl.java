@@ -117,13 +117,13 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 				goodsStock.setGoodsId(goods.getId());
 				if (type.indexOf("in") != -1) {
 					goodsStock.setInQuantity(goodsStock.getInQuantity() + orderGoods.getNum());
-					goodsStock.setCurrentStock(orderGoods.getNum());
+					goodsStock.setCurrentStock(orderGoods.getNum() + goodsStock.getCurrentStock());
 				} else {
 					if (goodsStock.getCurrentStock() < orderGoods.getNum()) {
 						result.put("msg", "该商品库存不足，无法出库！");
 						return result;
 					} else {
-						goodsStock.setOutQuentity(orderGoods.getNum());
+						goodsStock.setOutQuentity(goodsStock.getOutQuentity() + orderGoods.getNum());
 						goodsStock.setCurrentStock(goodsStock.getCurrentStock() - orderGoods.getNum());
 					}
 				}

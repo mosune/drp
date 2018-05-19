@@ -136,10 +136,6 @@ public class OrderController extends BaseController {
 			result.put("msg", "请选择需要采购的货物");
 			return result;
 		}
-		if (StringUtils.isEmpty(type)) {
-			result.put("msg", "数据错误，请刷新重试");
-			return result;
-		}
 		orderService.addOrder(json, type);
 		return result;
 	}

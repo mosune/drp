@@ -115,13 +115,18 @@
 	<select id="selectPage" parameterType="java.util.Map" resultType="goodsStockDto">
 		select
 			s.current_stock as currentStock,
+			s.in_quantity as inQuantity,
+			s.out_quentity as outQuentity,
 			s.create_time as createTime,
 			s.update_time as updateTime,
 			g.name as goodsName,
-			g.id as goodsId
+			g.id as goodsId,
+			c.name as cateName
 		from goods_stock s
 			left join goods g
 		on s.goods_id = g.id
+			left join category c
+		on g.cate_id = c.id
 		<where>
 			<if test="shop_id != null and shop_id != ''"> and g.shop_id = #{shop_id}</if>
 			<if test="name != null and name != ''"><![CDATA[ and g.name LIKE concat('%',#{name}, '%')]]></if>
@@ -136,6 +141,8 @@
 		from goods_stock s
 			left join goods g
 		on s.goods_id = g.id
+			left join category c
+		on g.cate_id = c.id
 		<where>
 			<if test="shop_id != null and shop_id != ''"> and g.shop_id = #{shop_id}</if>
 			<if test="name != null and name != ''"><![CDATA[ and g.name LIKE concat('%',#{name}, '%')]]></if>

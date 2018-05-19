@@ -43,7 +43,7 @@ public class GoodsStockController extends BaseController {
 	public JSONObject list(int limit, int offset, String nameLike) {
 		JSONObject result = new JSONObject();
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		if (!UserUtil.getCurUserId().equals("1")) map.put("shop_id", UserUtil.getCurShopId());
+		map.put("shop_id", UserUtil.getCurShopId());
 		map.put("name", nameLike);
 		PageParam pageParam = new PageParam(offset, limit, map);
 		Page<GoodsStock> page = goodsStockService.find(pageParam);

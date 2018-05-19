@@ -92,6 +92,10 @@
             var j = {};
             j.key = $(this).val();
             j.value = $("#"+$(this).val()+"").val();
+            if (!j.value) {
+                toastr.error("请输入数量");
+                die;
+            }
             json.push(j);
         });
         var a = JSON.stringify(json);

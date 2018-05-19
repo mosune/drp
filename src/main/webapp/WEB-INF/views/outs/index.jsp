@@ -18,9 +18,11 @@
                 <div class="row">
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">退货出库</a>
+                            <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">全部出库</a>
                             </li>
-                            <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">销售出库</a>
+                            <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">退货出库</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">销售出库</a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -30,13 +32,13 @@
                                         <div class="col-sm-6 m-b-xs">
                                             <div class="input-group">
                                                 <input type="text" id="nameLike1" placeholder="名称" class="input-sm form-control"> <span class="input-group-btn">
-                                        <button type="button" onclick="search();" class="btn btn-sm btn-primary">搜索</button> </span>
+                                        <button type="button" onclick="search1();" class="btn btn-sm btn-primary">搜索</button> </span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <table class="table table-striped table-bordered table-hover" id="orderDingTable">
+                                            <table class="table table-striped table-bordered table-hover" id="orderAllTable">
                                             </table>
                                         </div>
                                     </div>
@@ -48,7 +50,25 @@
                                         <div class="col-sm-6 m-b-xs">
                                             <div class="input-group">
                                                 <input type="text" id="nameLike2" placeholder="名称" class="input-sm form-control"> <span class="input-group-btn">
-                                                <button type="button" onclick="search2();" class="btn btn-sm btn-primary">搜索</button> </span>
+                                        <button type="button" onclick="search2();" class="btn btn-sm btn-primary">搜索</button> </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table class="table table-striped table-bordered table-hover" id="orderDingTable">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="tab-3" class="tab-pane">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-6 m-b-xs">
+                                            <div class="input-group">
+                                                <input type="text" id="nameLike3" placeholder="名称" class="input-sm form-control"> <span class="input-group-btn">
+                                                <button type="button" onclick="search3();" class="btn btn-sm btn-primary">搜索</button> </span>
                                             </div>
                                         </div>
                                     </div>
@@ -91,6 +111,48 @@
 <script type="text/javascript">
     var _orderDingTable;
     var _orderCaiTable;
+    var _orderAllTable;
+
+    $(document).ready(function() {
+        _orderAllTable = $('#orderAllTable').bootstrapTable({
+            sidePagination:'server',//设置为服务器端分页
+            url: '<%=root%>/order/list.do',
+            method: 'post',
+            contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+            striped: true,
+            pagination: true,
+            pageList: [10,30,50],
+            showToggle: true,
+            showRefresh: true,
+            showColumns: true,
+            queryParams: queryParams1,
+            sortable: true,
+            idField: 'id',
+            columns: [
+                {field: 'number',width: '15%', title: '单号', align: 'center'},
+                {field: 'totalPrice', width: '10%', title: '总金额（元）', align: 'center'},
+                {field: 'status',width: '10%', title: '状态', align: 'center',
+                    formatter : function(value) {
+                        if (value === 4) return "采购退货";
+                        else if(value === 5) return "采购退货成功";
+                        else if(value === 6) return "退货取消";
+                        else if(value === 11) return "待出库";
+                        else if(value === 12) return "已出库";
+                        else if(value === 13) return "销售已取消";
+                    }},
+                {field: 'createTime',width: '10%', title: '创建时间', align: 'center',
+                    formatter : function(value) {
+                        return $(this).dateFormat(value, 'yyyy-MM-dd HH:mm:ss');
+                    }},
+                {field: 'opt',width: '10%', title: '操作', align: 'center',
+                    formatter: function(value, row){
+                        return '<button type="button" class="btn btn-info btn-xs" onclick="openModel(\''+row.id+'\')">详情</button>';
+                    }}
+            ],
+            toolbar: '#toolbar'
+        });
+    });
+
     $(document).ready(function() {
         _orderDingTable = $('#orderDingTable').bootstrapTable({
             sidePagination:'server',//设置为服务器端分页
@@ -103,7 +165,7 @@
             showToggle: true,
             showRefresh: true,
             showColumns: true,
-            queryParams: queryParams,
+            queryParams: queryParams2,
             sortable: true,
             idField: 'id',
             columns: [
@@ -142,7 +204,7 @@
             showToggle: true,
             showRefresh: true,
             showColumns: true,
-            queryParams: queryParams2,
+            queryParams: queryParams3,
             sortable: true,
             idField: 'id',
             columns: [
@@ -169,10 +231,11 @@
         });
     });
 
-    function queryParams(params) {
+    function queryParams1(params) {
         params.nameLike = $('#nameLike1').val();
         var dataArr = new Array();
         dataArr.push(4);
+        dataArr.push(11);
         params.status = dataArr;
         return params;
     }
@@ -180,16 +243,28 @@
     function queryParams2(params) {
         params.nameLike = $('#nameLike2').val();
         var dataArr = new Array();
+        dataArr.push(4);
+        params.status = dataArr;
+        return params;
+    }
+
+    function queryParams3(params) {
+        params.nameLike = $('#nameLike3').val();
+        var dataArr = new Array();
         dataArr.push(11);
         params.status = dataArr;
         return params;
     }
 
-    function search() {
-        _orderDingTable.bootstrapTable("refresh");
+    function search1() {
+        _orderAllTable.bootstrapTable("refresh");
     }
 
     function search2() {
+        _orderDingTable.bootstrapTable("refresh");
+    }
+
+    function search3() {
         _orderCaiTable.bootstrapTable("refresh");
     }
 
