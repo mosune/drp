@@ -44,14 +44,14 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label" for="name">名称：</label>
+                                    <label class="col-sm-4 control-label" for="name"><span style="color:red;">*</span>名称：</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" id="name" name="name" type="text" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <label class="col-sm-4 control-label" for="cate">类别：</label>
+                                <label class="col-sm-4 control-label" for="cate"><span style="color:red;">*</span>类别：</label>
                                 <div class="col-sm-8">
                                     <select class="form-control m-b" name="cate" id="cate">
                                         <option value="0">请选择</option>
@@ -62,7 +62,7 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label" for="originalPrice">成本价：</label>
+                                    <label class="col-sm-4 control-label" for="originalPrice"><span style="color:red;">*</span>成本价：</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" id="originalPrice" name="originalPrice" type="text" />
                                     </div>
@@ -70,7 +70,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label" for="salePrice">售卖价：</label>
+                                    <label class="col-sm-4 control-label" for="salePrice"><span style="color:red;">*</span>售卖价：</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" id="salePrice" name="salePrice" type="text" />
                                     </div>

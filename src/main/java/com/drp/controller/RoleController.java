@@ -85,6 +85,10 @@ public class RoleController extends BaseController {
 	@RequestMapping("update.do")
 	public JSONObject update(Role role) {
 		JSONObject result = new JSONObject();
+		if (role.getId() == 0) {
+			result.put("msg", "数据错误，请刷新重试");
+			return result;
+		}
 		if (StringUtils.isEmpty(role.getName())) {
 			result.put("msg", "名称不能为空");
 			return result;
@@ -157,6 +161,15 @@ public class RoleController extends BaseController {
 	@RequiresRoles("admin")
 	@RequestMapping("savePower.do")
 	public JSONObject savePower(int id, String power) {
+		JSONObject result = new JSONObject();
+		if (id == 0) {
+			result.put("msg", "数据错误，请刷新重试");
+			return result;
+		}
+		if (StringUtils.isEmpty(power)) {
+			result.put("msg", "菜单不能为空");
+			return result;
+		}
 		return roleService.savePower(id, power);
 	}
 }

@@ -65,6 +65,10 @@ public class ShopController extends BaseController {
 			result.put("msg", "名称不能为空");
 			return result;
 		}
+		if (StringUtils.isEmpty(shop.getPhone())) {
+			result.put("msg", "电话不能为空");
+			return result;
+		}
 		return shopService.add(shop);
 	}
 

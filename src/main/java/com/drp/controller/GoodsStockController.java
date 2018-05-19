@@ -65,6 +65,10 @@ public class GoodsStockController extends BaseController {
 			result.put("msg", "请选择需要入库的采购单");
 			return result;
 		}
+		if (StringUtils.isEmpty(type)) {
+			result.put("msg", "数据错误，请刷新重试");
+			return result;
+		}
 		return goodsStockService.stock(orderId, type);
 	}
 

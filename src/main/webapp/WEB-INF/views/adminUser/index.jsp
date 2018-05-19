@@ -36,14 +36,14 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label" for="account">账号名：</label>
+                                    <label class="col-sm-4 control-label" for="account"><span style="color:red;">*</span>账号名：</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" id="account" name="account" type="text" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <label class="col-sm-4 control-label" for="shopId">门店：</label>
+                                <label class="col-sm-4 control-label" for="shopId"><span style="color:red;">*</span>门店：</label>
                                 <div class="col-sm-8">
                                     <select class="form-control m-b" name="shopId" id="shopId">
                                         <option value="0">请选择</option>
@@ -53,7 +53,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <label class="col-sm-4 control-label" for="roleId">岗位：</label>
+                                <label class="col-sm-4 control-label" for="roleId"><span style="color:red;">*</span>岗位：</label>
                                 <div class="col-sm-8">
                                     <select class="form-control m-b" name="roleId" id="roleId">
                                         <option value="0">请选择</option>
@@ -62,7 +62,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label" for="name">姓名：</label>
+                                    <label class="col-sm-4 control-label" for="name"><span style="color:red;">*</span>姓名：</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" id="name" name="name" type="text"/>
                                     </div>
@@ -205,6 +205,14 @@
             str = "<%=root%>adminUser/update.do";
         } else {
             str = "<%=root%>adminUser/add.do";
+        }
+        if (!shopId) {
+            toastr.error("门店不能为空");
+            return;
+        }
+        if (!roleId) {
+            toastr.error("岗位不能为空");
+            return;
         }
         $.ajax({
             url: str,

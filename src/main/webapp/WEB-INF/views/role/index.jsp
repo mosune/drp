@@ -43,7 +43,7 @@
                     <form id="myForm" class="form-horizontal">
                         <div class="row">
                             <div class="col-sm-6">
-                                <label class="col-sm-4 control-label" for="name">名称：</label>
+                                <label class="col-sm-4 control-label" for="name"><span style="color:red;">*</span>名称：</label>
                                 <div class="col-sm-8">
                                     <input class="form-control" id="name" name="name" type="text" />
                                 </div>

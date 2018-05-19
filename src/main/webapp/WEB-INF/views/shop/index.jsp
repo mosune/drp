@@ -44,14 +44,14 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label" for="shopNum">门店编号：</label>
+                                    <label class="col-sm-4 control-label" for="shopNum"><span style="color:red;">*</span>门店编号：</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" id="shopNum" name="shopNum" type="text" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <label class="col-sm-4 control-label" for="name">门店名称：</label>
+                                <label class="col-sm-4 control-label" for="name"><span style="color:red;">*</span>门店名称：</label>
                                 <div class="col-sm-8">
                                     <input class="form-control" id="name" name="name" type="text" />
                                 </div>
@@ -60,7 +60,7 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label" for="phone">电话：</label>
+                                    <label class="col-sm-4 control-label" for="phone"><span style="color:red;">*</span>电话：</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" id="phone" name="phone" type="text" />
                                     </div>
@@ -206,6 +206,10 @@
         var desc = $("#desc").val();
         var id = $("#hideValue").val();
         var str;
+        if (!shopNum) {
+            toastr.error('请输入门店编号');
+            return;
+        }
         if (id) {
             str = "<%=root%>shop/update.do";
         } else {

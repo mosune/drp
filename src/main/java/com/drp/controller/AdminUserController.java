@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.AdminUser;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
+import com.drp.util.PhoneCheckUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,8 +67,12 @@ public class AdminUserController extends BaseController {
     @RequestMapping("add.do")
     public JSONObject add(AdminUser adminUser) {
         JSONObject result = new JSONObject();
+        if (StringUtils.isEmpty(adminUser.getAccount())) {
+            result.put("msg", "账号不能为空");
+            return result;
+        }
         if (StringUtils.isEmpty(adminUser.getName())) {
-            result.put("msg", "名称不能为空");
+            result.put("msg", "姓名不能为空");
             return result;
         }
         return adminUserService.add(adminUser);
@@ -82,8 +87,16 @@ public class AdminUserController extends BaseController {
     @RequestMapping("update.do")
     public JSONObject update(AdminUser adminUser) {
         JSONObject result = new JSONObject();
+        if (StringUtils.isEmpty(adminUser.getAccount())) {
+            result.put("msg", "账号不能为空");
+            return result;
+        }
         if (StringUtils.isEmpty(adminUser.getName())) {
-            result.put("msg", "名称不能为空");
+            result.put("msg", "姓名不能为空");
+            return result;
+        }
+        if (StringUtils.isNotEmpty(adminUser.getMobile()) && !PhoneCheckUtil.isPhoneLegal(adminUser.getMobile())) {
+            result.put("msg", "手机号格式错误");
             return result;
         }
         return adminUserService.update(adminUser);

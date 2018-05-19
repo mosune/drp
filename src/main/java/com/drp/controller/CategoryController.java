@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.Category;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,6 +61,11 @@ public class CategoryController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "addOrUpdate.do")
 	public JSONObject addOrUpdate(Category category) {
+		JSONObject result = new JSONObject();
+		if (StringUtils.isEmpty(category.getName())) {
+			result.put("msg", "名称不能为空");
+			return result;
+		}
 		return categoryService.addOrUpdate(category);
 	}
 
@@ -116,11 +122,15 @@ public class CategoryController extends BaseController {
 			result.put("msg", "数据错误，请刷新重试");
 			return result;
 		}
+		if (StringUtils.isEmpty(category.getName())) {
+			result.put("msg", "名称不能为空");
+			return result;
+		}
 		return categoryService.updateStatus(category);
 	}
 
 	/**
-	 * 获取第二级列表
+	 * 获取列表
 	 * @return
 	 */
 	@ResponseBody
