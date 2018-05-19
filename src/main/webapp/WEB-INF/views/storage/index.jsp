@@ -20,9 +20,9 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">全部入库</a>
                             </li>
-                            <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">采购入库</a>
+                            <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">待采购入库</a>
                             </li>
-                            <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">退货入库</a>
+                            <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">待退货入库</a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -241,7 +241,9 @@
         params.nameLike = $('#nameLike1').val();
         var dataArr = new Array();
         dataArr.push(1);
+        dataArr.push(2);
         dataArr.push(14);
+        dataArr.push(15);
         params.status = dataArr;
         return params;
     }

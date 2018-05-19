@@ -14,4 +14,6 @@ public class GoodsDto extends Goods {
 
     private String cateName; // 类目名称
 
+    private Integer currentStock; // 当前库存
+
 }

@@ -20,9 +20,9 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">全部出库</a>
                             </li>
-                            <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">退货出库</a>
+                            <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">待退货出库</a>
                             </li>
-                            <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">销售出库</a>
+                            <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">待销售出库</a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -235,7 +235,9 @@
         params.nameLike = $('#nameLike1').val();
         var dataArr = new Array();
         dataArr.push(4);
+        dataArr.push(5);
         dataArr.push(11);
+        dataArr.push(12);
         params.status = dataArr;
         return params;
     }

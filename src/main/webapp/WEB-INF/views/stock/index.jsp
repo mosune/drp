@@ -117,9 +117,9 @@
                 {field: 'quantity',width: '30%', title: '数量', align: 'center'},
                 {field: 'type',width: '30%', title: '类型', align: 'center',
                     formatter : function(value) {
-                        if (value == 'in') return "入库";
+                        if (value == 'in') return "采购入库";
                         else if (value == 'back_in') return "退货入库";
-                        else if (value == 'out') return "出库";
+                        else if (value == 'out') return "退货出库";
                         else return "销售出库"
                     }},
                 {field: 'createTime',width: '40%', title: '操作时间', align: 'center',

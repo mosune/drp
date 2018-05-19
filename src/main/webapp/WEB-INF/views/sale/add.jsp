@@ -65,8 +65,9 @@
                     }},
                 {field: 'name',width: '15%', title: '名称', align: 'center'},
                 {field: 'cateName', width: '10%', title: '类别', align: 'center'},
-                {field: 'salePrice', width: '10%', title: '售卖价格', align: 'center'},
-                {field: 'originalPrice', width: '10%', title: '成本价格', align: 'center'},
+                {field: 'salePrice', width: '10%', title: '售卖价格（元）', align: 'center'},
+                {field: 'originalPrice', width: '10%', title: '成本价格（元）', align: 'center'},
+                {field: 'currentStock', width: '10%', title: '当前库存', align: 'center'},
                 {field: 'remark',width: '20%', title: '描述', align: 'center'},
                 {field: 'num',width: '15%', title: '数量', align: 'center',
                     formatter: function(value, row){

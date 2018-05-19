@@ -124,13 +124,18 @@
 			a.original_price as originalPrice,
 			a.status as status,
 			a.create_time as createTime,
-			b.name as cateName
+			b.name as cateName,
+			s.original_stock as currentStock
 		from
 			goods as a
 		left join
 			category as b
 		on
 			a.cate_id = b.id
+		left join
+			goods_stock as s
+		on
+			a.id = s.goods_id
 		<where>
 			delete_tag = 'N'
 			<if test="shop_id != null and shop_id != ''"> and a.shop_id = #{shop_id}</if>
