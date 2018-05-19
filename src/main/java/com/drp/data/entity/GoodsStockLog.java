@@ -23,7 +23,7 @@ public class GoodsStockLog implements Serializable {
 	
 	private Integer id; //
 	private Integer shopId; //门店Id
-	private Integer goodsId; //商品Id
+	private String goodsId; //商品Id
 	private Integer previousStock; //原始库存
 	private Integer quantity; //进货
 	private Integer currentStock; //当前库存

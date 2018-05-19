@@ -1,7 +1,7 @@
 package com.drp.data.dao;
 
 import com.drp.data.entity.GoodsStock;
-import com.drp.data.entity.GoodsStockLog;
+import com.drp.data.entity.dto.GoodsStockDto;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 
@@ -16,5 +16,5 @@ public interface GoodsStockDao extends BaseDao<GoodsStock> {
      * @param pageParam
      * @return
      */
-    Page<GoodsStock> find(PageParam pageParam);
+    Page<GoodsStockDto> find(PageParam pageParam);
 }

@@ -19,7 +19,7 @@
                     <div class="col-sm-6 m-b-xs">
                         <div class="input-group">
                             <input type="text" id="nameLike" placeholder="名称" class="input-sm form-control"> <span class="input-group-btn">
-                                        <button type="button" onclick="search();" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                            <button type="button" onclick="search();" class="btn btn-sm btn-primary"> 搜索</button> </span>
                         </div>
                     </div>
                 </div>
@@ -73,6 +73,16 @@
                                     <label class="col-sm-4 control-label" for="salePrice"><span style="color:red;">*</span>售卖价：</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" id="salePrice" name="salePrice" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label" for="originalAmount">原始库存：</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" id="originalAmount" name="originalAmount" type="text" />
                                     </div>
                                 </div>
                             </div>
@@ -185,6 +195,7 @@
                         $("#salePrice").val(result.goods.salePrice);
                         $("#desc").val(result.goods.remark);
                         $("#cate").find("option[value = '"+result.goods.cateId+"']").attr("selected","selected");
+                        $("#originalAmount").val(result.amount);
                     }
                 }
             });
@@ -195,6 +206,7 @@
             $("#originalPrice").val("");
             $("#salePrice").val("");
             $("#desc").val("");
+            $("#originalAmount").val("");
         }
         $("#modal").modal("show");
     }
@@ -206,12 +218,17 @@
         var salePrice = $("#salePrice").val();
         var remark = $("#desc").val();
         var id = $("#hideValue").val();
+        var originalAmount = $("#originalAmount").val();
         if (isNaN(originalPrice)) {
             toastr.error("成本价请输入数字");
             return;
         }
         if (isNaN(salePrice)) {
             toastr.error("售卖价请输入数字");
+            return;
+        }
+        if (originalAmount && isNaN(originalAmount)) {
+            toastr.error("原始库存请输入数字");
             return;
         }
         $.ajax({
@@ -223,7 +240,8 @@
                 originalPrice:originalPrice,
                 salePrice:salePrice,
                 remark:remark,
-                id:id
+                id:id,
+                originalAmount:originalAmount
             },
             dataType: "json",
             success:function(result) {

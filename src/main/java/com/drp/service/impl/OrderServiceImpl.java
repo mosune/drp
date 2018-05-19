@@ -87,9 +87,9 @@ public class OrderServiceImpl implements OrderService {
 			OrderGoods orderGoods = new OrderGoods();
 			orderGoods.setId(IDUtils.getUUID());
 			orderGoods.setOrderId(order.getId());
-			orderGoods.setGoodsId(Integer.valueOf((String) jsonObj.get("key")));
+			orderGoods.setGoodsId((String) jsonObj.get("key"));
 			orderGoods.setNum(Integer.valueOf((String) jsonObj.get("value")));
-			Goods goods = new Goods(Integer.valueOf((String) jsonObj.get("key")));
+			Goods goods = new Goods((String) jsonObj.get("key"));
 			goods = goodsDao.get(goods);
 			totalPrice = totalPrice.add(goods.getOriginalPrice().multiply(new BigDecimal((String) jsonObj.get("value"))));
 			orderGoods.setCreateTime(new Date());

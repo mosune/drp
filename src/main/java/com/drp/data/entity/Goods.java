@@ -22,7 +22,7 @@ public class Goods implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Integer id; //
+	private String id; //
 	private Integer shopId; //门店Id
 	private String name; //商品名称
 	private String remark; //描述
@@ -40,7 +40,7 @@ public class Goods implements Serializable {
 		super();
 	}
 
-	public Goods(int id) {
+	public Goods(String id) {
 		this.id = id;
 	}
 

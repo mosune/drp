@@ -2,6 +2,8 @@ package com.drp.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.Goods;
+import com.drp.data.entity.GoodsStock;
+import com.drp.service.GoodsStockService;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import com.drp.util.UserUtil;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.drp.service.GoodsService;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -26,6 +30,9 @@ public class GoodsController extends BaseController {
 
 	@Autowired
 	private GoodsService goodsService;
+
+	@Autowired
+	private GoodsStockService goodsStockService;
 	
 	@RequestMapping("/index.do")
 	public String index() {
@@ -58,7 +65,7 @@ public class GoodsController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("addOrUpdate.do")
-	public JSONObject addOrUpdate(Goods goods) {
+	public JSONObject addOrUpdate(Goods goods, String originalAmount) {
 		JSONObject result = new JSONObject();
 		if (StringUtils.isEmpty(goods.getName())) {
 			result.put("msg", "名称不能为空");
@@ -76,7 +83,7 @@ public class GoodsController extends BaseController {
 			result.put("msg", "售卖价不能为空");
 			return result;
 		}
-		return goodsService.addOrUpdate(goods);
+		return goodsService.addOrUpdate(goods, originalAmount);
 	}
 
 	/**
@@ -87,12 +94,11 @@ public class GoodsController extends BaseController {
 	@RequestMapping("getData.do")
 	public JSONObject getData(Goods goods) {
 		JSONObject result = new JSONObject();
-		if (goods.getId() == null) {
+		if (StringUtils.isEmpty(goods.getId())) {
 			result.put("msg", "数据错误，请刷新重试");
 			return result;
 		}
-		result.put("goods", goodsService.get(goods));
-		return result;
+		return goodsService.getdata(goods);
 	}
 
 	/**
@@ -103,7 +109,7 @@ public class GoodsController extends BaseController {
 	@RequestMapping(value = "delete.do")
 	public JSONObject delete(Goods goods) {
 		JSONObject result = new JSONObject();
-		if (goods.getId() == null) {
+		if (StringUtils.isEmpty(goods.getId())) {
 			result.put("msg", "数据错误，请刷新重试");
 			return result;
 		}
@@ -118,7 +124,7 @@ public class GoodsController extends BaseController {
 	@RequestMapping(value = "updateStatus.do")
 	public JSONObject updateStatus(Goods goods) {
 		JSONObject result = new JSONObject();
-		if (goods.getId() == null) {
+		if (StringUtils.isEmpty(goods.getId())) {
 			result.put("msg", "数据错误，请刷新重试");
 			return result;
 		}

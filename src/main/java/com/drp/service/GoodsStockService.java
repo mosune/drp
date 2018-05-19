@@ -2,6 +2,7 @@ package com.drp.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.GoodsStock;
+import com.drp.data.entity.dto.GoodsStockDto;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 
@@ -46,7 +47,7 @@ public interface GoodsStockService {
 	 * @param pageParam
 	 * @return
 	 */
-	Page<GoodsStock> find(PageParam pageParam);
+	Page<GoodsStockDto> find(PageParam pageParam);
 
 	/**
 	 * 入库出库确认

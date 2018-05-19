@@ -48,9 +48,9 @@
 		insert into
 		<include refid="table" />
 		(
-			shop_id, name, remark, cate_id, sale_price, original_price, status, delete_tag, create_by, create_time, update_by, update_time
+			id, shop_id, name, remark, cate_id, sale_price, original_price, status, delete_tag, create_by, create_time, update_by, update_time
 		) values(
-			#{shopId}, #{name}, #{remark}, #{cateId}, #{salePrice}, #{originalPrice}, #{status}, #{deleteTag}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}
+			#{id}, #{shopId}, #{name}, #{remark}, #{cateId}, #{salePrice}, #{originalPrice}, #{status}, #{deleteTag}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}
 		)
 	</insert>
 	
@@ -58,10 +58,10 @@
 		insert into
 		<include refid="table" />
 		(
-			shop_id, name, remark, cate_id, sale_price, original_price, status, delete_tag, create_by, create_time, update_by, update_time
+			id, shop_id, name, remark, cate_id, sale_price, original_price, status, delete_tag, create_by, create_time, update_by, update_time
 		) values
 		<foreach collection="list" item="item" index="index" separator="," >
-			(#{item.shopId}, #{item.name}, #{item.remark}, #{item.cateId}, #{item.salePrice}, #{item.originalPrice}, #{item.status}, #{item.deleteTag}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
+			(#{item.id}, #{item.shopId}, #{item.name}, #{item.remark}, #{item.cateId}, #{item.salePrice}, #{item.originalPrice}, #{item.status}, #{item.deleteTag}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
 		</foreach>
 	</insert>
 	
@@ -77,6 +77,7 @@
 		update
 		<include refid="table" />
 		<set>
+			id = #{id},
 			shop_id = #{shopId},
 			name = #{name},
 			remark = #{remark},

@@ -52,9 +52,10 @@ public interface GoodsService {
 	/**
 	 * 添加或者修改货物
 	 * @param goods
-	 * @return
+	 * @param originalAmount
+     * @return
 	 */
-    JSONObject addOrUpdate(Goods goods);
+    JSONObject addOrUpdate(Goods goods, String originalAmount);
 
 	/**
 	 * 软删除
@@ -74,4 +75,6 @@ public interface GoodsService {
 	 * @return
 	 */
     List<Goods> getGoodsList();
+
+    JSONObject getdata(Goods goods);
 }

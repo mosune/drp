@@ -114,13 +114,14 @@
 	<!-- 按参数查询（分页） -->
 	<select id="selectPage" parameterType="java.util.Map" resultType="goodsStockDto">
 		select
+			s.original_stock as originalStock,
 			s.current_stock as currentStock,
 			s.in_quantity as inQuantity,
 			s.out_quentity as outQuentity,
-			s.create_time as createTime,
-			s.update_time as updateTime,
 			g.name as goodsName,
 			g.id as goodsId,
+			g.original_price as originalPrice,
+			g.sale_price as salePrice,
 			c.name as cateName
 		from goods_stock s
 			left join goods g

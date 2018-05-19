@@ -5,6 +5,7 @@ import java.util.*;
 import com.alibaba.fastjson.JSONObject;
 import com.drp.data.dao.*;
 import com.drp.data.entity.*;
+import com.drp.data.entity.dto.GoodsStockDto;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import com.drp.util.UserUtil;
@@ -56,7 +57,7 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 	}
 
 	@Override
-	public Page<GoodsStock> find(PageParam pageParam) {
+	public Page<GoodsStockDto> find(PageParam pageParam) {
 		return this.goodsStockDao.find(pageParam);
 	}
 

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.drp.data.entity.Goods;
 import com.drp.data.dao.GoodsDao;
 import com.drp.service.GoodsService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -61,23 +62,25 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	@Override
-	public JSONObject addOrUpdate(Goods goods) {
+	@Transactional(rollbackFor = Exception.class)
+	public JSONObject addOrUpdate(Goods goods, String originalAmount) {
 		JSONObject result = new JSONObject();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("name", goods.getName());
 		map.put("delete_tag", "0");
 		List<Goods> list = goodsDao.getList(map);
 		if (CollectionUtils.isNotEmpty(list)) {
-			if (goods.getId() != null && goods.getId() != list.get(0).getId()) {
+			if (StringUtils.isEmpty(goods.getId()) && goods.getId().equals(list.get(0).getId())) {
 				result.put("msg", "该名称商品已存在");
 				return result;
 			}
-			if (goods.getId() == 0) {
+			if (StringUtils.isEmpty(goods.getId())) {
 				result.put("msg", "该名称商品已存在");
 				return result;
 			}
 		}
-		if (goods.getId() == null) {
+		if (StringUtils.isEmpty(goods.getId())) {
+			goods.setId(IDUtils.getUUID());
 			goods.setCreateBy(UserUtil.getCurUserId());
 			goods.setCreateTime(new Date());
 			goods.setDeleteTag("N");
@@ -85,6 +88,22 @@ public class GoodsServiceImpl implements GoodsService {
 			goods.setStatus("OFF");
 			goods.setUpdateBy(UserUtil.getCurUserId());
 			goods.setUpdateTime(new Date());
+			if (StringUtils.isNotEmpty(originalAmount)) {
+				GoodsStock goodsStock = new GoodsStock();
+				goodsStock.setId(IDUtils.getUUID());
+				goodsStock.setShopId(UserUtil.getCurShopId());
+				goodsStock.setGoodsId(goods.getId());
+				goodsStock.setOriginalStock(Integer.valueOf(originalAmount));
+				goodsStock.setInQuantity(0);
+				goodsStock.setOutQuentity(0);
+				goodsStock.setCurrentStock(Integer.valueOf(originalAmount));
+				goodsStock.setStatus(1);
+				goodsStock.setCreateBy(UserUtil.getCurUserId());
+				goodsStock.setCreateTime(new Date());
+				goodsStock.setUpdateBy(UserUtil.getCurUserId());
+				goodsStock.setUpdateTime(new Date());
+				goodsStockDao.insert(goodsStock);
+			}
 			goodsDao.insert(goods);
 		} else {
 			Goods newGoods = goodsDao.get(goods);
@@ -95,6 +114,35 @@ public class GoodsServiceImpl implements GoodsService {
 			newGoods.setOriginalPrice(goods.getOriginalPrice());
 			newGoods.setSalePrice(goods.getSalePrice());
 			if (StringUtils.isNotEmpty(goods.getRemark())) newGoods.setRemark(goods.getRemark());
+			if (StringUtils.isNotEmpty(originalAmount)) {
+				map.clear();
+				map.put("shop_id", UserUtil.getCurShopId());
+				map.put("goods_id", goods.getId());
+				List<GoodsStock> goodsStocks = goodsStockDao.getList(map);
+				if (CollectionUtils.isEmpty(goodsStocks)) {
+					GoodsStock goodsStock = new GoodsStock();
+					goodsStock.setId(IDUtils.getUUID());
+					goodsStock.setShopId(UserUtil.getCurShopId());
+					goodsStock.setGoodsId(goods.getId());
+					goodsStock.setOriginalStock(Integer.valueOf(originalAmount));
+					goodsStock.setInQuantity(0);
+					goodsStock.setOutQuentity(0);
+					goodsStock.setCurrentStock(Integer.valueOf(originalAmount));
+					goodsStock.setStatus(1);
+					goodsStock.setCreateBy(UserUtil.getCurUserId());
+					goodsStock.setCreateTime(new Date());
+					goodsStock.setUpdateBy(UserUtil.getCurUserId());
+					goodsStock.setUpdateTime(new Date());
+					goodsStockDao.insert(goodsStock);
+				} else {
+					GoodsStock goodsStock = goodsStocks.get(0);
+					goodsStock.setOriginalStock(Integer.valueOf(originalAmount));
+					goodsStock.setCurrentStock(Integer.valueOf(originalAmount));
+					goodsStock.setUpdateBy(UserUtil.getCurUserId());
+					goodsStock.setUpdateTime(new Date());
+					goodsStockDao.update(goodsStock);
+				}
+			}
 			goodsDao.update(newGoods);
 		}
 		return result;
@@ -151,6 +199,20 @@ public class GoodsServiceImpl implements GoodsService {
 		map.put("shop_id", UserUtil.getCurShopId());
 		map.put("delete_tag", "N");
 		return goodsDao.getList(map);
+	}
+
+	@Override
+	public JSONObject getdata(Goods goods) {
+		JSONObject result = new JSONObject();
+		result.put("goods", goodsDao.get(goods));
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("shop_id", UserUtil.getCurShopId());
+		map.put("goods_id", goods.getId());
+		List<GoodsStock> goodsStocks = goodsStockDao.getList(map);
+		if (CollectionUtils.isNotEmpty(goodsStocks)) {
+			result.put("amount", goodsStocks.get(0).getOriginalStock());
+		}
+		return result;
 	}
 
 }

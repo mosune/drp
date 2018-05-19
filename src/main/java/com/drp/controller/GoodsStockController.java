@@ -2,6 +2,7 @@ package com.drp.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.GoodsStock;
+import com.drp.data.entity.dto.GoodsStockDto;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import com.drp.util.UserUtil;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.drp.service.GoodsStockService;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 /**
@@ -46,8 +48,11 @@ public class GoodsStockController extends BaseController {
 		map.put("shop_id", UserUtil.getCurShopId());
 		map.put("name", nameLike);
 		PageParam pageParam = new PageParam(offset, limit, map);
-		Page<GoodsStock> page = goodsStockService.find(pageParam);
-		result.put("total", page.getTotal());
+		Page<GoodsStockDto> page = goodsStockService.find(pageParam);
+		for (GoodsStockDto goodsStock : page.getRows()) {
+			goodsStock.setPrice(goodsStock.getSalePrice().subtract(goodsStock.getOriginalPrice()).multiply(new BigDecimal(goodsStock.getCurrentStock() - goodsStock.getOriginalStock())));
+		}
+ 		result.put("total", page.getTotal());
 		result.put("rows", page.getRows());
 		return result;
 	}

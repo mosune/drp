@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col-sm-6 m-b-xs">
                         <div class="input-group">
-                            <input type="text" id="nameLike" placeholder="名称" class="input-sm form-control"> <span class="input-group-btn">
+                            <input type="text" id="nameLike" placeholder="商品名称" class="input-sm form-control"> <span class="input-group-btn">
                                         <button type="button" onclick="search();" class="btn btn-sm btn-primary"> 搜索</button> </span>
                         </div>
                     </div>
@@ -75,17 +75,13 @@
             columns: [
                 {field: 'goodsName',width: '10%', title: '商品名称', align: 'center'},
                 {field: 'cateName',width: '10%', title: '品类名称', align: 'center'},
+                {field: 'originalStock',width: '10%', title: '原始库存', align: 'center'},
                 {field: 'currentStock',width: '10%', title: '当前库存', align: 'center'},
                 {field: 'inQuantity',width: '10%', title: '入库数量', align: 'center'},
                 {field: 'outQuentity',width: '10%', title: '出库数量', align: 'center'},
-                {field: 'createTime',width: '20%', title: '创建时间', align: 'center',
-                    formatter : function(value) {
-                        return $(this).dateFormat(value, 'yyyy-MM-dd HH:mm:ss');
-                    }},
-                {field: 'updateTime',width: '20%', title: '更新时间', align: 'center',
-                    formatter : function(value) {
-                        return $(this).dateFormat(value, 'yyyy-MM-dd HH:mm:ss');
-                    }},
+                {field: 'originalPrice',width: '10%', title: '成本价（元）', align: 'center'},
+                {field: 'salePrice',width: '10%', title: '售卖价（元）', align: 'center'},
+                {field: 'price',width: '10%', title: '利润（元）', align: 'center'},
                 {field: 'opt',width: '10%', title: '操作', align: 'center',
                     formatter: function(value, row){
                         return '<button type="button" class="btn btn-info btn-xs" onclick="openModel(\''+row.goodsId+'\')">详情</button>';

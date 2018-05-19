@@ -24,7 +24,7 @@ public class OrderGoods implements Serializable {
 	
 	private String id; //
 	private String orderId; //申请单Id
-	private Integer goodsId; //货物id
+	private String goodsId; //货物id
 	private Integer num; // 数量
 	private Date createTime; //
 	private String createBy; //
