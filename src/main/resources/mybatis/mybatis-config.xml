@@ -38,6 +38,7 @@
         <typeAlias type="com.drp.data.entity.dto.AdminUserDto" alias="adminUserDto" />
         <typeAlias type="com.drp.data.entity.dto.GoodsStockDto" alias="goodsStockDto" />
         <typeAlias type="com.drp.data.entity.dto.OperationLogDto" alias="operationLogDto" />
+        <typeAlias type="com.drp.data.entity.dto.GoodsStockLogDto" alias="goodsStockLogDto" />
     </typeAliases>
 
 </configuration>

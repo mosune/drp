@@ -51,7 +51,7 @@ public class GoodsStockLogServiceImpl implements GoodsStockLogService {
 
 	@Override
 	public List<GoodsStockLog> getList(HashMap<String, Object> map) {
-		return goodsStockLogDao.getList(map);
+		return goodsStockLogDao.getListAndPrice(map);
 	}
 
 }

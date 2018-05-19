@@ -165,7 +165,7 @@
             columns: [
                 {field: 'goodsName',width: '40%', title: '货物名称', align: 'center'},
                 {field: 'num',width: '30%', title: '数量', align: 'center'},
-                {field: 'originalPrice',width: '30%', title: '成本价（元）', align: 'center'}
+                {field: 'salePrice',width: '30%', title: '销售价（元）', align: 'center'}
             ],
         });
     }

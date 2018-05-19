@@ -277,7 +277,7 @@
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
-            confirmButtonText: "入库",
+            confirmButtonText: "出库",
             cancelButtonText: "取消",
             closeOnConfirm: false,
             closeOnCancel: false,

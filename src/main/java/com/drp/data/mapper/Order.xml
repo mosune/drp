@@ -141,7 +141,7 @@
 	</select>
 
 	<select id="getGoodsList" parameterType="string" resultType="orderGoodsDto">
-		select g.num as num, gd.name as goodsName, gd.original_price as originalPrice from `order` o left join order_goods g on o.id = g.order_id left join goods gd on g.goods_id = gd.id
+		select g.num as num, gd.name as goodsName, gd.original_price as originalPrice, gd.sale_price as salePrice from `order` o left join order_goods g on o.id = g.order_id left join goods gd on g.goods_id = gd.id
 		<where>
 			o.id = #{id}
 		</where>

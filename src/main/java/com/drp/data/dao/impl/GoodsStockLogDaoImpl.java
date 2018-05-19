@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 import com.drp.data.entity.GoodsStockLog;
 import com.drp.data.dao.GoodsStockLogDao;
 
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * 
  * @author gcg
@@ -23,5 +26,10 @@ public class GoodsStockLogDaoImpl extends BaseDaoImpl<GoodsStockLog> implements 
         Integer count = getSqlSession().selectOne(getSqlName("getCount"), pageParam.getMap());
         page.setTotal(count == null ? 0 : count);
         return page;
+    }
+
+    @Override
+    public List<GoodsStockLog> getListAndPrice(HashMap<String, Object> map) {
+        return getSqlSession().selectList(getSqlName("getListAndPrice"), map);
     }
 }

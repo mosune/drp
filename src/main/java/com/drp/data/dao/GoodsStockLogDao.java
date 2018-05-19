@@ -4,6 +4,9 @@ import com.drp.data.entity.GoodsStockLog;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * 
  * @author gcg
@@ -17,4 +20,6 @@ public interface GoodsStockLogDao extends BaseDao<GoodsStockLog> {
      * @return
      */
     Page<GoodsStockLog> find(PageParam pageParam);
+
+    List<GoodsStockLog> getListAndPrice(HashMap<String,Object> map);
 }

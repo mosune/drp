@@ -2,7 +2,9 @@ package com.drp.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.GoodsStock;
+import com.drp.data.entity.GoodsStockLog;
 import com.drp.data.entity.dto.GoodsStockDto;
+import com.drp.service.GoodsStockLogService;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
 import com.drp.util.UserUtil;
@@ -16,6 +18,7 @@ import com.drp.service.GoodsStockService;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 
@@ -28,6 +31,9 @@ public class GoodsStockController extends BaseController {
 
 	@Autowired
 	private GoodsStockService goodsStockService;
+
+	@Autowired
+	private GoodsStockLogService goodsStockLogService;
 
 	@RequestMapping("index.do")
 	public String index() {
@@ -50,7 +56,22 @@ public class GoodsStockController extends BaseController {
 		PageParam pageParam = new PageParam(offset, limit, map);
 		Page<GoodsStockDto> page = goodsStockService.find(pageParam);
 		for (GoodsStockDto goodsStock : page.getRows()) {
-			goodsStock.setPrice(goodsStock.getSalePrice().subtract(goodsStock.getOriginalPrice()).multiply(new BigDecimal(goodsStock.getCurrentStock() - goodsStock.getOriginalStock())));
+			BigDecimal price = new BigDecimal(0);
+			map.put("shop_id", UserUtil.getCurShopId());
+			map.put("goods_id", goodsStock.getGoodsId());
+			List<GoodsStockLog> list = goodsStockLogService.getList(map);
+			for (GoodsStockLog goodsStockLog : list) {
+				if (goodsStockLog.getType().equals("in")) {
+					price = price.subtract(goodsStock.getOriginalPrice().multiply(new BigDecimal(goodsStockLog.getQuantity())));
+				} else if (goodsStockLog.getType().equals("back_in")) {
+					price = price.subtract(goodsStock.getSalePrice().multiply(new BigDecimal(goodsStockLog.getQuantity())));
+				} else if (goodsStockLog.getType().equals("out")) {
+					price = price.add(goodsStock.getOriginalPrice().multiply(new BigDecimal(goodsStockLog.getQuantity())));
+				} else {
+					price = price.add(goodsStock.getSalePrice().multiply(new BigDecimal(goodsStockLog.getQuantity())));
+				}
+				goodsStock.setPrice(price);
+			}
 		}
  		result.put("total", page.getTotal());
 		result.put("rows", page.getRows());

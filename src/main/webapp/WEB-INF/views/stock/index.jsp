@@ -110,17 +110,19 @@
             contentType: 'application/x-www-form-urlencoded;charset=utf-8',
             striped: true,
             queryParams : function(params) {
-                params.id = id;
+                params.goodsId = id;
                 return params;
             },
             columns: [
-                {field: 'quantity',width: '30%', title: '数量', align: 'center'},
-                {field: 'type',width: '30%', title: '类型', align: 'center',
+                {field: 'originalPrice',width: '20%', title: '成本价（元）', align: 'center'},
+                {field: 'salePrice',width: '20%', title: '售卖价（元）', align: 'center'},
+                {field: 'quantity',width: '20%', title: '数量', align: 'center'},
+                {field: 'type',width: '20%', title: '类型', align: 'center',
                     formatter : function(value) {
                         if (value == 'in') return "采购入库";
-                        else if (value == 'back_in') return "退货入库";
-                        else if (value == 'out') return "退货出库";
-                        else return "销售出库"
+                        else if (value == 'back_in') return "销售退货入库";
+                        else if (value == 'out') return "采购退货出库";
+                        else return "销售出库";
                     }},
                 {field: 'createTime',width: '40%', title: '操作时间', align: 'center',
                     formatter : function(value) {

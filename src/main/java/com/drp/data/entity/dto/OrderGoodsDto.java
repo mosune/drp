@@ -19,4 +19,6 @@ public class OrderGoodsDto extends OrderGoods {
 
     private BigDecimal originalPrice; //成本价格
 
+    private BigDecimal salePrice; // 销售价格
+
 }

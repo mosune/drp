@@ -33,7 +33,7 @@ public class GoodsStockLogController extends BaseController {
 	public JSONObject list(String goodsId) {
 		JSONObject result = new JSONObject();
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		if (!UserUtil.getCurUserId().equals("1")) map.put("shop_id", UserUtil.getCurShopId());
+		map.put("shop_id", UserUtil.getCurShopId());
 		map.put("goods_id", goodsId);
 		List<GoodsStockLog> list = goodsStockLogService.getList(map);
 		result.put("rows", list);
