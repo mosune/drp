@@ -12,6 +12,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.Map;
  * Description: user Realm
  * History:
  **/
+@Component
 public class UserRealm extends AuthorizingRealm {
 
     @Autowired
@@ -49,6 +51,7 @@ public class UserRealm extends AuthorizingRealm {
         String userName = (String) token.getPrincipal();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("account", userName);
+        map.put("v", Math.random());
         List<AdminUser> users = adminUserDao.getList(map);
 
         if (CollectionUtils.isEmpty(users)) {

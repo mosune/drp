@@ -52,23 +52,6 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6">
-                                <label class="col-sm-4 control-label" for="topLevel">是否为第一级：</label>
-                                <div class="radio col-sm-8">
-                                    <label><input type="radio" value="true" id="true" checked name="chooseFirst">是</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label><input type="radio" value="false" id="false" name="chooseFirst">否</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <label class="col-sm-4 control-label" for="topLevel">上一级别：</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control m-b" name="topLevel" id="topLevel" disabled>
-                                        <option value="0">请选择</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-sm-12">
                                 <label class="col-sm-2 control-label" for="desc">描述：</label>
                                 <div class="col-sm-10">
@@ -110,7 +93,6 @@
             idField: 'id',
             columns: [
                 {field: 'name',width: '15%', title: '名称', align: 'center'},
-                {field: 'levelName', width: '10%', title: '上级', align: 'center'},
                 {field: 'remark',width: '20%', title: '描述', align: 'center'},
                 {field: 'status',width: '10%', title: '状态', align: 'center',
                     formatter : function(value) {
@@ -130,27 +112,6 @@
             ],
             toolbar: '#toolbar'
         });
-
-        $('input[type=radio][name=chooseFirst]').change(function() {
-            if (this.value == 'true') {
-                $("#topLevel option:first").prop("selected", 'selected');
-                $("#topLevel").attr("disabled", true);
-                $("#topLevel").empty();
-                $("#topLevel").append("<option value='0'>请选择</option>");
-            } else {
-                $("#topLevel").attr("disabled", false);
-                $.ajax({
-                    url: "<%=root%>category/getTopLevel.do",
-                    type: "post",
-                    dataType: "json",
-                    success:function(result) {
-                        for (var i = 0; i < result.list.length; i++) {
-                            $("#topLevel").append("<option value="+result.list[i].id+">"+result.list[i].name+"</option>");
-                        }
-                    }
-                });
-            }
-        });
     });
 
     function queryParams(params) {
@@ -165,8 +126,6 @@
     function openModel(id) {
         if (id) {
             $("#hideValue").val(id);
-            $("#topLevel").empty();
-            $("#topLevel").append("<option value='0'>请选择</option>");
             $.ajax({
                 url: "<%=root%>category/getData.do",
                 type: "post",
@@ -181,37 +140,12 @@
                     } else {
                         $("#name").val(result.category.name);
                         $("#desc").val(result.category.remark);
-                        if (result.category.level == 0) {
-                            $('input:radio').eq(0).prop('checked', true);
-                            $("#topLevel option:first").prop("selected", 'selected');
-                        } else {
-                            $('input:radio').eq(1).prop('checked', true);
-                            $("#topLevel").prop("disabled", false);
-                            $.ajax({
-                                url: "<%=root%>category/getTopLevel.do",
-                                type: "post",
-                                async: false,
-                                dataType: "json",
-                                success:function(data) {
-                                    for (var i = 0; i < data.list.length; i++) {
-                                        if (data.list[i].id == result.category.level) {
-                                            $("#topLevel").append("<option selected value="+data.list[i].id+">"+data.list[i].name+"</option>");
-                                            continue;
-                                        }
-                                        $("#topLevel").append("<option value="+data.list[i].id+">"+data.list[i].name+"</option>");
-                                    }
-                                }
-                            });
-                        }
                     }
                 }
             });
         } else {
             $("#hideValue").val("");
             $("#name").val("");
-            $("#topLevel").attr("disabled","disabled");
-            $("#topLevel option:first").prop("selected", 'selected');
-            $('input:radio').eq(0).prop('checked', true);
             $("#desc").val("");
         }
         $("#modal").modal("show");
@@ -219,7 +153,6 @@
     
     function saveOrUpdate() {
         var name = $("#name").val();
-        var level = $("#topLevel").val();
         var remark = $("#desc").val();
         var id = $("#hideValue").val();
         $.ajax({
@@ -227,7 +160,6 @@
             type: "post",
             data: {
                 name:name,
-                level:level,
                 remark:remark,
                 id:id
             },

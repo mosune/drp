@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.drp.data.entity.Category;
 import com.drp.util.Page;
 import com.drp.util.PageParam;
-import com.drp.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +45,6 @@ public class CategoryController extends BaseController {
 	public JSONObject list(int limit, int offset, String nameLike) {
 		JSONObject result = new JSONObject();
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		if (!UserUtil.getCurUserId().equals("1")) map.put("shop_id", UserUtil.getCurShopId());
 		map.put("name", nameLike);
 		PageParam pageParam = new PageParam(offset, limit, map);
 		Page<Category> page = categoryService.find(pageParam);
@@ -63,18 +61,6 @@ public class CategoryController extends BaseController {
 	@RequestMapping(value = "addOrUpdate.do")
 	public JSONObject addOrUpdate(Category category) {
 		return categoryService.addOrUpdate(category);
-	}
-
-	/**
-	 * 获取第一级列表
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "getTopLevel.do")
-	public JSONObject getTopLevel() {
-		JSONObject result = new JSONObject();
-		result.put("list", categoryService.getTopLevel());
-		return result;
 	}
 
 	/**
@@ -138,7 +124,7 @@ public class CategoryController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("getSecondLevel.do")
+	@RequestMapping("getList.do")
 	public JSONObject getSecondLevel() {
 		JSONObject result = new JSONObject();
 		result.put("list", categoryService.getSecondLevel());

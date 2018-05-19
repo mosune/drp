@@ -156,7 +156,7 @@
         $("#cate").empty();
         $("#cate").append("<option value='0'>请选择</option>");
         $.ajax({
-            url: "<%=root%>category/getSecondLevel.do",
+            url: "<%=root%>category/getList.do",
             type: "post",
             async: false,
             dataType: "json",

@@ -19,26 +19,14 @@
         <property name="storedCredentialsHexEncoded" value="true"/>
     </bean>
 
-    <!-- 使用rememberMe需要把返回来的凭证改为字符串 -->
-    <!--<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
-        <constructor-arg value="rememberMe"/>
-        <property name="httpOnly" value="true" />
-        <property name="maxAge" value="2592000" />
-    </bean>
-
-    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
-        <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('3AvVhmFLUs0KTA3Kprsdag==')}"/>
-        <property name="cookie" ref="rememberMeCookie"/>
-    </bean>-->
-
     <!-- 自定义realm实现 -->
     <bean id="userRealm" class="com.drp.shiro.realm.UserRealm">
         <property name="credentialsMatcher" ref="credentialsMatcher" />
-        <property name="cachingEnabled" value="true" />
-        <property name="authorizationCachingEnabled" value="true" />
-        <property name="authorizationCacheName" value="authorizationCache" />
-        <property name="authenticationCachingEnabled" value="true" />
-        <property name="authenticationCacheName" value="authenticationCache" />
+        <property name="cachingEnabled" value="false" />
+        <!--<property name="authorizationCachingEnabled" value="true" />-->
+        <!--<property name="authorizationCacheName" value="authorizationCache" />-->
+        <!--<property name="authenticationCachingEnabled" value="true" />-->
+        <!--<property name="authenticationCacheName" value="authenticationCache" />-->
     </bean>
 
     <!-- 静态注入securityManager -->
@@ -92,7 +80,6 @@
         <property name="realm" ref="userRealm"/>
         <property name="sessionManager" ref="sessionManager" />
         <property name="cacheManager" ref="cacheManager"/>
-        <!--<property name="rememberMeManager" ref="rememberMeManager" />-->
     </bean>
 
     <!-- shiro过滤器实现 -->

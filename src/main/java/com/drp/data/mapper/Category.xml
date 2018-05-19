@@ -9,7 +9,6 @@
 		<result property="shopId" column="shop_id"/>
 		<result property="name" column="name"/>
 		<result property="remark" column="remark"/>
-		<result property="level" column="level"/>
 		<result property="status" column="status"/>
 		<result property="createBy" column="create_by"/>
 		<result property="createTime" column="create_time"/>
@@ -22,7 +21,6 @@
 		<if test="shop_id != null"> and shop_id = #{shop_id} </if>
 		<if test="name != null and name != ''"> and name = #{name} </if>
 		<if test="remark != null and remark != ''"> and remark = #{remark} </if>
-		<if test="level != null"> and level = #{level} </if>
 		<if test="status != null"> and status = #{status} </if>
 		<if test="create_by != null and create_by != ''"> and create_by = #{create_by} </if>
 		<if test="create_time != null"> and create_time = #{create_time} </if>
@@ -42,9 +40,9 @@
 		insert into
 		<include refid="table" />
 		(
-			shop_id, name, remark, level, status, create_by, create_time, update_by, update_time
+			shop_id, name, remark, status, create_by, create_time, update_by, update_time
 		) values(
-			#{shopId}, #{name}, #{remark}, #{level}, #{status}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}
+			#{shopId}, #{name}, #{remark}, #{status}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}
 		)
 	</insert>
 	
@@ -52,10 +50,10 @@
 		insert into
 		<include refid="table" />
 		(
-			id, shop_id, name, remark, level, status, create_by, create_time, update_by, update_time
+			id, shop_id, name, remark, status, create_by, create_time, update_by, update_time
 		) values
 		<foreach collection="list" item="item" index="index" separator="," >
-			(#{item.id}, #{item.shopId}, #{item.name}, #{item.remark}, #{item.level}, #{item.status}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
+			(#{item.id}, #{item.shopId}, #{item.name}, #{item.remark}, #{item.status}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
 		</foreach>
 	</insert>
 	
@@ -75,8 +73,6 @@
 			shop_id = #{shopId},
 			name = #{name},
             remark = #{remark},
-			level = #{level},
-			remark = #{remark},
 			status = #{status},
 			create_by = #{createBy},
 			create_time = #{createTime},
@@ -109,54 +105,26 @@
 	<!-- 按参数查询（分页） -->
 	<select id="selectPage" parameterType="java.util.Map" resultType="categoryDto">
 		select
-			a.id as id,
-			a.shop_id as shopId,
-			a.name as name,
-			a.remark as remark,
-			a.status as status,
-			a.create_time as createTime,
-			b.name as levelName
-		from category a LEFT join category b on a.level = b.id
+			id as id,
+			name as name,
+			remark as remark,
+			status as status,
+			create_time as createTime
+		from category
 		<where>
-			<if test="shop_id != null and shop_id != ''"> and a.shop_id = #{shop_id}</if>
-			<if test="name != null and name != ''"><![CDATA[ and a.name LIKE concat('%',#{name}, '%')]]></if>
+			<if test="shop_id != null and shop_id != ''"> and shop_id = #{shop_id}</if>
+			<if test="name != null and name != ''"><![CDATA[ and name LIKE concat('%',#{name}, '%')]]></if>
 		</where>
-			order by a.create_time DESC
+			order by create_time DESC
 	</select>
 
 	<!-- 获取分页总数据数 -->
 	<select id="getCount" parameterType="java.util.Map" resultType="integer">
-		select count(*) from category a LEFT join category b on a.level = b.id
+		select count(*) from category
 		<where>
-			a.shop_id = #{shop_id}
-			<if test="name != null and name != ''"><![CDATA[ and a.name LIKE concat('%',#{name}, '%')]]></if>
+			shop_id = #{shop_id}
+			<if test="name != null and name != ''"><![CDATA[ and name LIKE concat('%',#{name}, '%')]]></if>
 		</where>
 	</select>
 
-	<!-- 获取第一级别列表 -->
-	<select id="getTopLevel" parameterType="java.util.Map" resultMap="categoryMap">
-		select
-			id as id,
-			name as name
-		from
-		<include refid="table" />
-		<where>
-			<include refid="sql_where" />
-		</where>
-		order BY
-		<include refid="sql_order_key" />
-	</select>
-
-	<!-- 获取第二级别列表 -->
-	<select id="getSecondLevel" parameterType="java.util.Map" resultMap="categoryMap">
-		select
-			id as id,
-			name as name
-		from
-		<include refid="table" />
-		where level > 0
-		order BY
-		<include refid="sql_order_key" />
-	</select>
-	
 </mapper>

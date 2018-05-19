@@ -28,10 +28,4 @@ public interface CategoryDao extends BaseDao<Category> {
      */
     List<Category> getTopLevel(Map<String, Object> map);
 
-    /**
-     * 获取第二级列表
-     * @param map
-     * @return
-     */
-    Object getSecondLevel(Map<String, Object> map);
 }

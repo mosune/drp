@@ -10,7 +10,7 @@
 
     <settings>
         <!-- 这个配置使全局的映射器启用或禁用 缓存 -->
-        <setting name="cacheEnabled" value="true" />
+        <setting name="cacheEnabled" value="false" />
         <!-- 使用 jdbc 的getGeneratedKeys 获取数据库的自增主键值 -->
         <setting name="useGeneratedKeys" value="true"/>
         <!-- 使用列的别名来替换列名 默认为true-->

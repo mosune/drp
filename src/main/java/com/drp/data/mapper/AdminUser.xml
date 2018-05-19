@@ -110,6 +110,7 @@
 		<include refid="table" />
 		<where>
 			<include refid="sql_where" />
+			and #{v} = #{v}
 		</where>
 	</select>
 

@@ -57,12 +57,6 @@ public interface CategoryService {
     JSONObject addOrUpdate(Category category);
 
 	/**
-	 * 获取第一级别的列表
-	 * @return
-	 */
-	List<Category> getTopLevel();
-
-	/**
 	 * 修改状态
 	 * @param category
 	 * @return

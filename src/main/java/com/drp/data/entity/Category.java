@@ -25,7 +25,6 @@ public class Category implements Serializable {
 	private Integer shopId; //门店Id
 	private String name; //名称
 	private String remark; //描述
-	private Integer level; //级别
 	private Integer status; //状态：0，1
 	private String createBy; //
 	private Date createTime; //
